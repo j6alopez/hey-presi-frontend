@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
   imports: [
+    CommonModule,
     RouterModule,
     ReactiveFormsModule
   ],
@@ -16,12 +18,6 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
-  onRegister() {
-    throw new Error('Method not implemented.');
-  }
-  onConfirm() {
-    throw new Error('Method not implemented.');
-  }
 
   private authService = inject(AuthService);
   private activatedRoute = inject(ActivatedRoute);
@@ -51,32 +47,22 @@ export class LoginPageComponent {
     });
   }
 
-  getFieldError(field: string): string | null {
-    const control = this.loginForm.get(field);
-    if (!control) return null;
-
-    const errors = control.errors || {};
-
-    for (const key of Object.keys(errors)) {
-      switch (key) {
-        case 'required':
-          return 'Field is required';
-        case 'minlength':
-          return `Minimum ${errors['minlength'].requiredLength} characters`;
-        case 'pattern':
-          return 'Invalid email format';
-
-      }
+  onLogin() {
+    console.log(this.loginForm)
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
     }
-    return null;
   }
 
   isLoginFailed(): string | null {
     return this.loginForm.getError('customError');
   }
 
-  isNotValidField(arg0: string): boolean {
-    return false
+  isNotValidField(field: string): boolean {
+    const control = this.loginForm.get(field);
+    if (!control) return false;
+    return control.touched && control.invalid;
   }
 
 }

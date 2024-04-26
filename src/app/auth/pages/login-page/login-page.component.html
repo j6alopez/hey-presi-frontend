@@ -1,9 +1,10 @@
 <div class="row justify-content-center">
+  <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
   <div class="col-lg-6">
     <h3 class="text-center my-5">Inicio de Sesión</h3>
     <form
       [formGroup]="loginForm"
-      (ngSubmit)="onConfirm()"
+      (ngSubmit)="onLogin()"
       autocomplete="off"
       class="d-flex flex-column"
     >
@@ -12,12 +13,12 @@
           type="email"
           formControlName="email"
           class="form-control my-3"
-          id="firstname"
+          id="email"
           placeholder="Email"
         />
-        @if ( isNotValidField('firstname') ) {
+        @if ( isNotValidField('email') ) {
         <div class="text-center text-sm-start">
-          <small class="text-danger mt-1"> Must be a valid name </small>
+          <small class="text-danger mt-1"> Formato del email no válido  </small>
         </div>
         }
       </div>
@@ -27,12 +28,12 @@
           type="password"
           formControlName="password"
           class="form-control my-3"
-          id="firstname"
+          id="password"
           placeholder="Contraseña"
         />
-        @if ( isNotValidField('firstname') ) {
+        @if ( isNotValidField('password') ) {
         <div class="text-center text-sm-start">
-          <small class="text-danger mt-1"> Must be a valid name </small>
+          <small class="text-danger mt-1"> Mínimo 8 carácteres </small>
         </div>
         }
       </div>
