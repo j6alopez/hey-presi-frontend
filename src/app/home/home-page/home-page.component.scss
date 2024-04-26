@@ -1,0 +1,13 @@
+body {
+    background-color: black !important;
+}
+
+#starship-button {
+    background-color: #fade4b;
+    height: 52px;
+    border-radius: 28px;
+    &:hover {
+        background-color: #fae04b;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1)
+    }
+}

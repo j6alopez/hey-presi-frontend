@@ -1,0 +1,52 @@
+<h3 class="text-center my-5">Inicio de sesión</h3>
+
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="onConfirm()"
+  autocomplete="off"
+  class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space"
+>
+  <div>
+    <input
+      type="email"
+      formControlName="email"
+      class="form-control my-3"
+      id="firstname"
+      placeholder="Email"
+    />
+    @if ( isNotValidField('firstname') ) {
+    <div class="text-center text-sm-start">
+      <small class="text-danger mt-1"> Must be a valid name </small>
+    </div>
+    }
+  </div>
+
+  <div>
+    <input
+      type="password"
+      formControlName="password"
+      class="form-control my-3"
+      id="firstname"
+      placeholder="Contraseña"
+    />
+    @if ( isNotValidField('firstname') ) {
+    <div class="text-center text-sm-start">
+      <small class="text-danger mt-1"> Must be a valid name </small>
+    </div>
+    }
+  </div>
+
+  <a class="small text-primary my-3">
+    ¿Necesitas ayuda?
+  </a>
+  <button type="submit" class="btn btn-primary text-center my-3">
+    Iniciar Sesión
+  </button>
+</form>
+
+<a class="small text-secondary my-3">¿Eres nuevo en HeyPresi?</a>
+<button class="btn btn-light text-center my-3" 
+[routerLink]="['/auth/register']"
+>
+  Darse de alta
+</button>
