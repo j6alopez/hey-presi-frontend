@@ -98,13 +98,15 @@ export class RegistrationNeighborPage {
       return;
     }
 
+    this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
+
     const { community, email, password, firstname, surnames, phoneNumber } = this.neighborForm.value;
     const user: CreateUser = {
       email,
       password,
       fullname: `${firstname} ${surnames}`,
     }
-    
+
     this.authService.createUser(user).pipe(
       filter((user) => !!user),
       switchMap((user) => {
@@ -117,27 +119,15 @@ export class RegistrationNeighborPage {
           roles: [Role.RESIDENT],
           user: user!.id
         };
+
         return this.neighborsService.createNeighbor(neighbor);
       })
-    ).subscribe();
+    ).subscribe(
+      ({ community }) => {
+        this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community } });
 
-    // const email: string = this.loginForm.controls['email'].value!;
-    // const password: string = this.loginForm.controls['password'].value!;
-    // this.authService.login(email, password).subscribe(
-    //   (loginSuccess) => {
-    //     console.log('loginSuccess', loginSuccess)
-    //     if (loginSuccess) {
-    //       const url = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/home';
-    //       this.router.navigateByUrl(url);
-    //     }
-    //     this.loginForm.setErrors({ 'customError': 'Invalid credentials' });
-    //     this.loginForm.markAsPending();
-    //   });
-
-  }
-
-  isLoginFailed(): string | null {
-    return this.neighborForm.getError('customError');
+      }
+    );
   }
 
   isNotValidField(field: string): boolean {
