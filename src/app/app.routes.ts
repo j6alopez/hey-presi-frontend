@@ -11,12 +11,16 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/auth.routes').then( r => r.AUTH_ROUTES)
   },
   {
+    path: 'neighbors',
+    loadChildren: () => import('./neighbors/neighbor.routes').then( r => r.NEIGHBOR_ROUTES)
+  },
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'auth',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: 'auth',
   },
 ];

@@ -1,52 +1,70 @@
-<h3 class="text-center my-5">Inicio de sesión</h3>
+<!-- Outer Row -->
+<div class="row justify-content-center">
+  <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="card border-0 rounded-5 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+          <div class="col-lg-6 p-5">
+            <h3 class="text-center my-5">Inicio de Sesión</h3>
+            <form
+              [formGroup]="loginForm"
+              (ngSubmit)="onLogin()"
+              autocomplete="off"
+              class="d-flex flex-column"
+            >
+              <div>
+                <input
+                  type="email"
+                  formControlName="email"
+                  class="form-control my-3"
+                  id="email"
+                  placeholder="Email"
+                />
+                @if ( isNotValidField('email') ) {
+                <div class="text-center text-sm-start">
+                  <small class="text-danger mt-1">
+                    El email no es válido
+                  </small>
+                </div>
+                }
+              </div>
 
-<form
-  [formGroup]="loginForm"
-  (ngSubmit)="onConfirm()"
-  autocomplete="off"
-  class="d-flex flex-column flex-md-row flex-md-wrap justify-content-center justify-content-sm-space"
->
-  <div>
-    <input
-      type="email"
-      formControlName="email"
-      class="form-control my-3"
-      id="firstname"
-      placeholder="Email"
-    />
-    @if ( isNotValidField('firstname') ) {
-    <div class="text-center text-sm-start">
-      <small class="text-danger mt-1"> Must be a valid name </small>
+              <div>
+                <input
+                  type="text"
+                  formControlName="password"
+                  class="form-control my-3"
+                  id="password"
+                  placeholder="Contraseña"
+                />
+                @if ( isNotValidField('password') ) {
+                <div class="text-center text-sm-start">
+                  <small class="text-danger mt-1">
+                    Al menos 8 caracteres, con números y letras mayúsculas
+                  </small>
+                </div>
+                }
+              </div>
+
+              <a class="small text-primary my-3"> ¿Necesitas ayuda? </a>
+              <button type="submit" class="btn btn-primary text-center my-3">
+                Iniciar Sesión
+              </button>
+
+              <a class="small text-secondary my-3">¿Eres nuevo en HeyPresi?</a>
+
+              <button 
+                class="btn btn-light text-center my-3"
+                [routerLink]="['/auth/register']"
+              >
+                Darse de alta
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    }
   </div>
-
-  <div>
-    <input
-      type="password"
-      formControlName="password"
-      class="form-control my-3"
-      id="firstname"
-      placeholder="Contraseña"
-    />
-    @if ( isNotValidField('firstname') ) {
-    <div class="text-center text-sm-start">
-      <small class="text-danger mt-1"> Must be a valid name </small>
-    </div>
-    }
-  </div>
-
-  <a class="small text-primary my-3">
-    ¿Necesitas ayuda?
-  </a>
-  <button type="submit" class="btn btn-primary text-center my-3">
-    Iniciar Sesión
-  </button>
-</form>
-
-<a class="small text-secondary my-3">¿Eres nuevo en HeyPresi?</a>
-<button class="btn btn-light text-center my-3" 
-[routerLink]="['/auth/register']"
->
-  Darse de alta
-</button>
+</div>

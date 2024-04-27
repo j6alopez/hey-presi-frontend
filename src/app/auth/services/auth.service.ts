@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-import { AuthResponseDTO } from '../interfaces/auth-response-dto';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { User } from '../interfaces/user';
 import { environment } from '../../../environments/environment';
+import { LoginResponseDto } from '../interfaces/user-response.dto';
+import { CreateUser } from '../interfaces/create-user';
+import { CreateUserResponseDto } from '../interfaces/create-user-response.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -23,30 +25,32 @@ export class AuthService {
     return structuredClone(this.user);
   }
 
-  public createUser( email: string, password: string): Observable<boolean> {
-    const url: string = `${this.baseUrl}/users`;
-    return this.http.post<AuthResponseDTO>( url, { email, password })
+  public createUser(user: CreateUser): Observable<User | undefined> {
+    const url: string = `${this.baseUrl}/auth/register`;
+    return this.http.post<CreateUserResponseDto>(url, user)
       .pipe(
-        map( user => !!user),
-        catchError( () => of(false))
+        map(response => ({ id: response.id, email: response.email } as User)),
+        catchError(() => {
+          return of(undefined);
+        })
       );
   }
 
-  public login( email: string, password: string ): Observable<boolean> {
-    const url: string = `${this.baseUrl}/login`;
-    return this.http.post<AuthResponseDTO>( url, { email, password })
+  public login(email: string, password: string): Observable<boolean> {
+    const url: string = `${this.baseUrl}/auth/login`;
+    return this.http.post<LoginResponseDto>(url, { email, password })
       .pipe(
-          map( ({ user }) => ({ email: user.email } as User )),
-          tap( user => this.user = user ),
-          map( user => !!user),
-          catchError( () => {
-            return of(false);
-          })
+        map(({ email }) => ({ email } as User)),
+        tap(user => this.user = user),
+        map(user => !!user),
+        catchError(() => {
+          return of(false);
+        })
       );
   }
 
   logout() {
-      this.user = undefined;
+    this.user = undefined;
   }
 
 }

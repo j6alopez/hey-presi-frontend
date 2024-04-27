@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'auth-login-page',
   standalone: true,
   imports: [
     RouterModule,
@@ -16,6 +16,9 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
   styleUrl: './register-page.component.scss',
 })
 export class RegisterPageComponent {
+onLogin() {
+throw new Error('Method not implemented.');
+}
   onRegister() {
     throw new Error('Method not implemented.');
   }
