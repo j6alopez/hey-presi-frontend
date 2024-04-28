@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { ValidatorService } from '../../../shared/validators/validator.service';
@@ -22,7 +22,6 @@ import { filter, switchMap } from 'rxjs';
 })
 export class RegistrationNeighborPage {
 
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
   private readonly neighborsService = inject(NeighborsService);

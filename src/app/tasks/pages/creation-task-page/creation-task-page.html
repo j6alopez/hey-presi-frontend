@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-lg-6 p-5 mx-auto mx-lg-0">
+    <h3 class="">Crear una incidencia</h3>
+    <h5 class="mb-2">Escribe qué ocurre de forma sencilla.
+      Los demás lo podrán entender más fácilmente.
+    </h5>
+    <div>
+
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" autocomplete="off" class="d-flex flex-column">
+        <!-- topic  -->
+        <div class="form-floating">
+          <select class="form-select" id="topic" aria-label="Tema">
+            @for (taskType of taskTypes; track $index) {
+            <option [value]="taskType.toString()"> {{ 'TASK_TYPE.' + taskType.toString()  | translate}}</option>
+            }
+          </select>
+          <label for="floatingSelect">Tema</label>
+        </div>
+
+        @if ( isNotValidField('topic') ) {
+        <div class="text-center text-sm-start">
+          <small class="text-danger mt-1">
+            Se debe escoger un tema
+          </small>
+        </div>
+        }
+
+        <!-- title -->
+        <div class="form-floating">
+          <input type="text" formControlName="title" class="form-control my-3" id="title" />
+          <label for="title">Título</label>
+
+          @if ( isNotValidField('title') ) {
+          <div class="text-center text-sm-start">
+            <small class="text-danger mt-1">
+              El campo debe ser informado
+            </small>
+          </div>
+          }
+        </div>
+        <!-- description -->
+        <div class="form-floating">
+          <input type="text" formControlName="description" class="form-control my-3" id="description" />
+          <label for="description">Descripción</label>
+
+          @if ( isNotValidField('description') ) {
+          <div class="text-center text-sm-start">
+            <small class="text-danger mt-1">
+              Debe informarse brevemente qué ocurre
+            </small>
+          </div>
+          }
+        </div>
+      </form>
+      <button type="button" class="btn btn-primary text-center my-3 w-100" [routerLink]="['/tasks']">
+        Crear incidencia
+      </button>
+    </div>
+  </div>
+</div>

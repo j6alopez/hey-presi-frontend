@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-tasks-page',
+  selector: 'tasks-page',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterModule
+  ],
   templateUrl: './tasks-page.component.html',
   styleUrl: './tasks-page.component.scss'
 })

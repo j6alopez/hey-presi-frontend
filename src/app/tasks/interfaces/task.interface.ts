@@ -1,10 +1,12 @@
 import { TaskStatus } from '../enums/task-status.enum';
+import { TaskType } from '../enums/task-type.enum';
 
 export interface Task {
-  id: string;
+  id?: string;
   title: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   status: TaskStatus;
+  type: TaskType;
 }

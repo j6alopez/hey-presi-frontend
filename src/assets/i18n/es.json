@@ -1,0 +1,18 @@
+{
+  "TASK_TYPE": {
+    "ACCESS_ISSUE": "Problema de Acceso",
+    "CLEANING_ISSUE": "Problema de Limpieza",
+    "DISTURBANCE": "Molestia",
+    "ELECTRICITY_ISSUE": "Problema de Electricidad",
+    "ELEVATOR_ISSUE": "Problema de Ascensor",
+    "GARDEN": "Jardín",
+    "HAZARD": "Peligro",
+    "NEIGHBOR_MEETING": "Reunión de Vecinos",
+    "OTHER": "Otros",
+    "PARKING_ISSUE": "Parking",
+    "POOL": "Piscina",
+    "REPAIR": "Reparación",
+    "THEFT": "Robo",
+    "WATER_LEAK": "Fuga de Agua"
+  }
+}
