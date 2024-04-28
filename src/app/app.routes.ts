@@ -8,11 +8,15 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.routes').then( r => r.AUTH_ROUTES)
+    loadChildren: () => import('./auth/auth.routes').then(r => r.AUTH_ROUTES)
   },
   {
     path: 'neighbors',
-    loadChildren: () => import('./neighbors/neighbor.routes').then( r => r.NEIGHBOR_ROUTES)
+    loadChildren: () => import('./neighbors/neighbor.routes').then(r => r.NEIGHBOR_ROUTES)
+  },
+  {
+    path: 'tasks',
+    loadChildren: () => import('./tasks/task.routes').then(r => r.TASK_ROUTES)
   },
   {
     path: '',
