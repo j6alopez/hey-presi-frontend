@@ -3,6 +3,7 @@ import { Injectable, OnInit, Signal, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Task } from '../interfaces/task.interface';
+import { TasksResponseDto } from '../interfaces/tasks-response.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,9 @@ export class TasksService implements OnInit {
     this.ngOnInit();
   }
 
-  getTasks(): Observable<Task[]> {
+  getTasks(): Observable<TasksResponseDto> {
     const url = `${this.baseUrl}/tasks`
-    return this.http.get<Task[]>(url);
+    return this.http.get<TasksResponseDto>(url);
   }
 
   getTask(id: string): Observable<Task> {
@@ -32,14 +33,14 @@ export class TasksService implements OnInit {
     return this.http.post<Task>(url, task)
       .pipe(
         tap(task => {
-          this.tasksSignal.update(tasks => [...tasks, task]);
+          // this.tasksSignal.update(tasks => [...tasks, task]);
         })
       );
   }
 
   updateTask(task: Task): Observable<Task> {
     const { id, ...updateTask } = task;
-    const url = `${this.baseUrl}/tasks/${id}`
+    const url = `${this.baseUrl}/tasks/${id}`;
     return this.http.patch<Task>(url, updateTask).pipe(
       tap(task => {
         this.tasksSignal.update(tasks =>
@@ -51,15 +52,14 @@ export class TasksService implements OnInit {
   }
 
   deleteTask(id: string): Observable<Task> {
-    const url = `${this.baseUrl}/tasks/${id}`
+    const url = `${this.baseUrl}/tasks/${id}`;
     return this.http.delete<Task>(url)
       .pipe(
         tap(() => {
           this.tasksSignal.update(tasks =>
             tasks.filter(element => element.id !== id));
         })
-      )
-      ;
+      );
   }
 
   get tasks(): Signal<Task[]> {
@@ -68,8 +68,8 @@ export class TasksService implements OnInit {
 
   ngOnInit(): void {
     this.getTasks()
-      .subscribe(tasks => {
-        this.tasksSignal.set(tasks);
+      .subscribe(({ data }) => {
+        this.tasksSignal.set(data.tasks);
       })
   }
 

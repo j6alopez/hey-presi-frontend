@@ -7,17 +7,17 @@
     <div>
 
       <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" autocomplete="off" class="d-flex flex-column">
-        <!-- topic  -->
+        <!-- type  -->
         <div class="form-floating">
-          <select class="form-select" id="topic" aria-label="Tema">
+          <select class="form-select" formControlName='type' id="type" aria-label="Tema">
             @for (taskType of taskTypes; track $index) {
-            <option [value]="taskType.toString()"> {{ 'TASK_TYPE.' + taskType.toString()  | translate}}</option>
+            <option [value]="taskType"> {{ 'TASK_TYPE.' + taskType.toString() | translate}}</option>
             }
           </select>
           <label for="floatingSelect">Tema</label>
         </div>
 
-        @if ( isNotValidField('topic') ) {
+        @if ( isNotValidField('type') ) {
         <div class="text-center text-sm-start">
           <small class="text-danger mt-1">
             Se debe escoger un tema
@@ -52,7 +52,7 @@
           }
         </div>
       </form>
-      <button type="button" class="btn btn-primary text-center my-3 w-100" [routerLink]="['/tasks']">
+      <button type="button" class="btn btn-primary text-center my-3 w-100" (click)="onSubmit()">
         Crear incidencia
       </button>
     </div>

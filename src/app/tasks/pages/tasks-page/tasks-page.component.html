@@ -1,12 +1,42 @@
-<div class="row">
   <h3>Incidencias</h3>
-  <div class="col-lg-6 p-5 mx-lg-auto">
-    <div>
-      <button type="button" class="btn btn-primary text-center my-3 w-100"
-      [routerLink]="['/tasks', 'creation']"
-      >
-        Crear incidencia
-      </button>
-    </div>
+  <div class="my-3 ">
+    <ul class="list-group list-group-flush my-3">
+      @for (task of tasks(); track $index) {
+      <li class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{'TASK_TYPE.'+ task.type.toString() | uppercase| translate}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{task.title}}</h6>
+            <p class="card-text">{{task.description}}</p>
+            <span>
+              <a class="btn btn-secondary" [routerLink]="['/tasks', task.id]">
+                Editar
+              </a>
+            </span>
+            <span>
+              <a class="btn btn-secondary" (click)="onDelete(task.id)">
+                Eliminar
+              </a>
+            </span>
+
+          </div>
+
+        <!-- {{'TASK_TYPE.'+ task.type.toString() | uppercase| translate}}
+          <span>{{ task.title }}</span>
+          <span>
+            <a class="btn btn-secondary" [routerLink]="['/tasks', task.id]">
+              Ver
+            </a>
+          </span>
+          <span>
+            <a class="btn btn-secondary"
+              (click)="onDelete(task.id)"
+            >
+              Eliminar
+            </a>
+          </span> -->
+        }
+    </ul>
+    <button type="button" class="btn btn-primary text-center my-3 w-100" [routerLink]="['/tasks', 'creation']">
+      Crear incidencia
+    </button>
   </div>
-</div>

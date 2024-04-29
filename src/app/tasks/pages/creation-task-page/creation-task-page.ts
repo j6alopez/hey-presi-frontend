@@ -6,6 +6,7 @@ import { filter } from 'rxjs';
 import { TaskType } from '../../enums/task-type.enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { Task } from '../../interfaces/task.interface';
 
 @Component({
   selector: 'tasks-creation-task-page',
@@ -27,22 +28,24 @@ export class CreationTaskPage {
   public taskForm: FormGroup;
   public taskTypes = Object.values(TaskType);
 
+  private community = '8359da96-2cef-4c92-a92c-fe1eda83d971';
+
   constructor(private formBuilder: FormBuilder) {
     this.taskForm = this.formBuilder.group({
-      topic: [
-        '8359da96-2cef-4c92-a92c-fe1eda83d971',
+      type: [
+        TaskType.ACCESS_ISSUE,
         [
           Validators.required,
         ]
       ],
       title: [
-        'Primero primera',
+        'Titulo de prueba',
         [
           Validators.required,
         ]
       ],
       description: [
-        'Super Antonio',
+        'Descripcion de prueba con 20 caracteres',
         [
           Validators.required,
           Validators.minLength(20)
@@ -63,9 +66,12 @@ export class CreationTaskPage {
       this.taskForm.markAllAsTouched();
       return;
     }
-
-    this.tasksService.createTask(this.taskForm.value).pipe(
-      filter((task) => !!task)
+    const task: Task = {
+      ...this.taskForm.value,
+      community: this.community
+    };
+    this.tasksService.createTask(task).pipe(
+      filter((response) => !!response)
     ).subscribe(() => {
       this.router.navigate(['/tasks']);
     });  
