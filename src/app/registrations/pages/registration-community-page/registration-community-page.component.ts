@@ -4,9 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { ValidatorService } from '../../../shared/validators/validator.service';
-import { NeighborsService } from '../../services/neighbors.service';
 import { CommunityRole } from '../../enums/community-role.enum';
-import { Neighbor } from '../../interfaces/neighbor.interface';
 import { CreateUser } from '../../../auth/interfaces/create-user';
 import { filter, switchMap } from 'rxjs';
 
@@ -27,7 +25,6 @@ export class RegistrationCommunityPage {
 
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
-  private readonly neighborsService = inject(NeighborsService);
   private readonly authService = inject(AuthService);
 
   constructor(private formBuilder: FormBuilder) {

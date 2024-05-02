@@ -4,12 +4,12 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { ValidatorService } from '../../../shared/validators/validator.service';
-import { NeighborsService } from '../../services/neighbors.service';
 import { CommunityRole } from '../../enums/community-role.enum';
-import { Neighbor } from '../../interfaces/neighbor.interface';
 import { CreateUser } from '../../../auth/interfaces/create-user';
 import { filter, switchMap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { UnitsService } from '../../../units/units.service';
+import { Unit } from '../../../units/interfaces/unit.interface';
 
 @Component({
   selector: 'registration-user-page',
@@ -26,20 +26,20 @@ export class RegistrationNeighborPage {
 
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
-  private readonly neighborsService = inject(NeighborsService);
+  private readonly unitsService = inject(UnitsService);
   private readonly authService = inject(AuthService);
 
 
-  public neighborForm: FormGroup;
+  public userForm: FormGroup;
   public communityRoles = Object.values(CommunityRole).sort();
 
   private showCommunityToRoles = [CommunityRole.PROPERTY_OWNER, CommunityRole.TENANT];
 
   constructor(private formBuilder: FormBuilder) {
-    this.neighborForm = this.formBuilder.group({
+    this.userForm = this.formBuilder.group({
 
       communityCode: [
-        '8359da96-2cef-4c92-a92c-fe1eda83d971',
+        '1bed3f1f-6792-4362-9cb4-d22a3429f326',
         [
           Validators.required,
           Validators.pattern(PatternUtils.uuidV4)
@@ -84,14 +84,14 @@ export class RegistrationNeighborPage {
         ]
       ],
       password: [
-        '644903956Ab',
+        'J6alopez@gmail.com',
         [
           Validators.required,
           Validators.pattern(PatternUtils.password)
         ]
       ],
       passwordConfirm: [
-        '644903956Ab',
+        'J6alopez@gmail.com',
         [
           Validators.required
         ]
@@ -104,50 +104,49 @@ export class RegistrationNeighborPage {
   }
 
   onSubmit() {
-    if (this.neighborForm.invalid) {
-      this.neighborForm.markAllAsTouched();
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
       return;
     }
 
-    this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
-
-    const { community, email, password, firstname, surnames, phoneNumber } = this.neighborForm.value;
+    const { communityCode, email, password, firstname, surnames, phoneNumber, property } = this.userForm.value;
     const user: CreateUser = {
       email,
       password,
-      fullname: `${firstname} ${surnames}`,
-    }
+      firstname,
+      surnames,
+      phoneNumber,
+    };
 
     this.authService.createUser(user).pipe(
-      filter((user) => !!user),
-      switchMap((user) => {
-        const neighbor: Neighbor = {
-          community,
-          firstname,
-          surnames,
-          email,
-          phoneNumber,
-          roles: [CommunityRole.PROPERTY_OWNER],
-          user: user!.id
+      filter((createdUser) => !!createdUser),
+      switchMap((createdUser) => {
+        const unit: Unit = {
+          communityId: communityCode,
+          name: property,
+          unitRoles: [
+            {
+              role: this.userForm.get('type')!.value as CommunityRole
+            }
+          ]
         };
-
-        return this.neighborsService.createNeighbor(neighbor);
-      })
-    ).subscribe(
-      ({ community }) => {
-        this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community } });
-
-      }
+        return this.unitsService.createUnit(unit);
+      }),
+      filter((createdUnit) => !!createdUnit)
+    ).subscribe(() => 
+      this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } })
     );
   }
 
+
+
   isNotValidField(field: string): boolean {
-    const control = this.neighborForm.get(field);
+    const control = this.userForm.get(field);
     if (!control) return false;
     return control.touched && control.invalid;
   }
 
-  showCommunity(): boolean  {
-    return this.showCommunityToRoles.includes(this.neighborForm.get('type')?.value);
+  showCommunity(): boolean {
+    return this.showCommunityToRoles.includes(this.userForm.get('type')?.value);
   }
 }

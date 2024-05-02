@@ -1,8 +1,8 @@
-import { Role } from "../enums/role.enum";
+import { UserType } from "../enums/role.enum";
 
 export interface LoginResponseDto {
-  email:    string;
+  email: string;
   fullname: string;
   isActive: boolean;
-  roles:    Role[];
+  roles: UserType[];
 }

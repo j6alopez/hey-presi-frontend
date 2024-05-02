@@ -14,7 +14,7 @@
         </div>
 
         <!-- Register Neighbor -->
-        <form [formGroup]="neighborForm" (ngSubmit)="onSubmit()" autocomplete="off" class="d-flex flex-column">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="off" class="d-flex flex-column">
 
           <!-- type  -->
           <div class="form-floating">
@@ -132,7 +132,7 @@
             }
           </div>
 
-          <button type="submit" class="btn btn-primary text-center my-3" [disabled]="neighborForm.invalid">
+          <button type="submit" class="btn btn-primary text-center my-3" [disabled]="userForm.invalid">
             Siguiente
           </button>
         </form>

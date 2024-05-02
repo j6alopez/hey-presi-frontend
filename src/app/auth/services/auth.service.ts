@@ -16,6 +16,7 @@ export class AuthService {
 
   private baseUrl: string = environment.backend_base_url;
   private user?: User;
+  private registeredUser?: User;
 
 
   get currentUser(): User | undefined {
@@ -29,7 +30,7 @@ export class AuthService {
     const url: string = `${this.baseUrl}/auth/register`;
     return this.http.post<CreateUserResponseDto>(url, user)
       .pipe(
-        map(response => ({ id: response.id, email: response.email } as User)),
+        map(({ id }) => ({ id } as User)),
         catchError(() => {
           return of(undefined);
         })
@@ -40,7 +41,7 @@ export class AuthService {
     const url: string = `${this.baseUrl}/auth/login`;
     return this.http.post<LoginResponseDto>(url, { email, password })
       .pipe(
-        map(({ email }) => ({ email } as User)),
+        map(() => ({ email } as User)),
         tap(user => this.user = user),
         map(user => !!user),
         catchError(() => {
