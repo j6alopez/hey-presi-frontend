@@ -5,20 +5,22 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { ValidatorService } from '../../../shared/validators/validator.service';
 import { NeighborsService } from '../../services/neighbors.service';
-import { Role } from '../../enums/roles.enum';
+import { CommunityRole } from '../../enums/community-role.enum';
 import { Neighbor } from '../../interfaces/neighbor.interface';
 import { CreateUser } from '../../../auth/interfaces/create-user';
 import { filter, switchMap } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'registration-neighbor-page',
+  selector: 'registration-user-page',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    TranslateModule
   ],
-  templateUrl: './registration-neighbor-page.component.html',
-  styleUrl: './registration-neighbor-page.component.scss'
+  templateUrl: './registration-user-page.component.html',
+  styleUrl: './registration-user-page.component.scss'
 })
 export class RegistrationNeighborPage {
 
@@ -29,14 +31,24 @@ export class RegistrationNeighborPage {
 
 
   public neighborForm: FormGroup;
+  public communityRoles = Object.values(CommunityRole).sort();
+
+  private showCommunityToRoles = [CommunityRole.PROPERTY_OWNER, CommunityRole.TENANT];
 
   constructor(private formBuilder: FormBuilder) {
     this.neighborForm = this.formBuilder.group({
-      community: [
+
+      communityCode: [
         '8359da96-2cef-4c92-a92c-fe1eda83d971',
         [
           Validators.required,
           Validators.pattern(PatternUtils.uuidV4)
+        ]
+      ],
+      type: [
+        "",
+        [
+          Validators.required,
         ]
       ],
       property: [
@@ -115,7 +127,7 @@ export class RegistrationNeighborPage {
           surnames,
           email,
           phoneNumber,
-          roles: [Role.RESIDENT],
+          roles: [CommunityRole.PROPERTY_OWNER],
           user: user!.id
         };
 
@@ -133,5 +145,9 @@ export class RegistrationNeighborPage {
     const control = this.neighborForm.get(field);
     if (!control) return false;
     return control.touched && control.invalid;
+  }
+
+  showCommunity(): boolean  {
+    return this.showCommunityToRoles.includes(this.neighborForm.get('type')?.value);
   }
 }

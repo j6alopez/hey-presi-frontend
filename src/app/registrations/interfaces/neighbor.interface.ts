@@ -1,12 +1,12 @@
-import { Role } from "../enums/roles.enum";
+import { CommunityRole } from "../enums/community-role.enum";
 
 export interface Neighbor {
-  id?:string;
+  id?: string;
   community: string;
   firstname: string;
   surnames: string;
   email: string;
   phoneNumber: string;
   user: string;
-  roles: Role[];
+  roles: CommunityRole[];
 }

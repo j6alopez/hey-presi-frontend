@@ -5,7 +5,7 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { ValidatorService } from '../../../shared/validators/validator.service';
 import { NeighborsService } from '../../services/neighbors.service';
 import { Neighbor } from '../../interfaces/neighbor.interface';
-import { Role } from '../../enums/roles.enum';
+import { CommunityRole } from '../../enums/community-role.enum';
 
 @Component({
   selector: 'register-president-page',
@@ -46,7 +46,7 @@ export class RegistrationPresidentPage {
       return;
     }
     const neighbor = this.neighborForm.value as Neighbor;
-    neighbor.roles = [Role.RESIDENT, Role.PRESIDENT];
+    neighbor.roles = [CommunityRole.PRESIDENT];
 
     this.neighborsService.createNeighbor(neighbor).subscribe(
       (neighbor) => {

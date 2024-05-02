@@ -21,13 +21,11 @@ import { Task } from '../../interfaces/task.interface';
   styleUrl: './creation-task-page.scss'
 })
 export class CreationTaskPage {
-
-  private readonly tasksService = inject(TasksService);
-  private readonly router = inject(Router);
-
   public taskForm: FormGroup;
   public taskTypes = Object.values(TaskType);
 
+  private readonly tasksService = inject(TasksService);
+  private readonly router = inject(Router);
   private community = '8359da96-2cef-4c92-a92c-fe1eda83d971';
 
   constructor(private formBuilder: FormBuilder) {

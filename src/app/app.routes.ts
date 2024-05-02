@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'neighbors',
-    loadChildren: () => import('./neighbors/neighbor.routes').then(r => r.NEIGHBOR_ROUTES)
+    loadChildren: () => import('./registrations/neighbor.routes').then(r => r.NEIGHBOR_ROUTES)
   },
   {
     path: 'tasks',

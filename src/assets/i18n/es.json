@@ -14,5 +14,13 @@
     "REPAIR": "Reparación",
     "THEFT": "Robo",
     "WATER_LEAK": "Fuga de Agua"
+  },
+
+  "COMMUNITY_ROLE": {
+    "ADMINISTRATOR": "Administrador",
+    "PROPERTY_OWNER": "Propietario",
+    "SUPPLIER": "Proveedor",
+    "TENANT": "Alquilado",
+    "PRESIDENT": "Presidente"
   }
 }

@@ -14,5 +14,12 @@
     "REPAIR": "Repair",
     "THEFT": "Theft",
     "WATER_LEAK": "Water Leak"
+  },
+  "COMMUNITY_ROLE": {
+    "ADMINISTRATOR": "Administrator",
+    "PROPERTY_OWNER": "Property-owner",
+    "SUPPLIER": "Supplier",
+    "TENANT": "Tenant",
+    "PRESIDENT": "President"
   }
 }

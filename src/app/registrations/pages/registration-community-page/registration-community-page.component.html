@@ -28,6 +28,17 @@
             </div>
             }
           </div>
+
+                  <!-- type  -->
+        <div class="form-floating">
+          <select class="form-select" formControlName='type' id="type" aria-label="Tema">
+            @for (taskType of taskTypes; track $index) {
+            <option [value]="taskType"> {{ 'TASK_TYPE.' + taskType.toString() | translate}}</option>
+            }
+          </select>
+          <label for="floatingSelect">Tema</label>
+        </div>
+
           <!-- property -->
           <div class="form-floating">
             <input type="text" formControlName="property" class="form-control my-3" id="property" />

@@ -19,7 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
 export class TasksPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
-    console.log(this.tasks());
   }
 
   public tasks!: Signal<Task[]>;
