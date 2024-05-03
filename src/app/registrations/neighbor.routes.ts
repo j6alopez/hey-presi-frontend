@@ -3,7 +3,7 @@ import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { RegistrationNeighborPage } from './pages/registration-user-page/registration-user-page.component';
 import { RegistrationSuccessfulPage as RegistrationSuccessfulPage } from './pages/registration-completed/registration-completed.component';
 
-export const NEIGHBOR_ROUTES: Routes = [
+export const REGISTRATION_ROUTES: Routes = [
   {
     path: '',
     component: LayoutPageComponent,
@@ -13,7 +13,6 @@ export const NEIGHBOR_ROUTES: Routes = [
         children: [
           { path: '', component: RegistrationNeighborPage },
           { path: 'successful', component: RegistrationSuccessfulPage },
-          { path: '', redirectTo: 'registration', pathMatch: 'full' },
         ]
       },
       { path: '', redirectTo: 'registration', pathMatch: 'full' },
