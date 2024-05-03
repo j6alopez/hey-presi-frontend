@@ -138,6 +138,7 @@ export class RegistrationNeighborPage {
     ).subscribe(() => {
       if (role === CommunityRole.PRESIDENT) {
         this.router.navigate(['/registrations', 'community'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
+        return;
       }
       this.router.navigate(['/registrations', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
     });

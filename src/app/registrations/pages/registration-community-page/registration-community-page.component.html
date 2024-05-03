@@ -15,12 +15,28 @@
         <!-- Register Community -->
         <form [formGroup]="communityForm" (ngSubmit)="onSubmit()" autocomplete="off" class="row">
           <!-- street -->
-          <div class="col-12 my-3">
+          <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="street" class="form-control" id="street" />
               <label for="street">Dirección</label>
 
               @if ( isNotValidField('street') ) {
+              <div class="text-center text-sm-start">
+                <small class="text-danger mt-1">
+                  El campo debe ser informado
+                </small>
+              </div>
+              }
+            </div>
+          </div>
+
+          <!-- streetNumber -->
+          <div class="col-12 col-md-6 my-3">
+            <div class="form-floating">
+              <input type="text" formControlName="streetNumber" class="form-control" id="streetNumber" />
+              <label for="streetNumber">Número</label>
+
+              @if ( isNotValidField('streetNumber') ) {
               <div class="text-center text-sm-start">
                 <small class="text-danger mt-1">
                   El campo debe ser informado
@@ -49,13 +65,27 @@
           <!-- subregion -->
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
-              <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia">
-                <option value="">-- Seleccione tipo de vecino --</option>
-                @for (subregion of subregions; track $index) {
-                <option [value]="subregion">{{ subregion.description!}}</option>
+              <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia"
+                (change)="onSubregionChange($event)">
+                <option value= null>-- Seleccione una provincia --</option>
+                @for (subregion of subregions | keyvalue; track $index) {
+                <option [value]="subregion.key">{{ subregion.value}}</option>
                 }
               </select>
-              <label for="floatingSelect">Tema</label>
+              <label for="floatingSelect">Provincia</label>
+            </div>
+          </div>
+
+          <!-- city -->
+          <div class="col-12 col-md-6 my-3">
+            <div class="form-floating">
+              <select class="form-select" formControlName='city' id="city" aria-label="Ciudad">
+                <option value=null>-- Seleccione una población --</option>
+                @for (city of citiesSignal(); track $index) {
+                <option [value]="city.code">{{ city.name!}}</option>
+                }
+              </select>
+              <label for="floatingSelect">Población</label>
             </div>
           </div>
 
