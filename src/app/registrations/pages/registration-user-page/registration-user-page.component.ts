@@ -1,15 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+
+import { TranslateModule } from '@ngx-translate/core';
+
 import { AuthService } from '../../../auth/services/auth.service';
-import { PatternUtils } from '../../../shared/validators/pattern-utils';
-import { ValidatorService } from '../../../shared/validators/validator.service';
 import { CommunityRole } from '../../enums/community-role.enum';
 import { CreateUser } from '../../../auth/interfaces/create-user';
 import { filter, switchMap } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
-import { UnitsService } from '../../../units/units.service';
+import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { Unit } from '../../../units/interfaces/unit.interface';
+import { UnitsService } from '../../../units/units.service';
+import { ValidatorService } from '../../../shared/validators/validator.service';
 
 @Component({
   selector: 'registration-user-page',
@@ -117,7 +119,7 @@ export class RegistrationNeighborPage {
       surnames,
       phoneNumber,
     };
-
+    const role = this.userForm.get('type')!.value as CommunityRole;
     this.authService.createUser(user).pipe(
       filter((createdUser) => !!createdUser),
       switchMap((createdUser) => {
@@ -126,16 +128,19 @@ export class RegistrationNeighborPage {
           name: property,
           unitRoles: [
             {
-              role: this.userForm.get('type')!.value as CommunityRole
+              role
             }
           ]
         };
         return this.unitsService.createUnit(unit);
       }),
       filter((createdUnit) => !!createdUnit)
-    ).subscribe(() => 
-      this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } })
-    );
+    ).subscribe(() => {
+      if (role === CommunityRole.PRESIDENT) {
+        this.router.navigate(['/registrations', 'community'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
+      }
+      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
+    });
   }
 
 

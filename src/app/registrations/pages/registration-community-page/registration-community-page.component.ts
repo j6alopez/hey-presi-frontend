@@ -4,9 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { ValidatorService } from '../../../shared/validators/validator.service';
-import { CommunityRole } from '../../enums/community-role.enum';
-import { CreateUser } from '../../../auth/interfaces/create-user';
-import { filter, switchMap } from 'rxjs';
+import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
 
 @Component({
   selector: 'registration-community-page',
@@ -19,123 +17,68 @@ import { filter, switchMap } from 'rxjs';
   styleUrl: './registration-community-page.component.scss'
 })
 export class RegistrationCommunityPage {
-  
-  public neighborForm: FormGroup;
-  public communityRoles = Object.values(CommunityRole);
 
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
   private readonly authService = inject(AuthService);
 
-  constructor(private formBuilder: FormBuilder) {
-    this.neighborForm = this.formBuilder.group({
 
-      community: [
-        '8359da96-2cef-4c92-a92c-fe1eda83d971',
+  public communityForm: FormGroup;
+
+  public subregions = Object.values(SpanishSubRegions);
+
+  constructor(private formBuilder: FormBuilder) {
+    this.communityForm = this.formBuilder.group({
+
+      street: [
+        '1bed3f1f-6792-4362-9cb4-d22a3429f326',
         [
           Validators.required,
           Validators.pattern(PatternUtils.uuidV4)
         ]
       ],
-      type: [
-        CommunityRole.RESIDENT,
+      postalCode: [
+        "",
         [
           Validators.required,
         ]
       ],
-      property: [
+      region: [
         'Primero primera',
         [
           Validators.required,
         ]
       ],
-      firstname: [
+      subregion: [
         'Super Antonio',
         [
           Validators.required
         ]
       ],
-      surnames: [
-        'López Gómez',
+      city: [
+        'Super Antonio',
         [
           Validators.required
         ]
       ],
-      email: [
-        'j6alopezz@gmail.com',
-        [
-          Validators.required,
-          Validators.pattern(PatternUtils.email)
-        ]
-      ],
-      phoneNumber: [
-        '644903956',
-        [
-          Validators.required,
-          Validators.pattern(PatternUtils.spanishPhone)
-        ]
-      ],
-      password: [
-        '644903956Ab',
-        [
-          Validators.required,
-          Validators.pattern(PatternUtils.password)
-        ]
-      ],
-      passwordConfirm: [
-        '644903956Ab',
-        [
-          Validators.required
-        ]
-      ],
-    },
-      {
-        validators: this.validatorService.fieldsAreEqual('password', 'passwordConfirm')
-      }
-    );
+    });
   }
 
   onSubmit() {
-    if (this.neighborForm.invalid) {
-      this.neighborForm.markAllAsTouched();
+    if (this.communityForm.invalid) {
+      this.communityForm.markAllAsTouched();
       return;
     }
 
-    this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
-
-    const { community, email, password, firstname, surnames, phoneNumber } = this.neighborForm.value;
-    const user: CreateUser = {
-      email,
-      password,
-      fullname: `${firstname} ${surnames}`,
-    }
-
-    this.authService.createUser(user).pipe(
-      filter((user) => !!user),
-      switchMap((user) => {
-        const neighbor: Neighbor = {
-          community,
-          firstname,
-          surnames,
-          email,
-          phoneNumber,
-          roles: [CommunityRole.RESIDENT],
-          user: user!.id
-        };
-
-        return this.neighborsService.createNeighbor(neighbor);
-      })
-    ).subscribe(
-      ({ community }) => {
-        this.router.navigate(['/neighbors', 'registration', 'successful'], { queryParams: { community } });
-
-      }
-    );
   }
 
+
+
   isNotValidField(field: string): boolean {
-    const control = this.neighborForm.get(field);
+    const control = this.communityForm.get(field);
     if (!control) return false;
     return control.touched && control.invalid;
   }
+
 }
+

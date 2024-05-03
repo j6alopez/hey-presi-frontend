@@ -45,7 +45,6 @@ export class LoginPageComponent {
     const password: string = this.loginForm.controls['password'].value!;
     this.authService.login(email, password).subscribe(
       (loginSuccess) => {
-        console.log('loginSuccess', loginSuccess)
         if (loginSuccess) {
           const url = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/home';
           this.router.navigateByUrl(url);

@@ -11,8 +11,8 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/auth.routes').then(r => r.AUTH_ROUTES)
   },
   {
-    path: 'neighbors',
-    loadChildren: () => import('./registrations/neighbor.routes').then(r => r.REGISTRATION_ROUTES)
+    path: 'registrations',
+    loadChildren: () => import('./registrations/registration.routes').then(r => r.REGISTRATION_ROUTES)
   },
   {
     path: 'tasks',
