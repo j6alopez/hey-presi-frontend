@@ -3,7 +3,7 @@
   <div class="card-body p-0">
     <!-- Nested Row within Card Body -->
     <div class="row">
-      <div class="col-12 p-5 mx-auto">
+      <div class="col-12 p-5">
         <h3 class="my-3">Datos Usuario</h3>
         <h5 class="my-3">Registrate como vecino de tu comunidad</h5>
         <!-- Progressbar -->
@@ -15,7 +15,7 @@
         <!-- Register Neighbor -->
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="off" class="row">
           <!-- type  -->
-          <div class="col-12 col-md-6 my-3">
+          <div class="col-12 my-3">
             <div class="form-floating">
               <select class="form-select" formControlName='type' id="type" aria-label="type">
                 <option value="">-- Seleccione tipo de vecino --</option>
@@ -29,7 +29,7 @@
 
           <!-- community -->
           @if (showCommunity()) {
-          <div class="col-12 col-md-6 my-3">
+          <div class="col-12 my-3">
             <div class="form-floating">
               <input type="text" formControlName="communityCode" class="form-control" id="communityCode" />
               <label for="communityCode">Código de comunidad</label>
@@ -44,6 +44,24 @@
             </div>
           </div>
           }
+
+
+          <!-- property -->
+          <div class="col-12 my-3">
+            <div class="form-floating">
+              <input type="text" formControlName="property" class="form-control" id="property" />
+              <label for="property">Piso</label>
+
+              @if ( isNotValidField('property') ) {
+              <div class="text-center text-sm-start">
+                <small class="text-danger mt-1">
+                  El campo debe ser informado
+                </small>
+              </div>
+              }
+            </div>
+          </div>
+
 
           <!-- firstname -->
           <div class="col-12 col-md-6 my-3">
@@ -106,22 +124,6 @@
             </div>
           </div>
 
-          <!-- property -->
-          <div class="col-12 col-md-6 my-3">
-            <div class="form-floating">
-              <input type="text" formControlName="property" class="form-control" id="property" />
-              <label for="property">Piso</label>
-
-              @if ( isNotValidField('property') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  El campo debe ser informado
-                </small>
-              </div>
-              }
-            </div>
-          </div>
-
           <!-- password -->
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
@@ -152,10 +154,13 @@
             </div>
 
           </div>
-
-          <button type="submit" class="btn btn-primary text-center my-3" [disabled]="userForm.invalid">
-            Siguiente
-          </button>
+          <div class="row justify-content-center d-flex">
+            <div class="col-12 col-md-6 col-lg-4">
+              <button type="submit" class="btn btn-primary text-center my-3 w-100" [disabled]="userForm.invalid">
+                Siguiente
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
