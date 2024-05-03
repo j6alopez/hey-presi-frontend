@@ -11,9 +11,9 @@ export const NEIGHBOR_ROUTES: Routes = [
       {
         path: 'registration',
         children: [
-          { path: 'user', component: RegistrationNeighborPage },
+          { path: '', component: RegistrationNeighborPage },
           { path: 'successful', component: RegistrationSuccessfulPage },
-          { path: '', redirectTo: 'type', pathMatch: 'full' },
+          { path: '', redirectTo: 'registration', pathMatch: 'full' },
         ]
       },
       { path: '', redirectTo: 'registration', pathMatch: 'full' },
