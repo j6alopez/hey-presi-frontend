@@ -3,7 +3,7 @@ import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Community } from './communities/interfaces/community.interface';
-import { Address } from './locations/interfaces/address.interface';
+import { CreateCommunity } from './communities/interfaces/create-community.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,9 @@ export class CommunitiesService {
     return this.http.get<Community>(url);
   }
 
-  createCommunity(address: Address): Observable<Community | undefined> {
+  createCommunity(address: CreateCommunity): Observable<Community | undefined> {
     const url = `${this.baseUrl}/communities`
+    console.log(address);
     return this.http.post<Community>(url, address)
       .pipe(
         catchError(() => {

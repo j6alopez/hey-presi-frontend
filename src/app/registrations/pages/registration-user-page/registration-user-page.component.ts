@@ -4,16 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { AuthService } from '../../../auth/services/auth.service';
 import { CommunityRole } from '../../enums/community-role.enum';
-import { CreateUser } from '../../../auth/interfaces/create-user';
-import { filter, switchMap } from 'rxjs';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
-import { Unit } from '../../../units/interfaces/unit.interface';
-import { UnitsService } from '../../../units/units.service';
+import { RegistrationService } from '../../registation.service';
+import { UserRegistrationForm } from '../../interfaces/user-form.interface';
 import { ValidatorService } from '../../../shared/validators/validator.service';
-import { RegistationsService } from '../../registations.service';
-import { UserRegistrationForm } from '../../interfaces/registration-form.interface';
 
 @Component({
   selector: 'registration-user-page',
@@ -26,11 +21,11 @@ import { UserRegistrationForm } from '../../interfaces/registration-form.interfa
   templateUrl: './registration-user-page.component.html',
   styleUrl: './registration-user-page.component.scss'
 })
-export class RegistrationNeighborPage {
+export class RegistrationUserPage {
 
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
-  private readonly registrationsService = inject(RegistationsService);
+  private readonly registrationService = inject(RegistrationService);
 
   private showCommunityToRoles = [CommunityRole.PROPERTY_OWNER, CommunityRole.TENANT];
 
@@ -93,7 +88,7 @@ export class RegistrationNeighborPage {
           Validators.pattern(PatternUtils.password)
         ]
       ],
-      passwordConfirm: [
+      confirmPassword: [
         'J6alopez@gmail.com',
         [
           Validators.required
@@ -101,7 +96,7 @@ export class RegistrationNeighborPage {
       ],
     },
       {
-        validators: this.validatorService.fieldsAreEqual('password', 'passwordConfirm')
+        validators: this.validatorService.fieldsAreEqual('password', 'confirmPassword')
       }
     );
   }
@@ -113,13 +108,13 @@ export class RegistrationNeighborPage {
     }
 
     const userRegistration = this.userForm.value as UserRegistrationForm;
-    this.registrationsService.registerUser(userRegistration).subscribe(() => {
-      if (userRegistration.role === CommunityRole.PRESIDENT) {
-        this.router.navigate(['/registrations', 'community']);
-        return;
-      }
-      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: userRegistration.communityCode } });
-    });
+    this.registrationService.registerUser(userRegistration)
+      .subscribe(() => {
+        if (userRegistration.role === CommunityRole.PRESIDENT) {
+          this.router.navigate(['/registrations', 'community']);
+        }
+        this.router.navigate(['/registrations', 'successful'], { queryParams: { community: userRegistration.communityCode } });
+      });
   }
 
   isNotValidField(field: string): boolean {
@@ -131,4 +126,6 @@ export class RegistrationNeighborPage {
   showCommunity(): boolean {
     return this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
   }
+
 }
+

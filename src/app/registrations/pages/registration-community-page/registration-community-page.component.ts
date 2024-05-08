@@ -9,6 +9,9 @@ import { LocationsService } from '../../../locations/locations.service';
 import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
 import { CommunitiesService } from '../../../communities.service';
 import { Address } from '../../../locations/interfaces/address.interface';
+import { CommunityRegistrationForm } from '../../interfaces/community-form.interface';
+import { RegistrationService } from '../../registation.service';
+import { filter, switchMap } from 'rxjs';
 
 @Component({
   selector: 'registration-community-page',
@@ -25,8 +28,7 @@ export class RegistrationCommunityPage implements OnInit {
 
   private readonly router = inject(Router);
   private readonly LocationsService = inject(LocationsService);
-  private readonly communityService = inject(CommunitiesService);
-  private readonly authService = inject(AuthService);
+  private readonly registrationService = inject(RegistrationService);
 
   public citiesSignal!: Signal<City[]>;
   public communityForm: FormGroup;
@@ -81,8 +83,14 @@ export class RegistrationCommunityPage implements OnInit {
       return;
     }
 
-    const address: Address = this.communityForm.value;
-    this.communityService.createCommunity(address);
+    const communityRegistration: CommunityRegistrationForm = this.communityForm.value as CommunityRegistrationForm;
+    this.registrationService.registerCommunity(communityRegistration).pipe(
+      filter(created => created),
+      switchMap(() => this.registrationService.registerUnit())
+    ).subscribe(() => {
+      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: this.registrationService.communityCode } });
+      this.registrationService.clean()
+    });
 
   }
 
@@ -90,7 +98,11 @@ export class RegistrationCommunityPage implements OnInit {
     const subregion: string = event.target.value;
     if (!subregion) return;
     this.LocationsService.getCitiesBySubregionCode(subregion)
-      .subscribe();
+      .subscribe(
+        () => {
+          this.communityForm.get('city')?.setValue(null)
+        },
+      );
 
   }
 

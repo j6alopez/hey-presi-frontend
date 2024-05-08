@@ -83,7 +83,7 @@
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="surnames" class="form-control" id="surnames" />
-              <label for="password">Apellidos</label>
+              <label for="surnames">Apellidos</label>
               @if ( isNotValidField('firstname') ) {
               <div class="text-center text-sm-start">
                 <small class="text-danger mt-1">
@@ -139,12 +139,12 @@
             </div>
           </div>
 
-          <!-- passwordConfirm -->
+          <!-- confirmPassword -->
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
-              <input type="password" formControlName="passwordConfirm" class="form-control" id="passwordConfirm" />
-              <label for="passwordConfirm">Repetir contraseña</label>
-              @if ( isNotValidField('passwordConfirm') ) {
+              <input type="password" formControlName="confirmPassword" class="form-control" id="confirmPassword" />
+              <label for="confirmPassword">Repetir contraseña</label>
+              @if ( isNotValidField('confirmPassword') ) {
               <div class="text-center text-sm-start">
                 <small class="text-danger mt-1">
                   La contraseña no coincide

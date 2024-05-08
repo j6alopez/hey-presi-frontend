@@ -67,9 +67,9 @@
             <div class="form-floating">
               <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia"
                 (change)="onSubregionChange($event)">
-                <option value= null>-- Seleccione una provincia --</option>
+                <option value=null>-- Seleccione una provincia --</option>
                 @for (subregion of subregions | keyvalue; track $index) {
-                  <option [value]="subregion.key">{{ subregion.value}}</option>
+                <option [value]="subregion.key">{{ subregion.value}}</option>
                 }
               </select>
               <label for="floatingSelect">Provincia</label>

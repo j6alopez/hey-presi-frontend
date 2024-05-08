@@ -52,4 +52,3 @@ export enum SpanishSubRegions {
   'ES-ZA' = 'Zamora',
   'ES-Z' = 'Zaragoza'
 }
-
