@@ -14,10 +14,10 @@
 
         <!-- Register Neighbor -->
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="off" class="row">
-          <!-- type  -->
+          <!-- role  -->
           <div class="col-12 my-3">
             <div class="form-floating">
-              <select class="form-select" formControlName='type' id="type" aria-label="type">
+              <select class="form-select" formControlName='role' id="role" aria-label="role">
                 <option value="">-- Seleccione tipo de vecino --</option>
                 @for (role of communityRoles; track $index) {
                 <option [value]="role"> {{ 'COMMUNITY_ROLE.' + role.toString() | translate}}</option>

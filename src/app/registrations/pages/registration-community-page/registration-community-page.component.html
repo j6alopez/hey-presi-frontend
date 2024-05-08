@@ -18,7 +18,7 @@
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="street" class="form-control" id="street" />
-              <label for="street">Dirección</label>
+              <label for="street">Calle</label>
 
               @if ( isNotValidField('street') ) {
               <div class="text-center text-sm-start">
@@ -39,7 +39,7 @@
               @if ( isNotValidField('streetNumber') ) {
               <div class="text-center text-sm-start">
                 <small class="text-danger mt-1">
-                  El campo debe ser informado
+                  El campo debe contener 5 dígitos
                 </small>
               </div>
               }
@@ -55,7 +55,7 @@
               @if ( isNotValidField('postalCode') ) {
               <div class="text-center text-sm-start">
                 <small class="text-danger mt-1">
-                  Debe contener solo letras
+                  Debe contener solo números
                 </small>
               </div>
               }
@@ -69,7 +69,7 @@
                 (change)="onSubregionChange($event)">
                 <option value= null>-- Seleccione una provincia --</option>
                 @for (subregion of subregions | keyvalue; track $index) {
-                <option [value]="subregion.key">{{ subregion.value}}</option>
+                  <option [value]="subregion.key">{{ subregion.value}}</option>
                 }
               </select>
               <label for="floatingSelect">Provincia</label>
@@ -100,4 +100,8 @@
       </div>
     </div>
   </div>
+  <pre>
+    <!-- {{ communityForm.value | json }}
+    {{ communityForm.get('streetNUmber')!.errors | json}} -->
+  </pre>
 </div>

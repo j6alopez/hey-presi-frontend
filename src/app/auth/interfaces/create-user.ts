@@ -5,6 +5,7 @@ export interface CreateUser {
   firstname: string;
   surnames: string;
   password: string;
+  confirmPassword: string;
   phoneNumber: string;
   roles?: UserType[];
 }

@@ -12,6 +12,8 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { Unit } from '../../../units/interfaces/unit.interface';
 import { UnitsService } from '../../../units/units.service';
 import { ValidatorService } from '../../../shared/validators/validator.service';
+import { RegistationsService } from '../../registations.service';
+import { UserRegistrationForm } from '../../interfaces/registration-form.interface';
 
 @Component({
   selector: 'registration-user-page',
@@ -28,14 +30,13 @@ export class RegistrationNeighborPage {
 
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
-  private readonly unitsService = inject(UnitsService);
-  private readonly authService = inject(AuthService);
+  private readonly registrationsService = inject(RegistationsService);
 
+  private showCommunityToRoles = [CommunityRole.PROPERTY_OWNER, CommunityRole.TENANT];
 
   public userForm: FormGroup;
   public communityRoles = Object.values(CommunityRole).sort();
 
-  private showCommunityToRoles = [CommunityRole.PROPERTY_OWNER, CommunityRole.TENANT];
 
   constructor(private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({
@@ -47,7 +48,7 @@ export class RegistrationNeighborPage {
           Validators.pattern(PatternUtils.uuidV4)
         ]
       ],
-      type: [
+      role: [
         "",
         [
           Validators.required,
@@ -111,40 +112,15 @@ export class RegistrationNeighborPage {
       return;
     }
 
-    const { communityCode, email, password, firstname, surnames, phoneNumber, property } = this.userForm.value;
-    const user: CreateUser = {
-      email,
-      password,
-      firstname,
-      surnames,
-      phoneNumber,
-    };
-    const role = this.userForm.get('type')!.value as CommunityRole;
-    this.authService.createUser(user).pipe(
-      filter((createdUser) => !!createdUser),
-      switchMap((createdUser) => {
-        const unit: Unit = {
-          communityId: communityCode,
-          name: property,
-          unitRoles: [
-            {
-              role
-            }
-          ]
-        };
-        return this.unitsService.createUnit(unit);
-      }),
-      filter((createdUnit) => !!createdUnit)
-    ).subscribe(() => {
-      if (role === CommunityRole.PRESIDENT) {
-        this.router.navigate(['/registrations', 'community'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
+    const userRegistration = this.userForm.value as UserRegistrationForm;
+    this.registrationsService.registerUser(userRegistration).subscribe(() => {
+      if (userRegistration.role === CommunityRole.PRESIDENT) {
+        this.router.navigate(['/registrations', 'community']);
         return;
       }
-      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: '8359da96-2cef-4c92-a92c-fe1eda83d971' } });
+      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: userRegistration.communityCode } });
     });
   }
-
-
 
   isNotValidField(field: string): boolean {
     const control = this.userForm.get(field);
@@ -153,6 +129,6 @@ export class RegistrationNeighborPage {
   }
 
   showCommunity(): boolean {
-    return this.showCommunityToRoles.includes(this.userForm.get('type')?.value);
+    return this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
   }
 }

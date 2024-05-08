@@ -1,12 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, Signal, computed, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+
 import { AuthService } from '../../../auth/services/auth.service';
-import { PatternUtils } from '../../../shared/validators/pattern-utils';
-import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
-import { CommonModule } from '@angular/common';
-import { LocationsService } from '../../../locations/locations.service';
 import { City } from '../../../locations/interfaces/city.interface';
+import { LocationsService } from '../../../locations/locations.service';
+import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
+import { CommunitiesService } from '../../../communities.service';
+import { Address } from '../../../locations/interfaces/address.interface';
 
 @Component({
   selector: 'registration-community-page',
@@ -23,6 +25,7 @@ export class RegistrationCommunityPage implements OnInit {
 
   private readonly router = inject(Router);
   private readonly LocationsService = inject(LocationsService);
+  private readonly communityService = inject(CommunitiesService);
   private readonly authService = inject(AuthService);
 
   public citiesSignal!: Signal<City[]>;
@@ -37,7 +40,6 @@ export class RegistrationCommunityPage implements OnInit {
         'Calle de test',
         [
           Validators.required,
-          Validators.pattern(PatternUtils.uuidV4)
         ]
       ],
       streetNumber: [
@@ -78,6 +80,9 @@ export class RegistrationCommunityPage implements OnInit {
       this.communityForm.markAllAsTouched();
       return;
     }
+
+    const address: Address = this.communityForm.value;
+    this.communityService.createCommunity(address);
 
   }
 

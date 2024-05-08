@@ -2,8 +2,10 @@ import { UserType } from '../enums/role.enum';
 
 export interface CreateUserResponseDto {
   id: string;
+  firstname: string;
+  surnames: string;
   email: string;
-  password: string;
+  isActive: boolean;
   fullname: string;
   roles: UserType[];
 }

@@ -5,7 +5,6 @@ export interface User {
     email: string;
     firstname: string;
     surnames: string;
-    password: string;
     phoneNumber: string;
     isActive: boolean;
     roles: UserType[];
