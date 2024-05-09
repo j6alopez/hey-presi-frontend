@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit, Signal, inject, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+
 import { environment } from '../../../environments/environment';
+import { Observable, tap } from 'rxjs';
 import { Task } from '../interfaces/task.interface';
 import { TasksResponseDto } from '../interfaces/tasks-response.dto';
 
@@ -18,15 +19,16 @@ export class TasksService implements OnInit {
     this.ngOnInit();
   }
 
+  getTask(id: string): Observable<Task> {
+    const url = `${this.baseUrl}/tasks/${id}`
+    return this.http.get<Task>(url);
+  }
+
   getTasks(): Observable<TasksResponseDto> {
     const url = `${this.baseUrl}/tasks`
     return this.http.get<TasksResponseDto>(url);
   }
 
-  getTask(id: string): Observable<Task> {
-    const url = `${this.baseUrl}/tasks/${id}`
-    return this.http.get<Task>(url);
-  }
 
   createTask(task: Task): Observable<Task> {
     const url = `${this.baseUrl}/tasks`

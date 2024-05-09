@@ -26,12 +26,19 @@ export class AuthService {
 
   public createUser(user: CreateUser): Observable<User | undefined> {
     const url: string = `${this.baseUrl}/auth/register`;
-    return this.http.post<User>(url, user)
-      .pipe(
-        catchError(() => {
-          return of(undefined);
-        })
-      );
+
+    this.isEmailAvailable(user.email).pipe(isAvailable => {
+      if (!isAvailable) {
+        return of(undefined);
+      }
+      return this.http.post<User>(url, user)
+        .pipe(
+          catchError(() => {
+            return of(undefined);
+          })
+        );
+    })
+    return of(undefined);
   }
 
   public login(email: string, password: string): Observable<boolean> {
@@ -44,6 +51,15 @@ export class AuthService {
         catchError(() => {
           return of(false);
         })
+      );
+  }
+
+  public isEmailAvailable(email: string): Observable<boolean> {
+    const url: string = `${this.baseUrl}/auth/check-exists/${email}`;
+    return this.http.head(url)
+      .pipe(
+        map(() => true),
+        catchError(() => of(false))
       );
   }
 

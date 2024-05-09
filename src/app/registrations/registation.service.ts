@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 
-import { Observable, map, tap } from 'rxjs';
+import { Observable, catchError, filter, map, of, switchMap, tap } from 'rxjs';
 
 import { AuthService } from '../auth/services/auth.service';
 import { CommunitiesService } from '../communities.service';
@@ -21,20 +21,39 @@ import { UserRegistrationForm } from './interfaces/user-form.interface';
 })
 export class RegistrationService {
   private authService = inject(AuthService);
-  private communitiesService = inject(CommunitiesService);
+  private communityService = inject(CommunitiesService);
   private unitsService = inject(UnitsService);
 
   private registeredUser?: User;
   private registeredCommunity?: Community;
-
   private userForm?: UserRegistrationForm;
 
   public createCommunityRoles = [CommunityRole.PRESIDENT];
 
-  public registerUser(userForm: UserRegistrationForm): Observable<boolean> {
+  public checkUserRegistration(userForm: UserRegistrationForm): Observable<boolean> {
+    this.cleanRegistration();
     this.userForm = userForm;
-    const { communityCode, property, role, ...createUser } = userForm;
+    return this.registerUser();
+  }
 
+  public registerWithCommunityCode(userForm: UserRegistrationForm): Observable<boolean> {
+    this.cleanRegistration();
+    this.userForm = userForm;
+
+    return this.checkCommunityCode(this.userForm.communityCode).pipe(
+      catchError(() => of(false)),
+      switchMap(communityExists => {
+        if (communityExists) {
+          this.registerUser().pipe(
+            switchMap(() => this.registerUnit())
+          )
+        }
+
+      }));
+  }
+
+  private registerUser(): Observable<boolean> {
+    const { communityCode, property, role, ...createUser } = this.userForm!;
     return this.authService.createUser(createUser as CreateUser)
       .pipe(
         tap(registeredUser => this.registeredUser = registeredUser),
@@ -50,7 +69,8 @@ export class RegistrationService {
     communityForm.city = Number(communityForm.city);
 
     const createAddress = this.buildAddress(communityForm);
-    return this.communitiesService.createCommunity(createAddress)
+
+    return this.communityService.createCommunity(createAddress)
       .pipe(
         tap(registeredCommunity => this.registeredCommunity = registeredCommunity),
         map(registeredCommunity => !!registeredCommunity)
@@ -70,16 +90,25 @@ export class RegistrationService {
       )
   }
 
-  public clean(): void {
+  public cleanRegistration(): void {
     this.userForm = undefined;
     this.registeredUser = undefined;
     this.registeredCommunity = undefined;
   }
 
-  private checkCommunityCode(communityCode: string): boolean {
-    this.communitiesService.getCommunity(communityCode).pipe(
-      map(community => !!community)
-    );
+  public checkValidUser(email: string): Observable<boolean> {
+    return this.authService.g(communityCode)
+      .pipe(
+        map(community => !!community),
+      )
+  }
+
+  public checkCommunityCode(communityCode: string): Observable<boolean> {
+    return this.communityService.getCommunity(communityCode)
+      .pipe(
+        map(community => !!community),
+      )
+  }
 
   private buildAddress(communityForm: CommunityRegistrationForm): CreateCommunity {
     const createCommunity: CreateCommunity = {

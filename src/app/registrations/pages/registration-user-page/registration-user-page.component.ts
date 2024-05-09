@@ -9,11 +9,16 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { RegistrationService } from '../../registation.service';
 import { UserRegistrationForm } from '../../interfaces/user-form.interface';
 import { ValidatorService } from '../../../shared/validators/validator.service';
+import { CommonModule } from '@angular/common';
+import { filter, tap } from 'rxjs';
+import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';
 
 @Component({
   selector: 'registration-user-page',
   standalone: true,
   imports: [
+    CommonModule,
+    ErrorMessageComponent,
     ReactiveFormsModule,
     RouterModule,
     TranslateModule
@@ -31,17 +36,13 @@ export class RegistrationUserPage {
 
   public userForm: FormGroup;
   public communityRoles = Object.values(CommunityRole).sort();
+  public showCommunity: boolean = false;
 
 
   constructor(private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({
-
       communityCode: [
-        '1bed3f1f-6792-4362-9cb4-d22a3429f326',
-        [
-          Validators.required,
-          Validators.pattern(PatternUtils.uuidV4)
-        ]
+        null,
       ],
       role: [
         "",
@@ -102,18 +103,32 @@ export class RegistrationUserPage {
   }
 
   onSubmit() {
+    this.userForm.markAllAsTouched();
     if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
       return;
     }
 
     const userRegistration = this.userForm.value as UserRegistrationForm;
-    this.registrationService.registerUser(userRegistration)
+
+    if (userRegistration.communityCode) {
+      this.registrationWithCommunityCode(userRegistration);
+      return;
+    }
+
+    this.registrationService.registerWithoutCommunityCode(userRegistration)
       .subscribe(() => {
-        if (userRegistration.role === CommunityRole.PRESIDENT) {
-          this.router.navigate(['/registrations', 'community']);
+        this.router.navigate(['/registrations', 'community']);
+      });
+  }
+
+  private registrationWithCommunityCode(userRegistration: UserRegistrationForm): void {
+    this.registrationService.registerWithCommunityCode(userRegistration)
+      .subscribe(registered => {
+        if (registered) {
+          this.router.navigate(['/registrations', 'successful']);
+          return;
         }
-        this.router.navigate(['/registrations', 'successful'], { queryParams: { community: userRegistration.communityCode } });
+        this.userForm.get('communityCode')?.setErrors({ invalidCommunityCode: true });
       });
   }
 
@@ -123,9 +138,14 @@ export class RegistrationUserPage {
     return control.touched && control.invalid;
   }
 
-  showCommunity(): boolean {
-    return this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
+  onChangeRole(): void {
+    this.showCommunity = this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
+    const communityCodeField = this.userForm.get('communityCode');
+
+    if (!communityCodeField) return;
+
+    this.showCommunity
+      ? this.validatorService.setFieldAsRequired(communityCodeField, [Validators.pattern(PatternUtils.uuidV4)])
+      : this.validatorService.setFieldAsOptional(communityCodeField);
   }
-
 }
-

@@ -3,12 +3,9 @@ import { Component, OnInit, Signal, computed, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-import { AuthService } from '../../../auth/services/auth.service';
 import { City } from '../../../locations/interfaces/city.interface';
 import { LocationsService } from '../../../locations/locations.service';
 import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
-import { CommunitiesService } from '../../../communities.service';
-import { Address } from '../../../locations/interfaces/address.interface';
 import { CommunityRegistrationForm } from '../../interfaces/community-form.interface';
 import { RegistrationService } from '../../registation.service';
 import { filter, switchMap } from 'rxjs';
@@ -89,7 +86,7 @@ export class RegistrationCommunityPage implements OnInit {
       switchMap(() => this.registrationService.registerUnit())
     ).subscribe(() => {
       this.router.navigate(['/registrations', 'successful'], { queryParams: { community: this.registrationService.communityCode } });
-      this.registrationService.clean()
+      this.registrationService.cleanRegistration()
     });
 
   }
@@ -103,7 +100,6 @@ export class RegistrationCommunityPage implements OnInit {
           this.communityForm.get('city')?.setValue(null)
         },
       );
-
   }
 
   isNotValidField(field: string): boolean {

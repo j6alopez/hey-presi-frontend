@@ -17,7 +17,7 @@
           <!-- role  -->
           <div class="col-12 my-3">
             <div class="form-floating">
-              <select class="form-select" formControlName='role' id="role" aria-label="role">
+              <select class="form-select" formControlName='role' id="role" aria-label="role" (change)="onChangeRole()">
                 <option value="">-- Seleccione tipo de vecino --</option>
                 @for (role of communityRoles; track $index) {
                 <option [value]="role"> {{ 'COMMUNITY_ROLE.' + role.toString() | translate}}</option>
@@ -28,18 +28,14 @@
           </div>
 
           <!-- community -->
-          @if (showCommunity()) {
+          @if (showCommunity) {
           <div class="col-12 my-3">
             <div class="form-floating">
               <input type="text" formControlName="communityCode" class="form-control" id="communityCode" />
               <label for="communityCode">Código de comunidad</label>
 
               @if ( isNotValidField('communityCode') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  Formato no válido
-                </small>
-              </div>
+              <shared-error [message]="'Código no válido'"></shared-error>
               }
             </div>
           </div>
@@ -51,17 +47,11 @@
             <div class="form-floating">
               <input type="text" formControlName="property" class="form-control" id="property" />
               <label for="property">Piso</label>
-
               @if ( isNotValidField('property') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  El campo debe ser informado
-                </small>
-              </div>
+                <shared-error [message]="'Código no válido'"></shared-error>
               }
             </div>
           </div>
-
 
           <!-- firstname -->
           <div class="col-12 col-md-6 my-3">
@@ -70,11 +60,7 @@
               <label for="password">Nombre</label>
 
               @if ( isNotValidField('firstname') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  Debe contener solo letras
-                </small>
-              </div>
+                <shared-error [message]="'Debe contener solo letras'"></shared-error>
               }
             </div>
           </div>
@@ -85,11 +71,7 @@
               <input type="text" formControlName="surnames" class="form-control" id="surnames" />
               <label for="surnames">Apellidos</label>
               @if ( isNotValidField('firstname') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  Debe contener solo letras
-                </small>
-              </div>
+                <shared-error [message]="'Debe contener solo letras'"></shared-error>
               }
             </div>
           </div>
@@ -100,11 +82,7 @@
               <input type="email" formControlName="email" class="form-control" id="email" />
               <label for="email">Email</label>
               @if ( isNotValidField('email') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  El email no es válido
-                </small>
-              </div>
+                <shared-error [message]="'El email no es válido o ya existe'"></shared-error>
               }
             </div>
           </div>
@@ -115,11 +93,7 @@
               <input type="tel" formControlName="phoneNumber" class="form-control" id="phoneNumber" />
               <label for="phoneNumber">Teléfono</label>
               @if ( isNotValidField('phoneNumber') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  Debe ser un teléfono español
-                </small>
-              </div>
+                <shared-error [message]="'Debe ser un teléfono válido'"></shared-error>
               }
             </div>
           </div>
@@ -130,11 +104,7 @@
               <input type="text" formControlName="password" class="form-control" id="password" />
               <label for="password">Contraseña</label>
               @if ( isNotValidField('password') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  Al menos 8 caracteres, con números y letras mayúsculas
-                </small>
-              </div>
+                <shared-error [message]="'Al menos 8 caracteres, con números y letras mayúscula'"></shared-error>
               }
             </div>
           </div>
@@ -145,11 +115,7 @@
               <input type="password" formControlName="confirmPassword" class="form-control" id="confirmPassword" />
               <label for="confirmPassword">Repetir contraseña</label>
               @if ( isNotValidField('confirmPassword') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  La contraseña no coincide
-                </small>
-              </div>
+                <shared-error [message]="'La contraseña no coincide'"></shared-error>
               }
             </div>
 
