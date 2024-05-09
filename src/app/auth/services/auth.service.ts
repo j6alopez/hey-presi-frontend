@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 import { User } from '../interfaces/user';
 import { environment } from '../../../environments/environment';
 import { LoginResponseDto } from '../interfaces/user-response.dto';
@@ -24,24 +24,24 @@ export class AuthService {
     return structuredClone(this.user);
   }
 
-  public createUser(user: CreateUser): Observable<User | undefined> {
+  createUser(user: CreateUser): Observable<User | undefined> {
     const url: string = `${this.baseUrl}/auth/register`;
 
-    this.isEmailAvailable(user.email).pipe(isAvailable => {
-      if (!isAvailable) {
-        return of(undefined);
-      }
-      return this.http.post<User>(url, user)
-        .pipe(
+    return this.isEmailAvailable(user.email).pipe(
+      switchMap(isAvailable => {
+        if (!isAvailable) {
+          return of(undefined);
+        }
+        return this.http.post<User>(url, user).pipe(
           catchError(() => {
             return of(undefined);
           })
         );
-    })
-    return of(undefined);
+      })
+    );
   }
 
-  public login(email: string, password: string): Observable<boolean> {
+  login(email: string, password: string): Observable<boolean> {
     const url: string = `${this.baseUrl}/auth/login`;
     return this.http.post<LoginResponseDto>(url, { email, password })
       .pipe(
@@ -54,7 +54,7 @@ export class AuthService {
       );
   }
 
-  public isEmailAvailable(email: string): Observable<boolean> {
+  isEmailAvailable(email: string): Observable<boolean> {
     const url: string = `${this.baseUrl}/auth/check-exists/${email}`;
     return this.http.head(url)
       .pipe(

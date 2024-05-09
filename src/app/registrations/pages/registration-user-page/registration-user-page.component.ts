@@ -10,7 +10,7 @@ import { RegistrationService } from '../../registation.service';
 import { UserRegistrationForm } from '../../interfaces/user-form.interface';
 import { ValidatorService } from '../../../shared/validators/validator.service';
 import { CommonModule } from '@angular/common';
-import { filter, tap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';
 
 @Component({
@@ -36,7 +36,7 @@ export class RegistrationUserPage {
 
   public userForm: FormGroup;
   public communityRoles = Object.values(CommunityRole).sort();
-  public showCommunity: boolean = false;
+  public showCommunityCode: boolean = false;
 
 
   constructor(private formBuilder: FormBuilder) {
@@ -108,28 +108,47 @@ export class RegistrationUserPage {
       return;
     }
 
-    const userRegistration = this.userForm.value as UserRegistrationForm;
+    const userForm = this.userForm.value as UserRegistrationForm;
 
-    if (userRegistration.communityCode) {
-      this.registrationWithCommunityCode(userRegistration);
-      return;
-    }
+    this.showCommunityCode
+      ? this.registrationWithCommunityCode(userForm)
+      : this.registrationWithoutCommunityCode(userForm);
+  }
 
-    this.registrationService.registerWithoutCommunityCode(userRegistration)
-      .subscribe(() => {
+  private registrationWithoutCommunityCode(userForm: UserRegistrationForm): void {
+    this.registrationService.checkValidUser(userForm.email)
+      .subscribe(isValid => {
+        if (!isValid) {
+          this.userForm.get('email')?.setErrors({ invalidUser: true });
+          return;
+        }
+        this.registrationService.setUserForm(userForm);
         this.router.navigate(['/registrations', 'community']);
       });
   }
 
-  private registrationWithCommunityCode(userRegistration: UserRegistrationForm): void {
-    this.registrationService.registerWithCommunityCode(userRegistration)
-      .subscribe(registered => {
-        if (registered) {
-          this.router.navigate(['/registrations', 'successful']);
-          return;
+  private registrationWithCommunityCode(userForm: UserRegistrationForm): void {
+    //UserEmail
+    this.registrationService.checkValidUser(userForm.email).pipe(
+      tap((isOk) => {
+        if (!isOk) {
+          this.userForm.get('email')?.setErrors({ invalidUser: true });
         }
-        this.userForm.get('communityCode')?.setErrors({ invalidCommunityCode: true });
-      });
+      }),
+      filter(isOk => isOk),
+
+      switchMap(() => this.registrationService.checkCommunityCode(userForm.communityCode)),
+      tap((codeExists) => {
+        if (!codeExists) {
+          this.userForm.get('communityCode')?.setErrors({ invalidCommunityCode: true });
+        }
+      }),
+      filter(codeExists => codeExists),
+    ).subscribe(() => {
+      this.registrationService.registerWithCommunityCode(userForm);
+      this.router.navigate(['/registrations', 'successful']);
+
+    });
   }
 
   isNotValidField(field: string): boolean {
@@ -139,12 +158,12 @@ export class RegistrationUserPage {
   }
 
   onChangeRole(): void {
-    this.showCommunity = this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
+    this.showCommunityCode = this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
     const communityCodeField = this.userForm.get('communityCode');
 
     if (!communityCodeField) return;
 
-    this.showCommunity
+    this.showCommunityCode
       ? this.validatorService.setFieldAsRequired(communityCodeField, [Validators.pattern(PatternUtils.uuidV4)])
       : this.validatorService.setFieldAsOptional(communityCodeField);
   }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Community } from './communities/interfaces/community.interface';
 import { CreateCommunity } from './communities/interfaces/create-community.interface';
@@ -52,6 +52,15 @@ export class CommunitiesService {
           this.communitiesSignal.update(communities =>
             communities.filter(element => element.id !== id));
         })
+      );
+  }
+
+  communityExists(communityCode: string): Observable<boolean> {
+    const url: string = `${this.baseUrl}/communities/check-exists/${communityCode}`;
+    return this.http.head(url)
+      .pipe(
+        map(() => true),
+        catchError(() => of(false))
       );
   }
 
