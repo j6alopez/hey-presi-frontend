@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TopBarComponent } from '../../../shared/components/top-bar/top-bar.component';
 
 @Component({
-  selector: 'app-community-page',
+  selector: 'community-page',
   standalone: true,
   imports: [
     TopBarComponent

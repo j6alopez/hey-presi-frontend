@@ -136,10 +136,10 @@ export class RegistrationUserPage {
       }),
       filter(codeExists => codeExists),
     ).subscribe(() => {
-      this.registrationService.registerWithCommunityCode(userForm).pipe(
-        // filter(isOk => isOk),
+      this.registrationService.register(userForm).pipe(
+        filter(isOk => isOk),
       ).subscribe(() => {
-        this.router.navigate(['/registrations', 'completed']);
+        this.router.navigate(['/registration', 'completed']);
       });
     })
   }

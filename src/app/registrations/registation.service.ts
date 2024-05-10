@@ -31,26 +31,13 @@ export class RegistrationService {
 
   public createCommunityRoles = [CommunityRole.PRESIDENT];
 
-  public registerWithCommunityCode(userForm: UserRegistrationForm): Observable<boolean> {
+  public register(userForm: UserRegistrationForm): Observable<boolean> {
     this.cleanRegistration();
     this.userForm = userForm;
 
-    this.registerUser().pipe(
-      switchMap(userCreated => {
-        if (!userCreated) {
-          return of(false);
-        }
-        return this.registerUnit().pipe(
-          switchMap(unitCreated => {
-            if (!unitCreated) {
-              return of(false);
-            }
-            return of(true);
-          })
-        );
-      })
+    return this.registerUser().pipe(
+      map(createdUser => !!createdUser)
     );
-    return of(false);
   }
 
   public setUserForm(userForm: UserRegistrationForm): void {
@@ -58,22 +45,11 @@ export class RegistrationService {
     this.userForm = userForm;
   }
 
-  public registerWithoutCommunityCode(userRegistration: UserRegistrationForm): Observable<boolean> {
-    this.cleanRegistration();
-    this.userForm = userRegistration;
-
-    return this.registerUser();
-
-  }
-
   private registerUser(): Observable<boolean> {
     const { communityCode, property, role, ...createUser } = this.userForm!;
     return this.authService.createUser(createUser as CreateUser)
       .pipe(
         tap(registeredUser => this.registeredUser = registeredUser),
-        tap(registeredUser => {
-          console.log('dhfkjshskfhkgjhskjfghjsfg');
-        }),
         map(registeredUser => !!registeredUser)
       );
   }
