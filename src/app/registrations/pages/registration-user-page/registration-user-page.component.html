@@ -17,7 +17,7 @@
           <!-- role  -->
           <div class="col-12 my-3">
             <div class="form-floating">
-              <select class="form-select" formControlName='role' id="role" aria-label="role" (change)="onChangeRole()">
+              <select class="form-select" formControlName='role' id="role" aria-label="role">
                 <option value="">-- Seleccione tipo de vecino --</option>
                 @for (role of communityRoles; track $index) {
                 <option [value]="role"> {{ 'COMMUNITY_ROLE.' + role.toString() | translate}}</option>
@@ -27,20 +27,16 @@
             </div>
           </div>
 
-          <!-- community -->
-          @if (showCommunityCode) {
+          <!-- communityCode -->
           <div class="col-12 my-3">
             <div class="form-floating">
               <input type="text" formControlName="communityCode" class="form-control" id="communityCode" />
               <label for="communityCode">Código de comunidad</label>
-
               @if ( isNotValidField('communityCode') ) {
-              <shared-error [message]="'Código no válido'"></shared-error>
+              <shared-error [message]="'Código de comunidad no válido'"></shared-error>
               }
             </div>
           </div>
-          }
-
 
           <!-- property -->
           <div class="col-12 my-3">
@@ -48,7 +44,7 @@
               <input type="text" formControlName="property" class="form-control" id="property" />
               <label for="property">Piso</label>
               @if ( isNotValidField('property') ) {
-                <shared-error [message]="'Código no válido'"></shared-error>
+                <shared-error [message]="'Piso no válido'"></shared-error>
               }
             </div>
           </div>

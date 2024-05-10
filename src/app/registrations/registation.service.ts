@@ -71,12 +71,11 @@ export class RegistrationService {
     return this.authService.createUser(createUser as CreateUser)
       .pipe(
         tap(registeredUser => this.registeredUser = registeredUser),
+        tap(registeredUser => {
+          console.log('dhfkjshskfhkgjhskjfghjsfg');
+        }),
         map(registeredUser => !!registeredUser)
-      )
-  }
-
-  public get communityCode(): string {
-    return this.userForm!.communityCode;
+      );
   }
 
   public registerCommunity(communityForm: CommunityRegistrationForm): Observable<boolean> {

@@ -54,6 +54,14 @@ export class ValidatorService {
     }
   }
 
+  public noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim() === '') {
+      return { noWhitespace: true };
+    }
+    return null;
+  }
+
+
   public isNotValidField(form: FormGroup, field: string): boolean {
     const control = form.get(field);
     if (!control) return false;

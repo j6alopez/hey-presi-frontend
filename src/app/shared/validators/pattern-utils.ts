@@ -12,6 +12,8 @@ export class PatternUtils {
   public static spanishPhone: RegExp = /^[679][0-9]{8}$/;
   //At least one number, one uppercase letter, one lowercase letter
   public static password: RegExp = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d)/;
+
+  public static noEmptySpaces: RegExp = /^\S+$/;
   
   public static uuidV4: RegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 

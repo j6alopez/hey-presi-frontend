@@ -85,7 +85,7 @@ export class RegistrationCommunityPage implements OnInit {
       filter(created => created),
       switchMap(() => this.registrationService.registerUnit())
     ).subscribe(() => {
-      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: this.registrationService.communityCode } });
+      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: 'cambiar' } });
       this.registrationService.cleanRegistration()
     });
 

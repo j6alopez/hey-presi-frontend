@@ -36,47 +36,52 @@ export class RegistrationUserPage {
 
   public userForm: FormGroup;
   public communityRoles = Object.values(CommunityRole).sort();
-  public showCommunityCode: boolean = false;
-
 
   constructor(private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({
       communityCode: [
-        null,
+        '',
+        [
+          Validators.required,
+          Validators.pattern(PatternUtils.uuidV4)
+        ]
       ],
       role: [
-        "",
+        '',
         [
           Validators.required,
         ]
       ],
       property: [
-        'Primero primera',
+        '',
         [
           Validators.required,
+          this.validatorService.noWhitespaceValidator
         ]
       ],
       firstname: [
-        'Super Antonio',
+        '',
         [
-          Validators.required
+          Validators.required,
+          this.validatorService.noWhitespaceValidator
         ]
       ],
       surnames: [
-        'López Gómez',
+        '',
         [
-          Validators.required
+          Validators.required,
+          this.validatorService.noWhitespaceValidator
         ]
       ],
       email: [
-        'j6alopezz@gmail.com',
+        '',
         [
           Validators.required,
           Validators.pattern(PatternUtils.email)
         ]
       ],
       phoneNumber: [
-        '644903956',
+        '',
         [
           Validators.required,
           Validators.pattern(PatternUtils.spanishPhone)
@@ -103,28 +108,14 @@ export class RegistrationUserPage {
   }
 
   onSubmit() {
-    this.userForm.markAllAsTouched();
     if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
       return;
     }
 
     const userForm = this.userForm.value as UserRegistrationForm;
 
-    this.showCommunityCode
-      ? this.registrationWithCommunityCode(userForm)
-      : this.registrationWithoutCommunityCode(userForm);
-  }
-
-  private registrationWithoutCommunityCode(userForm: UserRegistrationForm): void {
-    this.registrationService.checkValidUser(userForm.email)
-      .subscribe(isValid => {
-        if (!isValid) {
-          this.userForm.get('email')?.setErrors({ invalidUser: true });
-          return;
-        }
-        this.registrationService.setUserForm(userForm);
-        this.router.navigate(['/registrations', 'community']);
-      });
+    this.registrationWithCommunityCode(userForm);
   }
 
   private registrationWithCommunityCode(userForm: UserRegistrationForm): void {
@@ -145,10 +136,12 @@ export class RegistrationUserPage {
       }),
       filter(codeExists => codeExists),
     ).subscribe(() => {
-      this.registrationService.registerWithCommunityCode(userForm);
-      this.router.navigate(['/registrations', 'successful']);
-
-    });
+      this.registrationService.registerWithCommunityCode(userForm).pipe(
+        // filter(isOk => isOk),
+      ).subscribe(() => {
+        this.router.navigate(['/registrations', 'completed']);
+      });
+    })
   }
 
   isNotValidField(field: string): boolean {
@@ -157,14 +150,4 @@ export class RegistrationUserPage {
     return control.touched && control.invalid;
   }
 
-  onChangeRole(): void {
-    this.showCommunityCode = this.showCommunityToRoles.includes(this.userForm.get('role')?.value);
-    const communityCodeField = this.userForm.get('communityCode');
-
-    if (!communityCodeField) return;
-
-    this.showCommunityCode
-      ? this.validatorService.setFieldAsRequired(communityCodeField, [Validators.pattern(PatternUtils.uuidV4)])
-      : this.validatorService.setFieldAsOptional(communityCodeField);
-  }
 }

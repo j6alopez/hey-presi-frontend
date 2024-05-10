@@ -26,19 +26,7 @@ export class AuthService {
 
   createUser(user: CreateUser): Observable<User | undefined> {
     const url: string = `${this.baseUrl}/auth/register`;
-
-    return this.isEmailAvailable(user.email).pipe(
-      switchMap(isAvailable => {
-        if (!isAvailable) {
-          return of(undefined);
-        }
-        return this.http.post<User>(url, user).pipe(
-          catchError(() => {
-            return of(undefined);
-          })
-        );
-      })
-    );
+    return this.http.post<User>(url, user);
   }
 
   login(email: string, password: string): Observable<boolean> {

@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/auth.routes').then(r => r.AUTH_ROUTES)
   },
   {
+    path: 'community',
+    loadChildren: () => import('./communities/communities.routes').then(r => r.COMMUNITIES_ROUTES)
+  },
+  {
     path: 'registrations',
     loadChildren: () => import('./registrations/registration.routes').then(r => r.REGISTRATION_ROUTES)
   },
