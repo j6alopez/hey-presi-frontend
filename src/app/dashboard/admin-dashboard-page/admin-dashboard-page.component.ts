@@ -4,15 +4,14 @@ import { TopBarComponent } from '../../shared/components/top-bar/top-bar.compone
 
 
 @Component({
-  selector: 'home-page',
   standalone: true,
   imports: [
     RouterModule,
     TopBarComponent,
   ],
-  templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss'
+  templateUrl: './admin-dashboard-page.component.html',
+  styleUrl: './admin-dashboard-page.component.scss'
 })
-export class HomePageComponent {
+export class AdminDashBoardPageComponent {
 
 }

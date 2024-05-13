@@ -1,4 +1,4 @@
 export enum UserType {
-  BACK_OFFICE_ADMIN = 'back-office-admin',
-  END_USER = 'end-user',
+  BACK_OFFICE_ADMIN = 'BACK_OFFICE_ADMIN',
+  END_USER = 'END_USER',
 }

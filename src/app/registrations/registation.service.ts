@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, filter, map, of, switchMap, tap } from 'rxjs';
 
 import { AuthService } from '../auth/services/auth.service';
-import { CommunitiesService } from '../communities.service';
+import { CommunitiesService } from '../communities/communities.service';
 import { Community } from '../communities/interfaces/community.interface';
 import { CommunityRegistrationForm } from './interfaces/community-form.interface';
 import { CommunityRole } from './enums/community-role.enum';

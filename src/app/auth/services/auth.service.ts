@@ -21,7 +21,7 @@ export class AuthService {
     if (!this.user) {
       return undefined;
     }
-    return structuredClone(this.user);
+    return this.user;
   }
 
   createUser(user: CreateUser): Observable<User | undefined> {
@@ -33,8 +33,8 @@ export class AuthService {
     const url: string = `${this.baseUrl}/auth/login`;
     return this.http.post<LoginResponseDto>(url, { email, password })
       .pipe(
-        map(() => ({ email } as User)),
         tap(user => this.user = user),
+        tap(() => console.log(this.user)),
         map(user => !!user),
         catchError(() => {
           return of(false);

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
+import { UserType } from '../../enums/role.enum';
 
 @Component({
   selector: 'auth-login-page',
@@ -19,13 +20,12 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
 })
 export class LoginPageComponent {
 
-  private authService = inject(AuthService);
-  private activatedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
 
   public loginForm = new FormGroup({
-    email: new FormControl('j6alopez@gmail.com', [
+    email: new FormControl('testtest@gmail.com', [
       Validators.required,
       Validators.pattern(PatternUtils.email)
     ]),
@@ -46,8 +46,8 @@ export class LoginPageComponent {
     this.authService.login(email, password).subscribe(
       (loginSuccess) => {
         if (loginSuccess) {
-          const url = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/home';
-          this.router.navigateByUrl(url);
+          this.redirectToHome();
+          return;
         }
         this.loginForm.setErrors({ 'customError': 'Invalid credentials' });
         this.loginForm.markAsPending();
@@ -65,4 +65,13 @@ export class LoginPageComponent {
     return control.touched && control.invalid;
   }
 
+  public invalidCredentials(): boolean {
+    return this.loginForm.getError('customError') !== null;
+  }
+
+  private redirectToHome() {
+    this.authService.currentUser?.roles.includes(UserType.BACK_OFFICE_ADMIN)
+      ? this.router.navigate(['/administrator'])
+      : this.router.navigate(['/neighbor']);
+  }
 }

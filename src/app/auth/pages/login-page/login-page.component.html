@@ -54,6 +54,14 @@
             }
           </div>
 
+          @if ( invalidCredentials() ) {
+            <div class="text-center text-sm-start">
+              <small class="text-danger mt-1">
+                Credenciales incorrectas, inténtalo de nuevo
+              </small>
+            </div>
+            }
+          
           <a class="small text-primary my-3"> ¿Necesitas ayuda? </a>
           <button
             type="submit"

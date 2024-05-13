@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
-import { environment } from '../environments/environment';
-import { Community } from './communities/interfaces/community.interface';
-import { CreateCommunity } from './communities/interfaces/create-community.interface';
+import { environment } from '../../environments/environment';
+import { Community } from './interfaces/community.interface';
+import { CreateCommunity } from './interfaces/create-community.interface';
 
 @Injectable({
   providedIn: 'root'

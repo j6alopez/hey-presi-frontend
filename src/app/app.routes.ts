@@ -11,8 +11,8 @@ export const routes: Routes = [
     loadChildren: () => import('./registrations/registration.routes').then(r => r.REGISTRATION_ROUTES)
   },
   {
-    path: 'management',
-    loadChildren: () => import('./routes/management.routes').then(r => r.MANAGEMENT_ROUTES)
+    path: 'administrator',
+    loadChildren: () => import('./routes/administrator.routes').then(r => r.ADMINISTRATOR_ROUTES)
   },
   {
     path: 'neighbor',
