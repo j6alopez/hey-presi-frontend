@@ -1,11 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MenuItem } from '../../interfaces/menu-item.interface';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'shared-side-bar',
   standalone: true,
   imports: [
+    CommonModule,
     RouterModule
   ],
   templateUrl: './side-bar.component.html',
@@ -13,13 +15,8 @@ import { RouterModule } from '@angular/router';
 })
 export class SideBarComponent {
 
-  @Input()
-  public menuItems: MenuItem[] = [
-    { name: 'Comunidad', route: '/community/main' },
-    { name: 'Cuentas', route: '#' },
-    { name: 'Incidencias', route: '/tasks' },
-    { name: 'Servicios', route: '#' },
-  ];
+  @Input({ required: true })
+  public menuItems: MenuItem[] = [];
 
 }
 

@@ -1,4 +1,4 @@
-import { UserType } from "../enums/role.enum";
+import { Role } from "../enums/role.enum";
 
 export interface User {
     id?: string;
@@ -7,5 +7,5 @@ export interface User {
     surnames?: string;
     phoneNumber?: string;
     isActive: boolean;
-    roles: UserType[];
+    role: Role;
 }

@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 
-import { Observable, catchError, filter, map, of, switchMap, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 import { AuthService } from '../auth/services/auth.service';
 import { CommunitiesService } from '../communities/communities.service';
 import { Community } from '../communities/interfaces/community.interface';
 import { CommunityRegistrationForm } from './interfaces/community-form.interface';
-import { CommunityRole } from './enums/community-role.enum';
+import { CommunityRole } from '../communities/enums/community-role.enum';
 import { CountryCode } from '../locations/enums/country-codes';
 import { CreateCommunity } from '../communities/interfaces/create-community.interface';
 import { CreateUser } from '../auth/interfaces/create-user';

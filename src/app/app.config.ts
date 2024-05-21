@@ -1,10 +1,12 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideRouter, withViewTransitions } from '@angular/router';
+
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { routes } from './app.routes';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { authInterceptor } from './auth/interceptors/auth.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http,
@@ -14,8 +16,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
-    provideHttpClient(),
+    provideRouter(
+      routes,
+      withViewTransitions()
+    ),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     importProvidersFrom(TranslateModule.forRoot({
       defaultLanguage: 'es',
       loader: {

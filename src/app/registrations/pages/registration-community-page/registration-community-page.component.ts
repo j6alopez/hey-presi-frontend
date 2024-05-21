@@ -3,12 +3,13 @@ import { Component, OnInit, Signal, computed, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-import { City } from '../../../locations/interfaces/city.interface';
-import { LocationsService } from '../../../locations/locations.service';
-import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
 import { CommunityRegistrationForm } from '../../interfaces/community-form.interface';
-import { RegistrationService } from '../../registation.service';
-import { filter, switchMap } from 'rxjs';
+
+import { LocationsService } from '../../../locations/locations.service';
+
+import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
+import { Location } from '../../../locations/interfaces/location.interface';
+import { PatternUtils } from '../../../shared/validators/pattern-utils';
 
 @Component({
   selector: 'registration-community-page',
@@ -25,9 +26,9 @@ export class RegistrationCommunityPage implements OnInit {
 
   private readonly router = inject(Router);
   private readonly LocationsService = inject(LocationsService);
-  private readonly registrationService = inject(RegistrationService);
 
-  public citiesSignal!: Signal<City[]>;
+
+  public citiesSignal!: Signal<Location[]>;
   public communityForm: FormGroup;
   public subregions = SpanishSubRegions;
 
@@ -36,27 +37,28 @@ export class RegistrationCommunityPage implements OnInit {
     this.communityForm = this.formBuilder.group({
 
       street: [
-        'Calle de test',
+        '',
         [
           Validators.required,
         ]
       ],
       streetNumber: [
-        "11",
+        '',
         [
           Validators.required,
         ]
       ],
       postalCode: [
-        "08304",
+        '',
         [
           Validators.required,
+          Validators.pattern(PatternUtils.spanishPostalCode)
         ]
       ],
       subregion: [
         null,
         [
-          Validators.required
+          Validators.required,
         ]
       ],
       city: [
@@ -81,13 +83,7 @@ export class RegistrationCommunityPage implements OnInit {
     }
 
     const communityRegistration: CommunityRegistrationForm = this.communityForm.value as CommunityRegistrationForm;
-    this.registrationService.registerCommunity(communityRegistration).pipe(
-      filter(created => created),
-      switchMap(() => this.registrationService.registerUnit())
-    ).subscribe(() => {
-      this.router.navigate(['/registrations', 'successful'], { queryParams: { community: 'cambiar' } });
-      this.registrationService.cleanRegistration()
-    });
+
 
   }
 
@@ -108,4 +104,3 @@ export class RegistrationCommunityPage implements OnInit {
     return control.touched && control.invalid;
   }
 }
-

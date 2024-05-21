@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, Signal, computed, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
-import { UserType } from '../../enums/role.enum';
+import { User } from '../../interfaces/user';
 
 @Component({
-  selector: 'auth-login-page',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,14 +21,15 @@ export class LoginPageComponent {
 
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private currentUser!: Signal<User | undefined>;
 
 
   public loginForm = new FormGroup({
-    email: new FormControl('testtest@gmail.com', [
+    email: new FormControl('j6a@gmail.com', [
       Validators.required,
       Validators.pattern(PatternUtils.email)
     ]),
-    password: new FormControl('J6alopez@gmail.com', [
+    password: new FormControl('Hcoach!10', [
       Validators.required,
       Validators.minLength(8),
       Validators.pattern(PatternUtils.password),
@@ -46,6 +46,7 @@ export class LoginPageComponent {
     this.authService.login(email, password).subscribe(
       (loginSuccess) => {
         if (loginSuccess) {
+          this.authService.persistUserOnLocalStorage();
           this.redirectToHome();
           return;
         }
@@ -70,8 +71,17 @@ export class LoginPageComponent {
   }
 
   private redirectToHome() {
-    this.authService.currentUser?.roles.includes(UserType.BACK_OFFICE_ADMIN)
-      ? this.router.navigate(['/administrator'])
-      : this.router.navigate(['/neighbor']);
+    if (!this.currentUser()) {
+      return;
+    }
+    this.router.navigate(['/dashboard']);
   }
+
+  ngOnInit(): void {
+    this.currentUser = computed(() => {
+      return this.authService.currentUser();
+    });
+
+  }
+
 }

@@ -46,22 +46,6 @@
             </div>
           </div>
 
-          <!-- postalCode -->
-          <div class="col-12 col-md-6 my-3">
-            <div class="form-floating">
-              <input type="text" formControlName="postalCode" class="form-control" id="postalCode" />
-              <label for="postalCode">Código postal</label>
-
-              @if ( isNotValidField('postalCode') ) {
-              <div class="text-center text-sm-start">
-                <small class="text-danger mt-1">
-                  Debe contener solo números
-                </small>
-              </div>
-              }
-            </div>
-          </div>
-
           <!-- subregion -->
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
@@ -89,10 +73,26 @@
             </div>
           </div>
 
+          <!-- postalCode -->
+          <div class="col-12 col-md-6 my-3">
+            <div class="form-floating">
+              <input type="text" formControlName="postalCode" class="form-control" id="postalCode" />
+              <label for="postalCode">Código postal</label>
+
+              @if ( isNotValidField('postalCode') ) {
+              <div class="text-center text-sm-start">
+                <small class="text-danger mt-1">
+                  Debe contener solo números
+                </small>
+              </div>
+              }
+            </div>
+          </div>
+
           <div class="row justify-content-center d-flex">
             <div class="col-12 col-md-6 col-lg-4">
               <button type="submit" class="btn btn-primary text-center my-3 w-100" [disabled]="communityForm.invalid">
-                Siguiente
+                Siguientes
               </button>
             </div>
           </div>

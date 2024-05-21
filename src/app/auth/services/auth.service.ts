@@ -1,27 +1,38 @@
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Signal, inject, signal } from '@angular/core';
 
-import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
-import { User } from '../interfaces/user';
+import { CreateUser } from '../interfaces/create-user';
 import { environment } from '../../../environments/environment';
 import { LoginResponseDto } from '../interfaces/user-response.dto';
-import { CreateUser } from '../interfaces/create-user';
+import { Observable, catchError, map, of, tap } from 'rxjs';
+import { User } from '../interfaces/user';
+import { Role } from '../enums/role.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private http: HttpClient = inject(HttpClient);
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly baseUrl: string = environment.backend_base_url;
+  private readonly user = signal<User | undefined>(undefined);
 
-  private baseUrl: string = environment.backend_base_url;
-  private user?: User;
+  private readonly USER_ID = "USER_ID";
 
 
-  get currentUser(): User | undefined {
+  get currentUser(): Signal<User | undefined> {
     if (!this.user) {
-      return undefined;
+      return this.user;
     }
-    return this.user;
+    return this.user.asReadonly();
+  }
+
+  hasPermission(route: ActivatedRouteSnapshot): boolean {
+    if (!this.currentUser() || !this.currentUser()?.role) {
+      return false;
+    }
+    const userType = route.data['permission'] as Role;
+    return this.currentUser()!.role.includes(userType);
   }
 
   createUser(user: CreateUser): Observable<User | undefined> {
@@ -33,8 +44,8 @@ export class AuthService {
     const url: string = `${this.baseUrl}/auth/login`;
     return this.http.post<LoginResponseDto>(url, { email, password })
       .pipe(
-        tap(user => this.user = user),
-        tap(() => console.log(this.user)),
+        tap(user => this.user.set(user)),
+        tap(() => this.persistUserOnLocalStorage()),
         map(user => !!user),
         catchError(() => {
           return of(false);
@@ -43,7 +54,7 @@ export class AuthService {
   }
 
   isEmailAvailable(email: string): Observable<boolean> {
-    const url: string = `${this.baseUrl}/auth/check-exists/${email}`;
+    const url: string = `${this.baseUrl}/auth/${email}/check-exists`;
     return this.http.head(url)
       .pipe(
         map(() => true),
@@ -51,8 +62,15 @@ export class AuthService {
       );
   }
 
-  logout() {
-    this.user = undefined;
+  public persistUserOnLocalStorage() {
+    if (!this.user()) {
+      return;
+    }
+    localStorage.setItem(this.USER_ID, this.user()?.id ?? '');
   }
 
+  logout() {
+    localStorage.removeItem(this.USER_ID);
+    this.user.set(undefined);
+  }
 }

@@ -1,4 +1,4 @@
-import { CommunityRole } from "../enums/community-role.enum";
+import { CommunityRole } from "../../communities/enums/community-role.enum";
 
 export interface UserRegistrationForm {
   communityCode: string;

@@ -1,4 +1,4 @@
-import { UserType } from '../enums/role.enum';
+import { Role } from '../enums/role.enum';
 
 export interface CreateUserResponseDto {
   id: string;
@@ -7,5 +7,5 @@ export interface CreateUserResponseDto {
   email: string;
   isActive: boolean;
   fullname: string;
-  roles: UserType[];
+  roles: Role[];
 }

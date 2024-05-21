@@ -1,6 +1,6 @@
-import { UserType } from "../enums/role.enum";
+import { Role } from "../enums/role.enum";
 
 export interface LoginResponseDto {
   isActive: boolean;
-  roles: UserType[];
+  role: Role;
 }

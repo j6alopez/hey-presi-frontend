@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { RegistrationUserPage } from './registrations/pages/registration-user-page/registration-user-page.component';
 
 export const routes: Routes = [
   {
@@ -8,15 +7,19 @@ export const routes: Routes = [
   },
   {
     path: 'registration',
-    loadChildren: () => import('./registrations/registration.routes').then(r => r.REGISTRATION_ROUTES)
+    loadChildren: () => import('./registrations/registration.routes')
+      .then(r => r.REGISTRATION_ROUTES),
   },
   {
-    path: 'administrator',
-    loadChildren: () => import('./routes/administrator.routes').then(r => r.ADMINISTRATOR_ROUTES)
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.routes')
+      .then(r => r.DASHBOARD_ROUTES),
+
   },
   {
-    path: 'neighbor',
-    loadChildren: () => import('./routes/neighbor.routes').then(r => r.NEIGHBOR_ROUTES)
+    path: 'communities',
+    loadChildren: () => import('./communities/communities.routes')
+      .then(r => r.COMMUNITIES_ROUTES)
   },
   {
     path: '',

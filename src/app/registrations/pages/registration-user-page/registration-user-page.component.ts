@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { CommunityRole } from '../../enums/community-role.enum';
+import { CommunityRole } from '../../../communities/enums/community-role.enum';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
 import { RegistrationService } from '../../registation.service';
 import { UserRegistrationForm } from '../../interfaces/user-form.interface';
@@ -119,7 +119,6 @@ export class RegistrationUserPage {
   }
 
   private registrationWithCommunityCode(userForm: UserRegistrationForm): void {
-    //UserEmail
     this.registrationService.checkValidUser(userForm.email).pipe(
       tap((isOk) => {
         if (!isOk) {

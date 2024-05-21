@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 
-import { City } from './interfaces/city.interface';
 import { environment } from '../../environments/environment';
+import { Location } from './interfaces/location.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +12,20 @@ export class LocationsService {
 
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.backend_base_url;
-  private readonly citiesSignal = signal<City[]>([]);
+  private readonly citiesSignal = signal<Location[]>([]);
 
-  getCitiesBySubregionCode(isocode: string): Observable<City[]> {
+  getCitiesBySubregionCode(isocode: string): Observable<Location[]> {
     if(!isocode || isocode === '') {
       this.emptyCities();
       return of([]);
     }
     const url = `${this.baseUrl}/locations/subregions/${isocode}/cities`;
-    return this.http.get<City[]>(url).pipe(
+    return this.http.get<Location[]>(url).pipe(
       tap((cities) => this.citiesSignal.set(cities))
     )
   }
 
-  get cities(): Signal<City[]> {
+  get cities(): Signal<Location[]> {
     return this.citiesSignal.asReadonly();
   }
 

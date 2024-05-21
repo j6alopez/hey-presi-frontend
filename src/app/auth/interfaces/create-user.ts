@@ -1,4 +1,4 @@
-import { UserType } from "../enums/role.enum";
+import { Role } from "../enums/role.enum";
 
 export interface CreateUser {
   email: string;
@@ -7,5 +7,5 @@ export interface CreateUser {
   password: string;
   confirmPassword: string;
   phoneNumber: string;
-  roles?: UserType[];
+  roles?: Role[];
 }

@@ -1,19 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Observable, catchError, delay, map, of, tap } from 'rxjs';
+
 import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
+import { environment } from '../../environments/environment';
+import { MetaData, Results } from '../shared/interfaces/results.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommunitiesService {
 
-  private http = inject(HttpClient);
-  private baseUrl = environment.backend_base_url;
-  private communitiesSignal = signal<Community[]>([]);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment.backend_base_url;
+  private readonly communitiesSignal = signal<Community[]>([]);
 
+
+  findCommunities(): Observable<MetaData> {
+    const url = `${this.baseUrl}/communities`;
+    return this.http.get<Results<Community>>(url).pipe(
+      tap(({ data }) => {
+        this.communitiesSignal.update(() => data);
+      }),
+      map(({ metadata }) => metadata)
+    );
+  }
 
   getCommunity(id: string): Observable<Community> {
     const url = `${this.baseUrl}/communities/${id}`
@@ -56,7 +68,7 @@ export class CommunitiesService {
   }
 
   communityExists(communityCode: string): Observable<boolean> {
-    const url: string = `${this.baseUrl}/communities/check-exists/${communityCode}`;
+    const url: string = `${this.baseUrl}/communities/${communityCode}/check-exists`;
     return this.http.head(url)
       .pipe(
         map(() => true),
