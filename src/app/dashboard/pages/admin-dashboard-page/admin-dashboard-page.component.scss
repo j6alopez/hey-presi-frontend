@@ -1,13 +1,6 @@
 @import 'bootstrap/scss/bootstrap-grid';
 @import 'bootstrap/scss/variables';
 
-h5 {
-  font-weight: bold;
-}
-
-#creation-button {
-  width: 8.7rem;
-}
 
 table td {
   vertical-align: middle;
@@ -16,8 +9,8 @@ table td {
 
 .btn-icon:hover {
   background-color: $light;
-
 }
+
 .table-bordered tbody tr:hover td, 
 .table-bordered tbody tr:hover th {
   background-color: $gray-200;
