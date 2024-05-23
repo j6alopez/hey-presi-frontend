@@ -6,7 +6,7 @@ import { Address } from '../../../locations/interfaces/address.interface';
 import { CommunitiesService } from './../../../communities/communities.service';
 import { Community } from '../../../communities/interfaces/community.interface';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
-import { TopBarComponent } from '../../../shared/components/top-bar/top-bar.component';
+import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
 
 
 @Component({

@@ -26,6 +26,13 @@ export class AuthService {
     }
     return this.user.asReadonly();
   }
+  
+  get currentRole(): Role | undefined {
+    if (!this.user) {
+      return this.user;
+    }
+    return this.currentUser()?.role;
+  }
 
   hasPermission(route: ActivatedRouteSnapshot): boolean {
     if (!this.currentUser() || !this.currentUser()?.role) {

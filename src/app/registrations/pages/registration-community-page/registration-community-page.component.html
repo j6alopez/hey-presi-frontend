@@ -1,10 +1,12 @@
 <!-- Outer Row -->
-<div class="card border-0 rounded-5 shadow-lg my-5">
+<div class="card border-0 shadow my-5">
+  <div class="card-header d-flex flex-wrap align-items">
+    <h5 class="me-auto my-auto py-2 font-weight-bold">Registrar Comunidad</h5>
+  </div>
   <div class="card-body p-0">
     <!-- Nested Row within Card Body -->
     <div class="row">
       <div class="col-12 p-5">
-        <h3 class="my-3">Registrar Comunidad</h3>
         <!-- Register Community -->
         <form [formGroup]="communityForm" (ngSubmit)="onSubmit()" autocomplete="off" class="row">
           <!-- subregion -->
@@ -84,7 +86,7 @@
           <div class="row justify-content-center d-flex">
             <div class="col-12 col-md-6 col-lg-4">
               <button type="submit" class="btn btn-primary text-center my-3 w-100" [disabled]="communityForm.invalid">
-                Siguiente
+                Registrar
               </button>
             </div>
           </div>
