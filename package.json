@@ -37,6 +37,6 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "typescript": "~5.2.2"
+    "typescript": "~5.4.5"
   }
 }
