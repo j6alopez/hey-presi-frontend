@@ -19,14 +19,13 @@ export class AuthService {
 
   private readonly USER_ID = "USER_ID";
 
-
   get currentUser(): Signal<User | undefined> {
     if (!this.user) {
       return this.user;
     }
     return this.user.asReadonly();
   }
-  
+
   get currentRole(): Role | undefined {
     if (!this.user) {
       return this.user;
@@ -76,8 +75,11 @@ export class AuthService {
     localStorage.setItem(this.USER_ID, this.user()?.id ?? '');
   }
 
-  logout() {
-    localStorage.removeItem(this.USER_ID);
-    this.user.set(undefined);
+  logout(): void {
+    const url: string = `${this.baseUrl}/auth/logout`;
+    this.http.post(url, null).subscribe(() => {
+      this.user.set(undefined);
+      localStorage.removeItem(this.USER_ID);
+    });
   }
 }
