@@ -23,10 +23,11 @@
     "PRESIDENT": "President"
   },
   "COMMUNITY_TABLE": {
-    "createdAt": "Fecha de creación",
-    "street": "Calle",
-    "region": "Comunidad Autónoma",
-    "subregion": "Provincia",
-    "city": "Ciudad"
+    "createdAt": "Created at",
+    "street": "Street",
+    "region": "Region",
+    "subregion": "Subregion",
+    "city": "City",
+    "actions": "Actions"
   }
 }

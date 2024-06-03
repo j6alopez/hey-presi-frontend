@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 
@@ -13,7 +13,9 @@ import { Role } from '../enums/role.enum';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly router = inject(Router);
   private readonly http: HttpClient = inject(HttpClient);
+
   private readonly baseUrl: string = environment.backend_base_url;
   private readonly user = signal<User | undefined>(undefined);
 
@@ -51,7 +53,6 @@ export class AuthService {
     return this.http.post<LoginResponseDto>(url, { email, password })
       .pipe(
         tap(user => this.user.set(user)),
-        tap(() => this.persistUserOnLocalStorage()),
         map(user => !!user),
         catchError(() => {
           return of(false);
@@ -68,18 +69,16 @@ export class AuthService {
       );
   }
 
-  public persistUserOnLocalStorage() {
-    if (!this.user()) {
-      return;
-    }
-    localStorage.setItem(this.USER_ID, this.user()?.id ?? '');
-  }
-
   logout(): void {
     const url: string = `${this.baseUrl}/auth/logout`;
     this.http.post(url, null).subscribe(() => {
       this.user.set(undefined);
-      localStorage.removeItem(this.USER_ID);
+      this.router.navigate(['/auth/login']);
     });
+  }
+
+  logoutOnExpire(): void {
+    this.user.set(undefined);
+    this.router.navigate(['/auth/login']);
   }
 }

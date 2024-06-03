@@ -1,6 +1,6 @@
-import { SortingDirection } from "../enums/sorting-direction.enum";
+import { SortingOrder } from "../enums/sorting-direction.enum";
 
 export interface Sorting {
   sortBy: string;
-  order: SortingDirection;
+  order: SortingOrder;
 }

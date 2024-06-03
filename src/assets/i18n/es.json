@@ -29,6 +29,7 @@
     "street": "Calle",
     "region": "Comunidad Autónoma",
     "subregion": "Provincia",
-    "city": "Ciudad"
+    "city": "Ciudad",
+    "actions": "Acciones"
   }
 }

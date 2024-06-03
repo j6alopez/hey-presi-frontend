@@ -46,7 +46,6 @@ export class LoginPageComponent {
     this.authService.login(email, password).subscribe(
       (loginSuccess) => {
         if (loginSuccess) {
-          this.authService.persistUserOnLocalStorage();
           this.redirectToHome();
           return;
         }

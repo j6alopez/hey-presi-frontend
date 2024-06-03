@@ -5,7 +5,7 @@ import { Address } from '../../../locations/interfaces/address.interface';
 import { CommunitiesService } from '../../communities.service';
 import { Community } from '../../interfaces/community.interface';
 import { Sorting } from '../../../shared/interfaces/sorting.interface';
-import { SortingDirection } from '../../../shared/enums/sorting-direction.enum';
+import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -20,23 +20,24 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class CommunitiesTableComponent implements OnInit {
 
+  private communitiesService = inject(CommunitiesService);
+
   communities: Community[] = [];
   communityColumns: Array<keyof Community> = ['createdAt'];
   addressColumns: Array<keyof Address> = ['street', 'region', 'subregion', 'city'];
-  columns: string[] = [
-    ...this.communityColumns.map(column => `COMMUNITY_TABLE.${column}`),
-    ...this.addressColumns.map(column => `COMMUNITY_TABLE.${column}`)
-  ]
+  actionsColumns: string[] = ['actions'];
+  
   sorting: Sorting = {
     sortBy: 'createdAt',
-    order: SortingDirection.ASC
+    order: SortingOrder.ASC
   };
-
-  private communitiesService = inject(CommunitiesService);
+  
+  columnLabels = new Map<string, string>();
+  
 
   ngOnInit(): void {
+    this.initializeColumns();
     this.fetchData();
-    console.table(this.columns);
   }
 
   fetchData(): void {
@@ -45,25 +46,37 @@ export class CommunitiesTableComponent implements OnInit {
     });
   }
 
+  initializeColumns(): void {
+    const columnHeaders = [
+      ...this.communityColumns, 
+      ...this.addressColumns,
+      ...this.actionsColumns
+    ];
+    this.columnLabels.entries
+    columnHeaders.forEach(header => {
+      this.columnLabels.set(header, `COMMUNITY_TABLE.${header}`);
+    });
+  }
+
   sortTable(column: string) {
-    const futureSortingOrder = this.isDescendingSorting(column)
-      ? SortingDirection.ASC
-      : SortingDirection.DESC;
+    const sortingOrder = this.isDescendingSorting(column)
+      ? SortingOrder.ASC
+      : SortingOrder.DESC;
 
-      this.sorting = {
-        sortBy: column,
-        order: futureSortingOrder
-      };
+    this.sorting = {
+      sortBy: column,
+      order: sortingOrder
+    };
 
-      this.fetchData();
+    this.fetchData();
   }
 
   isDescendingSorting(column: string): boolean {
-    return this.sorting.sortBy === column && this.sorting.order === SortingDirection.DESC;
+    return this.sorting.sortBy === column && this.sorting.order === SortingOrder.DESC;
   }
 
   isAscendingSorting(column: string): boolean {
-    return this.sorting.sortBy === column && this.sorting.order === SortingDirection.ASC;
+    return this.sorting.sortBy === column && this.sorting.order === SortingOrder.ASC;
   }
 
 }
