@@ -1,20 +1,21 @@
-<table class="table table-bordered w-100 communities-table">
-  <thead class="table-light">
-    <tr>
-      @for (column of columnLabels.entries(); track $index) {
+<div class="table-responsive">
+  <table class="table table-bordered w-100 communities-table">
+    <thead class="table-light">
+      <tr>
+        @for (column of columnLabels.entries(); track $index) {
         <th class="communities-table-cell" (click)="sortTable(column[0])">
-            {{column[1] | translate}}
+          {{column[1] | translate}}
           @if (isDescendingSorting(column[0])) {
-            <i class="bi bi-arrow-down-short"></i>
+          <i class="bi bi-arrow-down-short"></i>
           }
           @if (isAscendingSorting(column[0])) {
-            <i class="bi bi-arrow-up-short"></i>
-          }        
+          <i class="bi bi-arrow-up-short"></i>
+          }
         </th>
-      }
-  </thead>
-  <tbody>
-    @for (community of communities; track $index) {
+        }
+    </thead>
+    <tbody>
+      @for (community of communities; track $index) {
       <tr>
         <td class="communities-table-cell">{{community.createdAt}}</td>
         <td class="communities-table-cell">{{community.address.street}}</td>
@@ -30,6 +31,8 @@
           </button>
         </td>
       </tr>
-    }
-  </tbody>
-</table>
+      }
+    </tbody>
+  </table>
+</div>
+<shared-paginator></shared-paginator>

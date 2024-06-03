@@ -7,6 +7,7 @@ import { Community } from '../../../communities/interfaces/community.interface';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
 import { CommunitiesTableComponent } from '../../../communities/components/communities-table/communities-table.component';
+import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { CommunitiesTableComponent } from '../../../communities/components/commu
   imports: [
     CommonModule,
     CommunitiesTableComponent,
+    PaginatorComponent,
     RouterModule,
     SpinnerComponent,
     TopBarComponent,

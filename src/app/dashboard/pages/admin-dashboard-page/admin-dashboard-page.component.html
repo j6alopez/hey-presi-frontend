@@ -8,20 +8,10 @@
     </button>
   </div>
   @defer (when recordsLoaded) {
-  <div class="card-body">
-    <div class="table-responsive ">
+    <div class="card-body">
       <communities-table></communities-table>
     </div>
-  </div>
-  <div>
-        <div class="datatable-info">Viendo 1 de 10 de 57 registros</div>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end">
-          </ul>
-        </nav>
-      </div>
   } @placeholder {
-  <shared-spinner />
+    <shared-spinner />
   }
-
 </div>

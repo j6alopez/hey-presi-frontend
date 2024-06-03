@@ -7,12 +7,14 @@ import { Community } from '../../interfaces/community.interface';
 import { Sorting } from '../../../shared/interfaces/sorting.interface';
 import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
 import { TranslateModule } from '@ngx-translate/core';
+import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 
 @Component({
   selector: 'communities-table',
   standalone: true,
   imports: [
     CommonModule,
+    PaginatorComponent,
     TranslateModule
   ],
   templateUrl: './communities-table.component.html',
