@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Signal, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { Address } from '../../../locations/interfaces/address.interface';
 import { CommunitiesService } from './../../../communities/communities.service';
 import { Community } from '../../../communities/interfaces/community.interface';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
+import { CommunitiesTableComponent } from '../../../communities/components/communities-table/communities-table.component';
 
 
 @Component({
@@ -14,6 +14,7 @@ import { TopBarComponent } from '../../../shared/components/navigation/top-bar/t
   imports: [
     CommonModule,
     RouterModule,
+    CommunitiesTableComponent,
     TopBarComponent,
     SpinnerComponent
   ],
@@ -27,9 +28,8 @@ export class AdminDashBoardPageComponent implements OnInit {
   }
 
   private readonly communitiesService = inject(CommunitiesService);
-  public recordsLoaded = false;
-  public communities!: Signal<Community[]>;
-  public columns: Array<keyof Address> = ['city', 'region'];
+  recordsLoaded = false;
+  communities!: Signal<Community[]>;
 
   ngOnInit(): void {
     this.communities = computed(() =>

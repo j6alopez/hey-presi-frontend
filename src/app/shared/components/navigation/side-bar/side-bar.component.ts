@@ -19,7 +19,7 @@ export class SideBarComponent {
   private authService = inject(AuthService);
   private backOfficeAdminItems: MenuItem[] = [
     {
-      title: 'Titulo 1',
+      title: 'Communities',
       icon: 'bi bi bi-building',
       route: '/community/main'
     },

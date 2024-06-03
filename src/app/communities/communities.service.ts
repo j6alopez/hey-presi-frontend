@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Observable, catchError, delay, map, of, tap } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
 import { environment } from '../../environments/environment';
 import { MetaData, Results } from '../shared/interfaces/results.interface';
+import { Sorting } from '../shared/interfaces/sorting.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,21 @@ export class CommunitiesService {
         this.communitiesSignal.update(() => data);
       }),
       map(({ metadata }) => metadata)
+    );
+  }
+
+  getCommunities(sorting: Sorting): Observable<Community[]> {
+    const url = new URL(`${this.baseUrl}/communities`);
+    const params = new HttpParams()
+      .set('sortBy', sorting.sortBy)
+      .set('sortOrder', sorting.order);
+    url.search = params.toString();
+
+    return this.http.get<Results<Community>>(url.toString()).pipe(
+      tap(({ data }) => {
+        this.communitiesSignal.update(() => data);
+      }),
+      map(({ data }) => data)
     );
   }
 

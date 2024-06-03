@@ -10,3 +10,9 @@ body {
 
 //Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+.dropdown.no-arrow {
+  .dropdown-toggle::after {
+    display: none;
+  }
+}
