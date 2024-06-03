@@ -13,10 +13,10 @@ import { CommunitiesTableComponent } from '../../../communities/components/commu
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
     CommunitiesTableComponent,
+    RouterModule,
+    SpinnerComponent,
     TopBarComponent,
-    SpinnerComponent
   ],
   templateUrl: './admin-dashboard-page.component.html',
   styleUrl: './admin-dashboard-page.component.scss'

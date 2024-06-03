@@ -22,5 +22,13 @@
     "SUPPLIER": "Proveedor",
     "TENANT": "Alquilado",
     "PRESIDENT": "Presidente"
+  },
+
+  "COMMUNITY_TABLE": {
+    "createdAt": "Fecha de creación",
+    "street": "Calle",
+    "region": "Comunidad Autónoma",
+    "subregion": "Provincia",
+    "city": "Ciudad"
   }
 }

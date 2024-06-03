@@ -33,6 +33,7 @@ export class CommunitiesService {
     const params = new HttpParams()
       .set('sortBy', sorting.sortBy)
       .set('sortOrder', sorting.order);
+      
     url.search = params.toString();
 
     return this.http.get<Results<Community>>(url.toString()).pipe(

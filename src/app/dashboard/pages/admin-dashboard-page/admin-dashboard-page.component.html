@@ -10,37 +10,7 @@
   @defer (when recordsLoaded) {
   <div class="card-body">
     <div class="table-responsive ">
-      <table class="table table-bordered w-100">
-        <thead class="table-light">
-          <tr>
-            <th scope="col">Dirección</th>
-            <th scope="col">Comunidad Autónoma</th>
-            <th scope="col">Provincia</th>
-            <th scope="col">Ciudad</th>
-            <th scope="col">Creación</th>
-            <th scope="col">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (community of communities(); track $index) {
-          <tr data-row-value="index">
-            <td>{{ community.address.street }}</td>
-            <td>{{ community.address.region.name }}</td>
-            <td>{{ community.address.subregion.name }}</td>
-            <td>{{ community.address.city.name }}</td>
-            <td>{{ community.createdAt | date: 'dd/MM/yyyy' }}</td>
-            <td>
-              <button class="btn btn-icon" type="button">
-                <i class="bi bi-three-dots"></i>
-              </button>
-              <button class="btn btn-icon" type="button">
-                <i class="bi bi-trash3"></i>
-              </button>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+      <communities-table></communities-table>
     </div>
   </div>
   <div>

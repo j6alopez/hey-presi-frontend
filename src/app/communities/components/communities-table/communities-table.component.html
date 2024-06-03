@@ -1,38 +1,26 @@
 <table class="table table-bordered w-100 communities-table">
   <thead class="table-light">
     <tr>
-      @for (column of communityColumns; track $index) {
-        <th class="communities-table-cell">{{column} |titlecase }</th>
-        @if (isDescendingSorting(column)) {
-          <i class="bi bi-arrow-down-short"></i>
-        }
-        @if (isAscendingSorting(column)) {
-          <i class="bi bi-arrow-up-short"></i>
-        }
+      @for (column of columns; track $index) {
+        <th class="communities-table-cell" (click)="sortTable(column)">
+          {{column | translate}}
+          @if (isDescendingSorting(column)) {
+            <i class="bi bi-arrow-down-short"></i>
+          }
+          @if (isAscendingSorting(column)) {
+            <i class="bi bi-arrow-up-short"></i>
+          }        
+        </th>
       }
-    </tr>
-    <tr>
-      @for (column of addressColumns; track $index) {
-        <th class="communities-table-cell">{{column} |titlecase }</th>
-        @if (isDescendingSorting(column)) {
-        <i class="bi bi-arrow-down-short"></i>
-      }
-        @if (isAscendingSorting(column)) {
-          <i class="bi bi-arrow-up-short"></i>
-        }
-      }
-    </tr>
   </thead>
   <tbody>
     @for (community of communities; track $index) {
       <tr>
-        @for (column of communityColumns; track $index) {
-            <td class="communities-table-cell">{{community[column]}}</td>
-          }
-      
-        @for (column of addressColumns; track $index) {
-          <td class="communities-table-cell">{{community.address[column]}}</td>
-        }
+        <td class="communities-table-cell">{{community.createdAt}}</td>
+        <td class="communities-table-cell">{{community.address.street}}</td>
+        <td class="communities-table-cell">{{community.address.region.name}}</td>
+        <td class="communities-table-cell">{{community.address.subregion.name}}</td>
+        <td class="communities-table-cell">{{community.address.city.name}}</td>
       </tr>
     }
   </tbody>
