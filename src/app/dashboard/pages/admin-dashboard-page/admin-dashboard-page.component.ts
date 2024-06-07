@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Signal, computed, inject } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CommunitiesService } from './../../../communities/communities.service';
@@ -8,6 +8,10 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
 import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
 import { CommunitiesTableComponent } from '../../../communities/components/communities-table/communities-table.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
+import { Pagination } from '../../../shared/interfaces/pagination.interface';
+import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
+import { Sorting } from '../../../shared/interfaces/sorting.interface';
+
 
 
 @Component({
@@ -25,18 +29,26 @@ import { PaginatorComponent } from '../../../shared/components/paginator/paginat
 })
 export class AdminDashBoardPageComponent implements OnInit {
   private readonly communitiesService = inject(CommunitiesService);
+
+  communities : Community[] = [];
   recordsLoaded = false;
-  communities!: Signal<Community[]>;
+  pagination: Pagination = {
+    page: 1,
+    size: 25,
+  }
+
+  sorting: Sorting = {
+    sortBy: 'createdAt',
+    order: SortingOrder.ASC,
+  }
 
   ngOnInit(): void {
-    this.communities = computed(() =>
-      this.communitiesService.communities()
-    );
-    this.communitiesService.findCommunities().subscribe(
+    this.communitiesService.getCommunities(this.pagination, this.sorting).subscribe(
       () => {
+        this.communities = this.communitiesService.communities;
         this.recordsLoaded = true;
       }
-    );
+    )
   }
 
 }

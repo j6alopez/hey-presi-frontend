@@ -9,7 +9,8 @@
   </div>
   @defer (when recordsLoaded) {
     <div class="card-body">
-      <communities-table [communities]="communities()"></communities-table>
+      <communities-table [communities]="communities"></communities-table>
+      <shared-paginator></shared-paginator>
     </div>
   } @placeholder {
     <shared-spinner />

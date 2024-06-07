@@ -15,7 +15,7 @@
         }
     </thead>
     <tbody>
-      @for (community of communities; track $index) {
+      @for (community of communities(); track $index) {
       <tr>
         <td class="communities-table-cell">{{community.createdAt | date}}</td>
         <td class="communities-table-cell">{{community.address.street}}</td>
@@ -35,4 +35,3 @@
     </tbody>
   </table>
 </div>
-<shared-paginator></shared-paginator>

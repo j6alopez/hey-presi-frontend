@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
-import { Observable, catchError, delay, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
 import { environment } from '../../environments/environment';
 import { MetaData, Results } from '../shared/interfaces/results.interface';
 import { Sorting } from '../shared/interfaces/sorting.interface';
+import { Pagination } from '../shared/interfaces/pagination.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,6 @@ export class CommunitiesService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.backend_base_url;
   private readonly communitiesSignal = signal<Community[]>([]);
-
 
   findCommunities(): Observable<MetaData> {
     const url = `${this.baseUrl}/communities`;
@@ -28,12 +28,14 @@ export class CommunitiesService {
     );
   }
 
-  getCommunities(sorting: Sorting): Observable<Community[]> {
+  getCommunities(pagination: Pagination, sorting: Sorting): Observable<Community[]> {
     const url = new URL(`${this.baseUrl}/communities`);
     const params = new HttpParams()
+      .set('page', pagination.page)
+      .set('size', pagination.size)
       .set('sortBy', sorting.sortBy)
-      .set('sortOrder', sorting.order);
-      
+      .set('sortOrder', sorting.order)
+
     url.search = params.toString();
 
     return this.http.get<Results<Community>>(url.toString()).pipe(
@@ -93,8 +95,7 @@ export class CommunitiesService {
       );
   }
 
-  get communities(): Signal<Community[]> {
-    return this.communitiesSignal.asReadonly();
+  get communities(): Community[] {
+    return this.communitiesSignal();
   }
-
 }
