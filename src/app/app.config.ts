@@ -8,6 +8,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { routes } from './app.routes';
 import { authInterceptor } from './auth/interceptors/auth.interceptor';
 
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http,
     './assets/i18n/',
@@ -31,5 +34,6 @@ export const appConfig: ApplicationConfig = {
         useFactory: HttpLoaderFactory
       }
     })),
+    { provide: 'LOCALE_ID', useValue: 'es-ES' },
   ],
 };

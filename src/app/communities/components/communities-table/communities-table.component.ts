@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Address } from '../../../locations/interfaces/address.interface';
@@ -23,8 +23,11 @@ import { PaginatorComponent } from '../../../shared/components/paginator/paginat
 export class CommunitiesTableComponent implements OnInit {
 
   private communitiesService = inject(CommunitiesService);
-
+  @Input()
   communities: Community[] = [];
+  @Input()
+  currentPage: number = 1;
+  
   communityColumns: Array<keyof Community> = ['createdAt'];
   addressColumns: Array<keyof Address> = ['street', 'region', 'subregion', 'city'];
   actionsColumns: string[] = ['actions'];
@@ -36,7 +39,6 @@ export class CommunitiesTableComponent implements OnInit {
   
   columnLabels = new Map<string, string>();
   
-
   ngOnInit(): void {
     this.initializeColumns();
     this.fetchData();

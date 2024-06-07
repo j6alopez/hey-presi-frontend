@@ -9,3 +9,9 @@
   text-align: left ;
   padding: 8px;
 }
+
+th {
+    &:hover {
+        cursor: pointer;
+    }
+}

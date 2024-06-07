@@ -24,11 +24,6 @@ import { PaginatorComponent } from '../../../shared/components/paginator/paginat
   styleUrl: './admin-dashboard-page.component.scss'
 })
 export class AdminDashBoardPageComponent implements OnInit {
-
-  deleteCommunity(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
-
   private readonly communitiesService = inject(CommunitiesService);
   recordsLoaded = false;
   communities!: Signal<Community[]>;
