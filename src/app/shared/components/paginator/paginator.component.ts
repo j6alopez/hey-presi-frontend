@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss']
 })
-export class PaginatorComponent implements OnInit {
+export class PaginatorComponent implements OnInit, OnChanges {
   @Input() currentPage: number = 1;
   @Input() pageSizeRanges: number[] = [5, 10, 25, 100];
   @Input() totalItems: number = 0;
@@ -20,23 +20,26 @@ export class PaginatorComponent implements OnInit {
 
   indicator: string = '';
 
-
   ngOnInit(): void {
     this.updateIndicatorText();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['totalItems'] || changes['itemsPerPage'] || changes['currentPage'] || changes['currentPage']) {
+      this.updateIndicatorText();
+    }
+  }
 
   changePage(pageNumber: number) {
     this.currentPage = pageNumber;
     this.pageChanged.emit(pageNumber);
-    this.updateIndicatorText();
+
   }
 
   onPreviousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.pageChanged.emit(this.currentPage);
-      this.updateIndicatorText();
     }
   }
 
@@ -45,7 +48,6 @@ export class PaginatorComponent implements OnInit {
     if (this.currentPage < pageCount) {
       this.currentPage++;
       this.pageChanged.emit(this.currentPage);
-      this.updateIndicatorText();
     }
   }
 
@@ -61,7 +63,6 @@ export class PaginatorComponent implements OnInit {
     this.itemsPerPage = Number(target.value);
     this.currentPage = 1;
     this.pageSizeChanged.emit(this.itemsPerPage);
-    this.updateIndicatorText();
   }
 
   get totalPages(): number {
