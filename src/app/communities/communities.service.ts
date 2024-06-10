@@ -18,32 +18,15 @@ export class CommunitiesService {
   private readonly baseUrl = environment.backend_base_url;
   private readonly communitiesSignal = signal<Community[]>([]);
 
-  findCommunities(): Observable<MetaData> {
+  getCommunities(pagination: Pagination, sorting: Sorting): Observable<Results<Community>> {
     const url = `${this.baseUrl}/communities`;
-    return this.http.get<Results<Community>>(url).pipe(
-      tap(({ data }) => {
-        this.communitiesSignal.update(() => data);
-      }),
-      map(({ metadata }) => metadata)
-    );
-  }
-
-  getCommunities(pagination: Pagination, sorting: Sorting): Observable<Community[]> {
-    const url = new URL(`${this.baseUrl}/communities`);
     const params = new HttpParams()
       .set('page', pagination.page)
       .set('size', pagination.size)
       .set('sortBy', sorting.sortBy)
       .set('sortOrder', sorting.order)
 
-    url.search = params.toString();
-
-    return this.http.get<Results<Community>>(url.toString()).pipe(
-      tap(({ data }) => {
-        this.communitiesSignal.update(() => data);
-      }),
-      map(({ data }) => data)
-    );
+    return this.http.get<Results<Community>>(url, { params });
   }
 
   getCommunity(id: string): Observable<Community> {
@@ -93,9 +76,5 @@ export class CommunitiesService {
         map(() => true),
         catchError(() => of(false))
       );
-  }
-
-  get communities(): Community[] {
-    return this.communitiesSignal();
   }
 }

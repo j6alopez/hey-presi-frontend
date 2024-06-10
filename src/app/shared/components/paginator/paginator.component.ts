@@ -11,7 +11,9 @@ export class PaginatorComponent implements OnChanges {
   @Input() 
   totalItems: number = 0;
   @Input() 
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 5;
+  @Input()
+  currentPage: number = 1;
   @Input() 
   pageSizeRanges: number[] = [5, 10, 25, 100];
   @Output() 
@@ -20,7 +22,7 @@ export class PaginatorComponent implements OnChanges {
   pageSizeChanged: EventEmitter<number> = new EventEmitter<number>();
 
   indicator: string = '';
-  currentPage: number = 1;
+
 
   ngOnChanges(changes: SimpleChanges) {
 
@@ -51,7 +53,7 @@ export class PaginatorComponent implements OnChanges {
     const startItem = (this.currentPage - 1) * this.itemsPerPage + 1;
     const endItem = Math.min(startItem + this.itemsPerPage - 1, this.totalItems);
     const totalItems = this.totalItems;
-    this.indicator = `Items por página: ${startItem} – ${endItem} de ${totalItems}`;
+    this.indicator = `${startItem} – ${endItem} de ${totalItems}`;
   }
 
   onPageSizeChange(event: Event) {

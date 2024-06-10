@@ -1,6 +1,8 @@
 <div class="row justify-content-end align-items-center">
   <div class="col-auto">
-    <span>indicator()</span>
+    <span> 
+      Items por página: 
+    </span>
   </div>
   <div class="col-auto">
     <select class="form-select select-sm" 
@@ -11,6 +13,9 @@
       <option [value]="range">{{ range}}</option>
       }
     </select>
+  </div>
+  <div class="col-auto">
+    <small>{{indicator}}</small>
   </div>
   <button class="btn btn-light btn-sm col-auto mx-1"
     [disabled]="currentPage === 1"

@@ -28,14 +28,22 @@ import { Sorting } from '../../../shared/interfaces/sorting.interface';
   styleUrl: './admin-dashboard-page.component.scss'
 })
 export class AdminDashBoardPageComponent implements OnInit {
+  onPageSizeChanged(pageSize: number) {
+    this.pagination.size = pageSize;
+    this.loadCommunities();
+  }
   private readonly communitiesService = inject(CommunitiesService);
 
-  communities : Community[] = [];
+  communities: Community[] = [];
   recordsLoaded = false;
   pagination: Pagination = {
     page: 1,
-    size: 25,
+    size: 5,
   }
+
+  totalItems = 0;
+  currentPage = 1;
+  itemsPerPage = 1;
 
   sorting: Sorting = {
     sortBy: 'createdAt',
@@ -43,9 +51,17 @@ export class AdminDashBoardPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadCommunities();
+  }
+
+  private loadCommunities() {
+    this.recordsLoaded = false;
     this.communitiesService.getCommunities(this.pagination, this.sorting).subscribe(
-      () => {
-        this.communities = this.communitiesService.communities;
+      (response) => {
+        this.communities = response.data;
+        this.currentPage = response.metadata.currentPage;
+        this.totalItems = response.metadata.totalCount;
+        this.itemsPerPage = this.pagination.size
         this.recordsLoaded = true;
       }
     )

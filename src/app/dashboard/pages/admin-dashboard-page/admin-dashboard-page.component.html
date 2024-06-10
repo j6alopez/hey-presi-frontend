@@ -10,7 +10,9 @@
   @defer (when recordsLoaded) {
     <div class="card-body">
       <communities-table [communities]="communities"></communities-table>
-      <shared-paginator></shared-paginator>
+      <shared-paginator [itemsPerPage]="itemsPerPage" [totalItems]="totalItems" [currentPage]="currentPage"
+        (pageSizeChanged)="onPageSizeChanged($event)">
+    </shared-paginator>
     </div>
   } @placeholder {
     <shared-spinner />
