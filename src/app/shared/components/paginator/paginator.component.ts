@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'shared-paginator',
@@ -7,15 +7,12 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss']
 })
-export class PaginatorComponent implements OnChanges {
-  @Input() 
-  totalItems: number = 0;
-  @Input() 
-  itemsPerPage: number = 5;
-  @Input()
-  currentPage: number = 1;
-  @Input() 
-  pageSizeRanges: number[] = [5, 10, 25, 100];
+export class PaginatorComponent implements OnInit {
+  @Input() currentPage: number = 1;
+  @Input() pageSizeRanges: number[] = [5, 10, 25, 100];
+  @Input() totalItems: number = 0;
+  @Input() itemsPerPage: number = 5;
+
   @Output() 
   pageChanged = new EventEmitter<number>();
   @Output() 
@@ -24,9 +21,10 @@ export class PaginatorComponent implements OnChanges {
   indicator: string = '';
 
 
-  ngOnChanges(changes: SimpleChanges) {
-
+  ngOnInit(): void {
+    this.updateIndicatorText();
   }
+
 
   changePage(pageNumber: number) {
     this.currentPage = pageNumber;
@@ -34,18 +32,20 @@ export class PaginatorComponent implements OnChanges {
     this.updateIndicatorText();
   }
 
-  previousPage() {
+  onPreviousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.pageChanged.emit(this.currentPage);
+      this.updateIndicatorText();
     }
   }
 
-  nextPage() {
+  onNextPage() {
     const pageCount = Math.ceil(this.totalItems / this.itemsPerPage);
     if (this.currentPage < pageCount) {
       this.currentPage++;
       this.pageChanged.emit(this.currentPage);
+      this.updateIndicatorText();
     }
   }
 

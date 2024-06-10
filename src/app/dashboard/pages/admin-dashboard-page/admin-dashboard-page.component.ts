@@ -28,10 +28,6 @@ import { Sorting } from '../../../shared/interfaces/sorting.interface';
   styleUrl: './admin-dashboard-page.component.scss'
 })
 export class AdminDashBoardPageComponent implements OnInit {
-  onPageSizeChanged(pageSize: number) {
-    this.pagination.size = pageSize;
-    this.loadCommunities();
-  }
   private readonly communitiesService = inject(CommunitiesService);
 
   communities: Community[] = [];
@@ -65,6 +61,16 @@ export class AdminDashBoardPageComponent implements OnInit {
         this.recordsLoaded = true;
       }
     )
+  }
+
+  onPageChanged(pageChanged: number) {
+    this.pagination.page = pageChanged;
+    console.log('pageChanged', pageChanged);
+    this.loadCommunities();
+  }
+  onPageSizeChanged(pageSize: number) {
+    this.pagination.size = pageSize;
+    this.loadCommunities();
   }
 
 }

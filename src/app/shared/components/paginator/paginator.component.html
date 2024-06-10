@@ -19,11 +19,13 @@
   </div>
   <button class="btn btn-light btn-sm col-auto mx-1"
     [disabled]="currentPage === 1"
+    (click)="onPreviousPage()"
   >
     <i class="bi bi-chevron-left"></i>
   </button>
   <button class="btn btn-light btn-sm col-auto me-3"
     [disabled]="currentPage === totalPages"
+    (click)="onNextPage()"
   >
     <i class="bi bi-chevron-right"></i>
   </button>
