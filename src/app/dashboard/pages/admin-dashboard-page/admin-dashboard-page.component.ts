@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CommunitiesService } from './../../../communities/communities.service';
@@ -8,7 +8,7 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
 import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
 import { CommunitiesTableComponent } from '../../../communities/components/communities-table/communities-table.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
-import { Pagination } from '../../../shared/interfaces/pagination.interface';
+import { Page } from '../../../shared/interfaces/page.interface';
 import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
 import { Sorting } from '../../../shared/interfaces/sorting.interface';
 
@@ -32,18 +32,20 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   communities: Community[] = [];
   recordsLoaded = false;
-  pagination: Pagination = {
-    page: 1,
-    size: 5,
-  }
-
   totalItems = 0;
   currentPage = 1;
   itemsPerPage = 1;
 
+  initialField: keyof Community = 'createdAt';
+
+  pagination: Page = {
+    page: 1,
+    size: 10,
+  }
+
   sorting: Sorting = {
-    sortBy: 'createdAt',
-    order: SortingOrder.ASC,
+    sortBy: this.initialField,
+    sortOrder: SortingOrder.ASC,
   }
 
   ngOnInit(): void {
@@ -65,11 +67,15 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   onPageChanged(pageChanged: number) {
     this.pagination.page = pageChanged;
-    console.log('pageChanged', pageChanged);
     this.loadCommunities();
   }
   onPageSizeChanged(pageSize: number) {
     this.pagination.size = pageSize;
+    this.loadCommunities();
+  }
+
+  onSortingEvent(sorting: Sorting) {
+    this.sorting = sorting;
     this.loadCommunities();
   }
 

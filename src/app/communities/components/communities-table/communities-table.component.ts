@@ -33,7 +33,7 @@ export class CommunitiesTableComponent implements OnInit {
 
   sorting: Sorting = {
     sortBy: 'createdAt',
-    order: SortingOrder.ASC
+    sortOrder: SortingOrder.ASC
   };
 
   columnLabels = new Map<string, string>();
@@ -56,16 +56,27 @@ export class CommunitiesTableComponent implements OnInit {
 
     this.sorting = {
       sortBy: column,
-      order: sortingOrder
+      sortOrder: sortingOrder
     };
+    this.emitEvent();
   }
 
   isDescendingSorting(column: string): boolean {
-    return this.sorting.sortBy === column && this.sorting.order === SortingOrder.DESC;
+    if (this.isActionsColumn(column)) {
+      return false;
+    }
+    return this.sorting.sortBy === column && this.sorting.sortOrder === SortingOrder.DESC;
   }
 
   isAscendingSorting(column: string): boolean {
-    return this.sorting.sortBy === column && this.sorting.order === SortingOrder.ASC;
+    if (this.isActionsColumn(column)) {
+      return false;
+    }
+    return this.sorting.sortBy === column && this.sorting.sortOrder === SortingOrder.ASC;
+  }
+
+  isActionsColumn(column: string): boolean {
+    return this.actionsColumns.includes(column);
   }
 
   emitEvent() {

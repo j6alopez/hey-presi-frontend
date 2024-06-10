@@ -3,15 +3,18 @@
     <thead class="table-light">
       <tr>
         @for (column of columnLabels.entries(); track $index) {
-        <th class="communities-table-cell" (click)="sortTable(column[0])">
-          {{column[1] | translate}}
-          @if (isDescendingSorting(column[0])) {
-          <i class="bi bi-arrow-down-short"></i>
-          }
-          @if (isAscendingSorting(column[0])) {
-          <i class="bi bi-arrow-up-short"></i>
-          }
-        </th>
+          <th class="communities-table-cell" 
+            (click)="sortTable(column[0])"
+            [ngClass]="{ 'sortable': !isActionsColumn(column[0]) }"
+          >
+            {{ column[1] | translate }}
+            @if (isDescendingSorting(column[0])) {
+              <i class="bi bi-arrow-down-short"></i>
+            }
+            @if (isAscendingSorting(column[0])) {
+              <i class="bi bi-arrow-up-short"></i>
+            }
+          </th>
         }
     </thead>
     <tbody>

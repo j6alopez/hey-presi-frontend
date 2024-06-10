@@ -6,12 +6,12 @@
 
 .communities-table-cell {
   border: 1px solid #e0e0e0;
-  text-align: left ;
+  text-align: left;
   padding: 8px;
 }
 
-th {
-    &:hover {
-        cursor: pointer;
-    }
+th.sortable {
+  &:hover {
+    cursor: pointer;
+  }
 }

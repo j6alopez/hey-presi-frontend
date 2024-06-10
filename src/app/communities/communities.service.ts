@@ -5,9 +5,9 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
 import { environment } from '../../environments/environment';
-import { MetaData, Results } from '../shared/interfaces/results.interface';
+import { Results } from '../shared/interfaces/results.interface';
 import { Sorting } from '../shared/interfaces/sorting.interface';
-import { Pagination } from '../shared/interfaces/pagination.interface';
+import { Page } from '../shared/interfaces/page.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +18,16 @@ export class CommunitiesService {
   private readonly baseUrl = environment.backend_base_url;
   private readonly communitiesSignal = signal<Community[]>([]);
 
-  getCommunities(pagination: Pagination, sorting: Sorting): Observable<Results<Community>> {
-    const url = `${this.baseUrl}/communities`;
+  getCommunities(pagination: Page, sorting: Sorting): Observable<Results<Community>> {
+    const { page, size } = pagination;
+    const { sortBy, sortOrder } = sorting;
     const params = new HttpParams()
-      .set('page', pagination.page)
-      .set('size', pagination.size)
-      .set('sortBy', sorting.sortBy)
-      .set('sortOrder', sorting.order)
+      .set('page', page)
+      .set('size', size)
+      .set('sortBy', sortBy)
+      .set('sortOrder', sortOrder)
 
+    const url = `${this.baseUrl}/communities`;
     return this.http.get<Results<Community>>(url, { params });
   }
 

@@ -11,7 +11,7 @@ export class PaginatorComponent implements OnInit, OnChanges {
   @Input() currentPage: number = 1;
   @Input() pageSizeRanges: number[] = [5, 10, 25, 100];
   @Input() totalItems: number = 0;
-  @Input() itemsPerPage: number = 5;
+  @Input() itemsPerPage: number = 10;
 
   @Output() 
   pageChanged = new EventEmitter<number>();
