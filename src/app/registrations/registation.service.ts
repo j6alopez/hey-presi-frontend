@@ -5,7 +5,6 @@ import { Observable, map, tap } from 'rxjs';
 import { AuthService } from '../auth/services/auth.service';
 import { CommunitiesService } from '../communities/communities.service';
 import { Community } from '../communities/interfaces/community.interface';
-import { CommunityRegistrationForm } from './interfaces/community-form.interface';
 import { CommunityRole } from '../communities/enums/community-role.enum';
 import { CountryCode } from '../locations/enums/country-codes';
 import { CreateCommunity } from '../communities/interfaces/create-community.interface';
@@ -54,18 +53,6 @@ export class RegistrationService {
       );
   }
 
-  public registerCommunity(communityForm: CommunityRegistrationForm): Observable<boolean> {
-    communityForm.city = Number(communityForm.city);
-
-    const createAddress = this.buildAddress(communityForm);
-
-    return this.communityService.createCommunity(createAddress)
-      .pipe(
-        tap(registeredCommunity => this.registeredCommunity = registeredCommunity),
-        map(registeredCommunity => !!registeredCommunity)
-      )
-  }
-
   public registerUnit(): Observable<boolean> {
     const createUnit: Unit = {
       communityId: this.registeredCommunity!.id,
@@ -94,16 +81,6 @@ export class RegistrationService {
       .pipe(
         map(community => !!community),
       )
-  }
-
-  private buildAddress(communityForm: CommunityRegistrationForm): CreateCommunity {
-    const createCommunity: CreateCommunity = {
-      address: {
-        ...communityForm,
-        country: CountryCode.ES
-      }
-    }
-    return createCommunity;
   }
 
   private buildUnitRole(): UnitRoles {

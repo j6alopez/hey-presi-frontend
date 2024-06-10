@@ -3,13 +3,17 @@ import { Component, OnInit, Signal, computed, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-import { CommunityRegistrationForm } from '../../interfaces/community-form.interface';
+import { filter, tap } from 'rxjs';
 
 import { LocationsService } from '../../../locations/locations.service';
 
 import { SpanishSubRegions } from '../../../locations/enums/spanish-regions';
 import { Location } from '../../../locations/interfaces/location.interface';
 import { PatternUtils } from '../../../shared/validators/pattern-utils';
+import { CommunitiesService } from '../../../communities/communities.service';
+import { CreateCommunity } from '../../../communities/interfaces/create-community.interface';
+import { CreateAddress } from '../../../locations/interfaces/create-address.interface';
+import { CountryCode } from '../../../locations/enums/country-codes';
 
 @Component({
   selector: 'registration-community-page',
@@ -25,8 +29,8 @@ import { PatternUtils } from '../../../shared/validators/pattern-utils';
 export class RegistrationCommunityPage implements OnInit {
 
   private readonly router = inject(Router);
-  private readonly LocationsService = inject(LocationsService);
-
+  private readonly locationsService = inject(LocationsService);
+  private readonly communitiesService = inject(CommunitiesService)
 
   public citiesSignal!: Signal<Location[]>;
   public communityForm: FormGroup;
@@ -72,7 +76,7 @@ export class RegistrationCommunityPage implements OnInit {
 
   ngOnInit(): void {
     this.citiesSignal = computed(() => {
-      return this.LocationsService.cities();
+      return this.locationsService.cities();
     })
   }
 
@@ -82,15 +86,21 @@ export class RegistrationCommunityPage implements OnInit {
       return;
     }
 
-    const communityRegistration: CommunityRegistrationForm = this.communityForm.value as CommunityRegistrationForm;
-
+    const createAddress = this.buildAddress();
+    const address: CreateCommunity = {
+      address: createAddress
+    }
+    this.communitiesService.createCommunity(address).pipe(
+      filter(created => !!created),
+      tap(() => this.router.navigate(['/dashboard']))
+    ).subscribe();
 
   }
 
   onSubregionChange(event: any) {
     const subregion: string = event.target.value;
     if (!subregion) return;
-    this.LocationsService.getCitiesBySubregionCode(subregion)
+    this.locationsService.getCitiesBySubregionCode(subregion)
       .subscribe(
         () => {
           this.communityForm.get('city')?.setValue(null)
@@ -102,5 +112,14 @@ export class RegistrationCommunityPage implements OnInit {
     const control = this.communityForm.get(field);
     if (!control) return false;
     return control.touched && control.invalid;
+  }
+
+  private buildAddress(): CreateAddress {
+    const createAddress: CreateAddress = {
+      ...this.communityForm.value,
+      city: Number(this.communityForm.value.city),
+      country: CountryCode.ES
+    };
+    return createAddress;
   }
 }

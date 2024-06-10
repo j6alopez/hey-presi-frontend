@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, Signal, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { Community } from './interfaces/community.interface';
@@ -36,10 +36,10 @@ export class CommunitiesService {
     return this.http.get<Community>(url);
   }
 
-  createCommunity(address: CreateCommunity): Observable<Community | undefined> {
+  createCommunity(community: CreateCommunity): Observable<Community | undefined> {
     const url = `${this.baseUrl}/communities`
-    console.log(address);
-    return this.http.post<Community>(url, address)
+
+    return this.http.post<Community>(url, community)
       .pipe(
         catchError(() => {
           return of(undefined);
