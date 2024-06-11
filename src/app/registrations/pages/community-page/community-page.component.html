@@ -15,7 +15,7 @@
               <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia"
                 (change)="onSubregionChange($event)">
                 <option value=null>-- Seleccione una provincia --</option>
-                @for (subregion of subregions | keyvalue; track $index) {
+                @for (subregion of subregions | keyvalue: keepOrder; track $index) {
                 <option [value]="subregion.key">{{ subregion.value}}</option>
                 }
               </select>

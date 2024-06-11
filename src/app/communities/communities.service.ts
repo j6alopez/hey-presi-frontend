@@ -31,7 +31,7 @@ export class CommunitiesService {
     return this.http.get<Results<Community>>(url, { params });
   }
 
-  getCommunity(id: string): Observable<Community> {
+  getCommunityById(id: string): Observable<Community> {
     const url = `${this.baseUrl}/communities/${id}`
     return this.http.get<Community>(url);
   }

@@ -14,7 +14,10 @@
         (sortingEvent)="onSortingEvent($event)"
         >
       </communities-table>
-      <shared-paginator [itemsPerPage]="itemsPerPage" [totalItems]="totalItems" [currentPage]="currentPage"
+      <shared-paginator 
+        [itemsPerPage]="itemsPerPage" 
+        [totalItems]="totalItems" 
+        [currentPage]="currentPage"
         (pageSizeChanged)="onPageSizeChanged($event)"
         (pageChanged)="onPageChanged($event)"
         >

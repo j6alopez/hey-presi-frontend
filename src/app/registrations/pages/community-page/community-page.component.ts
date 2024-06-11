@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Signal, computed, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { filter, tap } from 'rxjs';
 
@@ -16,19 +16,19 @@ import { CreateAddress } from '../../../locations/interfaces/create-address.inte
 import { CountryCode } from '../../../locations/enums/country-codes';
 
 @Component({
-  selector: 'registration-community-page',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule
   ],
-  templateUrl: './registration-community-page.component.html',
-  styleUrl: './registration-community-page.component.scss'
+  templateUrl: './community-page.component.html',
+  styleUrl: './community-page.component.scss'
 })
-export class RegistrationCommunityPage implements OnInit {
+export class CommunityPage implements OnInit {
 
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly locationsService = inject(LocationsService);
   private readonly communitiesService = inject(CommunitiesService)
 
@@ -36,6 +36,8 @@ export class RegistrationCommunityPage implements OnInit {
   public communityForm: FormGroup;
   public subregions = SpanishSubRegions;
 
+  private isEditMode: boolean = false;
+  private communityId?: string;
 
   constructor(private formBuilder: FormBuilder) {
     this.communityForm = this.formBuilder.group({
@@ -78,7 +80,21 @@ export class RegistrationCommunityPage implements OnInit {
     this.citiesSignal = computed(() => {
       return this.locationsService.cities();
     })
+    console.log('aaa');
+    console.log(this.subregions);
+    this.route.paramMap.subscribe(params => {
+      if (params.has('id')) {
+        this.isEditMode = true;
+        this.communityId = params.get('id')!;
+        this.communitiesService.getCommunityById(this.communityId).subscribe(community => {
+          if (community) {
+            this.communityForm.patchValue(community.address);
+          }
+        });
+      }
+    });
   }
+
 
   onSubmit() {
     if (this.communityForm.invalid) {
@@ -121,5 +137,9 @@ export class RegistrationCommunityPage implements OnInit {
       country: CountryCode.ES
     };
     return createAddress;
+  }
+
+  keepOrder = (a: any, b: any) : any => {
+    return a;
   }
 }

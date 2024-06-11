@@ -20,7 +20,7 @@
     <tbody>
       @for (community of communities(); track $index) {
       <tr>
-        <td class="communities-table-cell">{{community.createdAt | date}}</td>
+        <td class="communities-table-cell">{{community.createdAt | date:'fullDate'}}</td>
         <td class="communities-table-cell">{{community.address.street}}</td>
         <td class="communities-table-cell">{{community.address.region.name}}</td>
         <td class="communities-table-cell">{{community.address.subregion.name}}</td>

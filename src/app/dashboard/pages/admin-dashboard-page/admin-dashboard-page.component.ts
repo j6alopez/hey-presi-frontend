@@ -34,13 +34,13 @@ export class AdminDashBoardPageComponent implements OnInit {
   recordsLoaded = false;
   totalItems = 0;
   currentPage = 1;
-  itemsPerPage = 1;
+  itemsPerPage = 5;
 
   initialField: keyof Community = 'createdAt';
 
   pagination: Page = {
     page: 1,
-    size: 10,
+    size: 5,
   }
 
   sorting: Sorting = {
