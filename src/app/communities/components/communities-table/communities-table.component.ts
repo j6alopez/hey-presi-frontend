@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, input, OnInit, output, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,21 +7,22 @@ import { Address } from '../../../locations/interfaces/address.interface';
 import { Community } from '../../interfaces/community.interface';
 import { Sorting } from '../../../shared/interfaces/sorting.interface';
 import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
+import { CommunityActionComponentComponent } from '../community-action-component/community-action-component.component';
 
 @Component({
   selector: 'communities-table',
   standalone: true,
   imports: [
+    CommunityActionComponentComponent,
     CommonModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './communities-table.component.html',
   styleUrl: './communities-table.component.scss'
 })
 export class CommunitiesTableComponent implements OnInit {
-  communities = input<Community[]>([]);
-  @Output()
-  sortingEvent = new EventEmitter<Sorting>();
+  communities  = input<Community[]>([]);
+  sortingEvent = output<Sorting>();
 
   ngOnInit(): void {
     this.setColumnHeaders();

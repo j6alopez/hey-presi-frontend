@@ -26,9 +26,7 @@
         <td class="communities-table-cell">{{community.address.subregion.name}}</td>
         <td class="communities-table-cell">{{community.address.city.name}}</td>
         <td>
-          <button class="btn btn-icon" type="button">
-            <i class="bi bi-three-dots"></i>
-          </button>
+          <community-action [communityId]="community.id"></community-action>
           <button class="btn btn-icon" type="button">
             <i class="bi bi-trash3"></i>
           </button>

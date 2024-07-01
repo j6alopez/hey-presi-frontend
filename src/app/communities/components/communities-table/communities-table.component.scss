@@ -8,6 +8,8 @@
   border: 1px solid #e0e0e0;
   text-align: left;
   padding: 8px;
+  white-space: wrap;
+  word-break: keep-all;
 }
 
 th.sortable {

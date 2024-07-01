@@ -41,7 +41,6 @@ export class CommunityPage implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {
     this.communityForm = this.formBuilder.group({
-
       street: [
         '',
         [
@@ -79,19 +78,6 @@ export class CommunityPage implements OnInit {
   ngOnInit(): void {
     this.citiesSignal = computed(() => {
       return this.locationsService.cities();
-    })
-    console.log('aaa');
-    console.log(this.subregions);
-    this.route.paramMap.subscribe(params => {
-      if (params.has('id')) {
-        this.isEditMode = true;
-        this.communityId = params.get('id')!;
-        this.communitiesService.getCommunityById(this.communityId).subscribe(community => {
-          if (community) {
-            this.communityForm.patchValue(community.address);
-          }
-        });
-      }
     });
   }
 

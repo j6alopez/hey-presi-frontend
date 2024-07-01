@@ -10,6 +10,7 @@ export const COMMUNITIES_ROUTES: Routes = [
     component: LayoutPageComponent,
     children: [
       { path: 'creation', component: CommunityPage },
+      { path: ':id', component: CommunityPage },
       { path: 'community', component: CommunityPageComponent },
       { path: '**', redirectTo: 'communities' },
     ]
