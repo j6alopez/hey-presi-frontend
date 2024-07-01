@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Signal, computed, inject } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { filter, tap } from 'rxjs';
+
+import { Observable, catchError, concatMap, delay, filter, of, switchMap, tap } from 'rxjs';
 
 import { LocationsService } from '../../../locations/locations.service';
 
@@ -14,6 +15,7 @@ import { CommunitiesService } from '../../../communities/communities.service';
 import { CreateCommunity } from '../../../communities/interfaces/create-community.interface';
 import { CreateAddress } from '../../../locations/interfaces/create-address.interface';
 import { CountryCode } from '../../../locations/enums/country-codes';
+import { Community } from '../../../communities/interfaces/community.interface';
 
 @Component({
   standalone: true,
@@ -32,11 +34,11 @@ export class CommunityPage implements OnInit {
   private readonly locationsService = inject(LocationsService);
   private readonly communitiesService = inject(CommunitiesService)
 
-  public citiesSignal!: Signal<Location[]>;
+  public citiesSignal = signal<Location[]>([]);
   public communityForm: FormGroup;
   public subregions = SpanishSubRegions;
 
-  private isEditMode: boolean = false;
+  private isEditMode = false;
   private communityId?: string;
 
   constructor(private formBuilder: FormBuilder) {
@@ -76,11 +78,16 @@ export class CommunityPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.citiesSignal = computed(() => {
-      return this.locationsService.cities();
-    });
+    this.route.params.pipe(
+      filter(params => !!params['id']),
+      tap((params) => {
+        this.isEditMode = true;
+        this.communityId = params['id']
+      })
+    ).subscribe();
+    this.loadCommunity();
+    this.handleSubregionChange().subscribe();
   }
-
 
   onSubmit() {
     if (this.communityForm.invalid) {
@@ -92,28 +99,33 @@ export class CommunityPage implements OnInit {
     const address: CreateCommunity = {
       address: createAddress
     }
+
     this.communitiesService.createCommunity(address).pipe(
       filter(created => !!created),
-      tap(() => this.router.navigate(['/dashboard']))
+      switchMap(() => this.router.navigate(['/dashboard']))
     ).subscribe();
 
   }
 
-  onSubregionChange(event: any) {
-    const subregion: string = event.target.value;
-    if (!subregion) return;
-    this.locationsService.getCitiesBySubregionCode(subregion)
-      .subscribe(
-        () => {
-          this.communityForm.get('city')?.setValue(null)
-        },
-      );
+  handleSubregionChange(): Observable<Location[]> {
+    return this.communityForm.get('subregion')!.valueChanges.pipe(
+      switchMap((subregion: string) =>
+        this.locationsService.getCitiesBySubregionCode(subregion).pipe(
+          tap(cities => this.citiesSignal.set(cities)),
+          catchError(() => of([])),
+        )
+      )
+    )
   }
 
   isNotValidField(field: string): boolean {
     const control = this.communityForm.get(field);
     if (!control) return false;
     return control.touched && control.invalid;
+  }
+
+  keepOrder = (a: any, b: any): any => {
+    return a;
   }
 
   private buildAddress(): CreateAddress {
@@ -125,7 +137,17 @@ export class CommunityPage implements OnInit {
     return createAddress;
   }
 
-  keepOrder = (a: any, b: any) : any => {
-    return a;
+  private loadCommunity(): void {
+    this.communitiesService.getCommunityById(this.communityId!).pipe(
+      tap(({ address }) => {
+        this.communityForm.patchValue(address);
+        this.communityForm.patchValue({ subregion: address.subregion.code })
+      }),
+      switchMap(({ address }) => this.locationsService.getCitiesBySubregionCode(address.subregion.code).pipe(
+        tap(cities => this.citiesSignal.set(cities)),
+        tap(() => this.communityForm.patchValue({ city: address.city.code })),
+        catchError(() => of([])),
+      )),
+    ).subscribe();
   }
 }

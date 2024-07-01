@@ -7,13 +7,16 @@
     <!-- Nested Row within Card Body -->
     <div class="row">
       <div class="col-12 p-5">
+
         <!-- Register Community -->
+
         <form [formGroup]="communityForm" (ngSubmit)="onSubmit()" autocomplete="off" class="row">
+
           <!-- subregion -->
+
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
-              <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia"
-                (change)="onSubregionChange($event)">
+              <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia">
                 <option value=null>-- Seleccione una provincia --</option>
                 @for (subregion of subregions | keyvalue: keepOrder; track $index) {
                 <option [value]="subregion.key">{{ subregion.value}}</option>
@@ -22,7 +25,9 @@
               <label for="floatingSelect">Provincia</label>
             </div>
           </div>
+
           <!-- city -->
+
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <select class="form-select" formControlName='city' id="city" aria-label="Ciudad">
@@ -36,6 +41,7 @@
           </div>
 
           <!-- street -->
+
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="street" class="form-control" id="street" />
@@ -52,6 +58,7 @@
           </div>
 
           <!-- streetNumber -->
+
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="streetNumber" class="form-control" id="streetNumber" />
@@ -68,6 +75,7 @@
           </div>
 
           <!-- postalCode -->
+           
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="postalCode" class="form-control" id="postalCode" />
