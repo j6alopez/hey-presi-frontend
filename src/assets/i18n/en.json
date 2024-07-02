@@ -28,6 +28,6 @@
     "region": "Region",
     "subregion": "Subregion",
     "city": "City",
-    "actions": "Actions"
+    "action": "Action"
   }
 }

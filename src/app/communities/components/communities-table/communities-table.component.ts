@@ -30,7 +30,7 @@ export class CommunitiesTableComponent implements OnInit {
 
   communityColumns: Array<keyof Community> = ['createdAt'];
   addressColumns: Array<keyof Address> = ['street', 'region', 'subregion', 'city'];
-  actionsColumns: string[] = ['actions'];
+  actionsColumns: string[] = ['action'];
 
   sorting: Sorting = {
     sortBy: 'createdAt',
@@ -63,20 +63,27 @@ export class CommunitiesTableComponent implements OnInit {
   }
 
   isDescendingSorting(column: string): boolean {
-    if (this.isActionsColumn(column)) {
+    if (this.isActionColumn(column)) {
       return false;
     }
     return this.sorting.sortBy === column && this.sorting.sortOrder === SortingOrder.DESC;
   }
 
   isAscendingSorting(column: string): boolean {
-    if (this.isActionsColumn(column)) {
+    if (this.isActionColumn(column)) {
       return false;
     }
     return this.sorting.sortBy === column && this.sorting.sortOrder === SortingOrder.ASC;
   }
 
-  isActionsColumn(column: string): boolean {
+  isNotSorted(column: string): boolean {
+    if (this.isActionColumn(column)) {
+      return false;
+    }
+    return this.sorting.sortBy !== column;
+  }
+
+  isActionColumn(column: string): boolean {
     return this.actionsColumns.includes(column);
   }
 
