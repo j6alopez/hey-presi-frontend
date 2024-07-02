@@ -1,18 +1,28 @@
+@import 'bootstrap/scss/bootstrap-grid';
+@import 'bootstrap/scss/variables';
+
 .communities-table {
   table-layout: fixed;
-  width: 100%;
   border-collapse: collapse;
 }
 
-.communities-table-cell {
-  border: 1px solid #e0e0e0;
-  padding: 8px;
-  // white-space: wrap;
-  word-break: keep-all;
+th, td {
+  vertical-align: middle;
+  height: 3rem;
+  width: auto;
+}
+
+.communities-table tbody tr:hover td, 
+.communities-table tbody tr:hover th {
+  background-color: $gray-100;
 }
 
 th.sortable {
   &:hover {
     cursor: pointer;
   }
+}
+
+th:first-child {
+  width: 2rem;
 }

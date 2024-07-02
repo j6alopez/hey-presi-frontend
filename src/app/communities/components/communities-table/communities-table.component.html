@@ -1,7 +1,8 @@
 <div class="table-responsive">
-  <table class="table table-bordered w-100 communities-table">
+  <table class="table communities-table">
     <thead class="table-light">
       <tr>
+        <th class="p-0"></th>
         @for (column of columnLabels.entries(); track $index) {
           <th class="communities-table-cell" 
             (click)="sortTable(column[0])"
@@ -23,11 +24,12 @@
     <tbody>
       @for (community of communities(); track $index) {
       <tr>
-        <td class="communities-table-cell">{{community.createdAt | date:'mediumDate'}}</td>
-        <td class="communities-table-cell fw-bold">{{community.address.street}}</td>
-        <td class="communities-table-cell">{{community.address.region.name}}</td>
-        <td class="communities-table-cell">{{community.address.subregion.name}}</td>
-        <td class="communities-table-cell">{{community.address.city.name}}</td>
+        <td><input  type="checkbox"></td>
+        <td>{{community.createdAt | date:'mediumDate'}}</td>
+        <td class="fw-bold">{{community.address.street}}</td>
+        <td> {{community.address.region.name}}</td>
+        <td> {{community.address.subregion.name}}</td>
+        <td> {{community.address.city.name}}</td>
         <td>
           <community-action [communityId]="community.id"></community-action>
           <button class="btn btn-icon" type="button">
