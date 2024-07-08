@@ -26,7 +26,7 @@
       <tr>
         <td><input  type="checkbox"></td>
         <td>{{community.createdAt | date:'mediumDate'}}</td>
-        <td class="fw-bold">{{community.address.street}}</td>
+        <td class="fw-bold">{{ formatAddress(community.address)}}</td>
         <td> {{community.address.region.name}}</td>
         <td> {{community.address.subregion.name}}</td>
         <td> {{community.address.city.name}}</td>

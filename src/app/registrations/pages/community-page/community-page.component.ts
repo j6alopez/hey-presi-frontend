@@ -15,7 +15,6 @@ import { CommunitiesService } from '../../../communities/communities.service';
 import { CreateCommunity } from '../../../communities/interfaces/create-community.interface';
 import { CreateAddress } from '../../../locations/interfaces/create-address.interface';
 import { CountryCode } from '../../../locations/enums/country-codes';
-import { Community } from '../../../communities/interfaces/community.interface';
 
 @Component({
   standalone: true,
@@ -41,8 +40,8 @@ export class CommunityPage implements OnInit {
   private isEditMode = false;
   private communityId?: string;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.communityForm = this.formBuilder.group({
+  constructor(private fb: FormBuilder) {
+    this.communityForm = this.fb.group({
       street: [
         '',
         [
@@ -100,11 +99,17 @@ export class CommunityPage implements OnInit {
       address: createAddress
     }
 
-    this.communitiesService.createCommunity(address).pipe(
-      filter(created => !!created),
-      switchMap(() => this.router.navigate(['/dashboard']))
-    ).subscribe();
-
+    if (this.isEditMode) {
+      this.communitiesService.updateCommunity(this.communityId!, address).pipe(
+        filter(updated => !!updated),
+        switchMap(() => this.router.navigate(['/dashboard']))
+      ).subscribe();
+    } else {
+      this.communitiesService.createCommunity(address).pipe(
+        filter(created => !!created),
+        switchMap(() => this.router.navigate(['/dashboard']))
+      ).subscribe();
+    }
   }
 
   handleSubregionChange(): Observable<Location[]> {

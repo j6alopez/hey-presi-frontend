@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CommunitiesService } from './../../../communities/communities.service';
-import { Community } from '../../../communities/interfaces/community.interface';
-import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
-import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
-import { CommunitiesTableComponent } from '../../../communities/components/communities-table/communities-table.component';
-import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
-import { Page } from '../../../shared/interfaces/page.interface';
-import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
-import { Sorting } from '../../../shared/interfaces/sorting.interface';
-
+import { CommunitiesService } from '@communities/communities.service';
+import { Community } from '@communities/interfaces/community.interface';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
+import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
+import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
+import { Page } from '@shared/interfaces/page.interface';
+import { SortingOrder } from '@shared/enums/sorting-direction.enum';
+import { Sorting } from '@shared/interfaces/sorting.interface';
+import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 
 
 @Component({
@@ -22,6 +22,7 @@ import { Sorting } from '../../../shared/interfaces/sorting.interface';
     PaginatorComponent,
     RouterModule,
     SpinnerComponent,
+    TabsComponent,
     TopBarComponent,
   ],
   templateUrl: './admin-dashboard-page.component.html',
@@ -47,6 +48,9 @@ export class AdminDashBoardPageComponent implements OnInit {
     sortBy: this.initialField,
     sortOrder: SortingOrder.ASC,
   }
+
+  tabs = ['inmuebles','propietarios'];
+  selectedTabIndex = 0;
 
   ngOnInit(): void {
     this.loadCommunities();
@@ -77,6 +81,10 @@ export class AdminDashBoardPageComponent implements OnInit {
   onSortingEvent(sorting: Sorting) {
     this.sorting = sorting;
     this.loadCommunities();
+  }
+
+  onTabChanged(tabIndex: number) {
+    this.selectedTabIndex = tabIndex;
   }
 
 }

@@ -1,0 +1,13 @@
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    @for (tab of tabs(); track $index) {
+      <button class="nav-link" id="nav-building-units-tab" data-bs-toggle="tab" data-bs-target="#nav-building-units" 
+        type="button" role="tab" aria-controls="nav-building-units" aria-selected="false"
+        [ngClass]=" activatedTab() === $index ? 'active' : '' " 
+        (click)="setActivatedTab($index)"
+      >   
+          {{ tab | titlecase }}
+      </button>
+    }
+  </div>
+</nav>

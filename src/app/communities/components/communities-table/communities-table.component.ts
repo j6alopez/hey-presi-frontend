@@ -8,6 +8,7 @@ import { Community } from '../../interfaces/community.interface';
 import { Sorting } from '../../../shared/interfaces/sorting.interface';
 import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
 import { CommunityActionComponentComponent } from '../community-action-component/community-action-component.component';
+import { formatAddress } from '../../../shared/utils/utils';
 
 @Component({
   selector: 'communities-table',
@@ -23,6 +24,8 @@ import { CommunityActionComponentComponent } from '../community-action-component
 export class CommunitiesTableComponent implements OnInit {
   communities  = input<Community[]>([]);
   sortingEvent = output<Sorting>();
+
+  formatAddress = formatAddress;
 
   ngOnInit(): void {
     this.setColumnHeaders();

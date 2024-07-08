@@ -2,14 +2,14 @@
 @import 'bootstrap/scss/variables';
 
 .communities-table {
-  table-layout: fixed;
+  table-layout: auto;
   border-collapse: collapse;
 }
 
 th, td {
   vertical-align: middle;
   height: 3rem;
-  width: auto;
+  white-space: nowrap;
 }
 
 .communities-table tbody tr:hover td, 

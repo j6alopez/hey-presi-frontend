@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject, signal } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, map, of } from 'rxjs';
 
 import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
@@ -13,10 +13,12 @@ import { Page } from '../shared/interfaces/page.interface';
   providedIn: 'root'
 })
 export class CommunitiesService {
+  communityExists(communityCode: string) {
+    throw new Error('Method not implemented.');
+  }
 
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.backend_base_url;
-  private readonly communitiesSignal = signal<Community[]>([]);
 
   getCommunities(pagination: Page, sorting: Sorting): Observable<Results<Community>> {
     const { page, size } = pagination;
@@ -47,36 +49,27 @@ export class CommunitiesService {
       );
   }
 
-  updateCommunity(community: Community): Observable<Community> {
-    const { id, ...updateCommunity } = community;
+  updateCommunity(id: string, updateCommunity: CreateCommunity): Observable<boolean> {
     const url = `${this.baseUrl}/communities/${id}`;
     return this.http.patch<Community>(url, updateCommunity).pipe(
-      tap(community => {
-        this.communitiesSignal.update(communities =>
-          communities.map(element =>
-            element.id === community.id ? community : element)
-        );
-      }),
+      map(() => true),
+      catchError(() => of(false))
     );
   }
 
-  deleteCommunity(id: string): Observable<Community> {
+  deleteCommunity(id: string): Observable<boolean> {
     const url = `${this.baseUrl}/communities/${id}`;
-    return this.http.delete<Community>(url)
-      .pipe(
-        tap(() => {
-          this.communitiesSignal.update(communities =>
-            communities.filter(element => element.id !== id));
-        })
-      );
+    return this.http.delete<Community>(url).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 
-  communityExists(communityCode: string): Observable<boolean> {
-    const url: string = `${this.baseUrl}/communities/${communityCode}/check-exists`;
-    return this.http.head(url)
-      .pipe(
-        map(() => true),
-        catchError(() => of(false))
-      );
+  checkBookExistance(bookCode: string): Observable<boolean> {
+    const url: string = `${this.baseUrl}/books/${bookCode}/check-exists`;
+    return this.http.head(url).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }

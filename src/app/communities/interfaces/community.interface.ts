@@ -2,6 +2,6 @@ import { Address } from "../../locations/interfaces/address.interface";
 
 export interface Community {
   id: string;
-  createdAt: Date;
+  createdAt?: Date;
   address: Address;
 }
