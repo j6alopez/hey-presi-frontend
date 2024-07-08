@@ -12,12 +12,14 @@ import { Page } from '@shared/interfaces/page.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
+import { BuildingUnitsTableComponent } from 'building-units/components/building-units-table/building-units-table.component';
 
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
+    BuildingUnitsTableComponent,
     CommunitiesTableComponent,
     PaginatorComponent,
     RouterModule,

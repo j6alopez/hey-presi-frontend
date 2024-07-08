@@ -51,18 +51,18 @@ export class RegistrationService {
       );
   }
 
-  public registerUnit(): Observable<boolean> {
-    const createUnit: BuildingUnit = {
-      communityId: this.registeredCommunity!.id,
-      address: this.userForm!.property,
-      unitRoles: [this.buildUnitRole()],
-    }
+  // public registerUnit(): Observable<boolean> {
+  //   const createUnit: BuildingUnit = {
+  //     communityId: this.registeredCommunity!.id,
+  //     address: this.userForm!.property,
+  //     unitRoles: [this.buildUnitRole()],
+  //   }
 
-    return this.unitsService.createBuildingUnit(createUnit)
-      .pipe(
-        map(registeredUnit => !!registeredUnit)
-      )
-  }
+  //   return this.unitsService.createBuildingUnit(createUnit)
+  //     .pipe(
+  //       map(registeredUnit => !!registeredUnit)
+  //     )
+  // }
 
   public cleanRegistration(): void {
     this.userForm = undefined;

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { BuildingUnit } from './interfaces/building-unit.interface';
 
 @Injectable({
   providedIn: 'root'

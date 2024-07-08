@@ -29,5 +29,11 @@
     "subregion": "Subregion",
     "city": "City",
     "action": "Action"
+  },
+  "BUILDING_UNIT_TABLE" : {
+    "address": "Address",
+    "type": "Type",
+    "coefficient": "Coefficient",
+    "action": "Action"
   }
 }

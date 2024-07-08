@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Address } from '../../../locations/interfaces/address.interface';
-import { Community } from '../../interfaces/community.interface';
-import { Sorting } from '../../../shared/interfaces/sorting.interface';
-import { SortingOrder } from '../../../shared/enums/sorting-direction.enum';
+import { Address } from '@locations/interfaces/address.interface';
+import { Community } from '@communities/interfaces/community.interface';
+import { Sorting } from '@shared/interfaces/sorting.interface';
+import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { CommunityActionComponentComponent } from '../community-action-component/community-action-component.component';
-import { formatAddress } from '../../../shared/utils/utils';
+import { formatAddress } from '@shared/utils/utils';
 
 @Component({
   selector: 'communities-table',

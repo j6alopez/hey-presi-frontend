@@ -31,5 +31,11 @@
     "subregion": "Provincia",
     "city": "Ciudad",
     "action": "Acción"
+  },
+  "BUILDING_UNIT_TABLE" : {
+    "address": "Dirección",
+    "type": "Tipo",
+    "coefficient": "Coeficiente",
+    "action": "Acción"
   }
 }

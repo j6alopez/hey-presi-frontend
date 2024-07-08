@@ -1,14 +1,19 @@
 <div class="card shadow my-5">
   <div class="card-header d-flex flex-wrap align-items">
     <h5 class="me-auto my-auto font-weight-bold">Comunidades</h5>
-    <button class="btn btn-primary ms-auto my-auto" type="button" [routerLink]="['/communities', 'creation']"
-      id="creation-button">
-      <span class="bi bi-building-add me-1"></span>
-      Crear
-    </button>
   </div>
   @defer (when recordsLoaded) {
     <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']" id="creation-button">
+              <span class="bi bi-building-add me-1"></span>
+              Crear Comunidad
+            </button>
+          </div>
+        </div>
+      </div>
       <communities-table 
         [communities]="communities"
         (sortingEvent)="onSortingEvent($event)"
@@ -27,7 +32,16 @@
         @case (0) {
           <div class="row">
             <div class="col my-3">
-              <p>Inmuebles vista</p>
+              <div class="row">
+                <div class="col d-flex justify-content-end">
+                  <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
+                  id="creation-button">
+                  <span class="bi bi-plus-lg me-1"></span>
+                  Crear Inmueble
+                </button>
+                </div>
+              </div>
+              <building-units-table></building-units-table>
             </div>
           </div>
         }
