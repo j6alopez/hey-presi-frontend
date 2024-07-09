@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, model, output } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
-import { formatAddress } from '@shared/utils/utils';
+import { BuildingUnitType } from 'building-units/enums/building-unit-type.enum';
 import { BuildingUnit } from 'building-units/interfaces/building-unit.interface';
 
 @Component({
@@ -11,13 +12,14 @@ import { BuildingUnit } from 'building-units/interfaces/building-unit.interface'
   standalone: true,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     TranslateModule
   ],
   templateUrl: './building-units-table.component.html',
   styleUrl: './building-units-table.component.scss'
 })
 export class BuildingUnitsTableComponent {
-  buildingUnits = input<BuildingUnit[]>([]);
+  buildingUnits = model<BuildingUnit[]>([]);
   sortingEvent = output<Sorting>();
 
   ngOnInit(): void {
@@ -33,6 +35,7 @@ export class BuildingUnitsTableComponent {
   };
 
   columnLabels = new Map<string, string>();
+  buildingUnitTypes = BuildingUnitType;
 
   private setColumnHeaders(): void {
     const columnHeaders = [
@@ -85,4 +88,9 @@ export class BuildingUnitsTableComponent {
     this.sortingEvent.emit(this.sorting);
   }
 
+  keepOrder = (a: any, b: any): any => {
+    return a;
+  }
+
 }
+

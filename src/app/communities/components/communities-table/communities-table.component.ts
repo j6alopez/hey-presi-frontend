@@ -7,22 +7,22 @@ import { Address } from '@locations/interfaces/address.interface';
 import { Community } from '@communities/interfaces/community.interface';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
-import { CommunityActionComponentComponent } from '../community-action-component/community-action-component.component';
+import { CommunityActionComponent } from '../community-action-component/community-action-component';
 import { formatAddress } from '@shared/utils/utils';
 
 @Component({
   selector: 'communities-table',
   standalone: true,
   imports: [
-    CommunityActionComponentComponent,
     CommonModule,
+    CommunityActionComponent,
     TranslateModule,
   ],
   templateUrl: './communities-table.component.html',
   styleUrl: './communities-table.component.scss'
 })
 export class CommunitiesTableComponent implements OnInit {
-  communities  = input<Community[]>([]);
+  communities = input<Community[]>([]);
   sortingEvent = output<Sorting>();
 
   formatAddress = formatAddress;

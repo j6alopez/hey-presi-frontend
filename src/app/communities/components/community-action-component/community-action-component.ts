@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
   selector: 'community-action',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './community-action-component.component.html',
-  styleUrl: './community-action-component.component.scss'
+  templateUrl: './community-action-component.html',
+  styleUrl: './community-action-component.scss'
 })
-export class CommunityActionComponentComponent {
+export class CommunityActionComponent {
   communityId = input.required<string>();
 }

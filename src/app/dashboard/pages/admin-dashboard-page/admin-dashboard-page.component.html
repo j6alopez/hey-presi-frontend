@@ -3,58 +3,54 @@
     <h5 class="me-auto my-auto font-weight-bold">Comunidades</h5>
   </div>
   @defer (when recordsLoaded) {
-    <div class="card-body">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-1 justify-content-end d-flex">
+        <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
+          id="creation-button">
+          <span class="bi bi-building-add me-1"></span>
+          Crear Comunidad
+        </button>
+      </div>
+    </div>
+    
+    <communities-table [communities]="communities" (sortingEvent)="onSortingEvent($event)"/>
+    
+    <shared-paginator [itemsPerPage]="itemsPerPage" [totalItems]="totalItems" [currentPage]="currentPage"
+      (pageSizeChanged)="onPageSizeChanged($event)" (pageChanged)="onPageChanged($event)"/>
+
+    <shared-tabs [tabs]="tabs" (activatedTabChange)="onTabChanged($event)"></shared-tabs>
+    
+    @switch (selectedTabIndex) {
+    @case (0) {
       <div class="row">
-        <div class="col-6">
-          <div>
-            <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']" id="creation-button">
-              <span class="bi bi-building-add me-1"></span>
-              Crear Comunidad
-            </button>
+        <div class="col my-3">
+          <div class="row">
+            <div class="col d-flex justify-content-end">
+              <button class="btn btn-primary mb-3" type="button" id="add-building-properties-"
+                (click)="addBuildingUnitRow()">
+                <span class="bi bi-plus-lg me-1"></span>
+                Crear Inmueble
+              </button>
+            </div>
           </div>
+          <form [formGroup]="buildingUnitsForm" (ngSubmit)="onSubmit()">
+            <building-units-table [buildingUnits]="buildingUnits"></building-units-table>  <button class="btn btn-primary" type="submit">Save Units</button>
+          </form>
+
         </div>
       </div>
-      <communities-table 
-        [communities]="communities"
-        (sortingEvent)="onSortingEvent($event)"
-        >
-      </communities-table>
-      <shared-paginator 
-        [itemsPerPage]="itemsPerPage" 
-        [totalItems]="totalItems" 
-        [currentPage]="currentPage"
-        (pageSizeChanged)="onPageSizeChanged($event)"
-        (pageChanged)="onPageChanged($event)"
-        >
-      </shared-paginator>
-      <shared-tabs [tabs]="tabs" (activatedTabChange)="onTabChanged($event)"></shared-tabs>
-      @switch (selectedTabIndex) {
-        @case (0) {
-          <div class="row">
-            <div class="col my-3">
-              <div class="row">
-                <div class="col d-flex justify-content-end">
-                  <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
-                  id="creation-button">
-                  <span class="bi bi-plus-lg me-1"></span>
-                  Crear Inmueble
-                </button>
-                </div>
-              </div>
-              <building-units-table></building-units-table>
-            </div>
-          </div>
-        }
-        @case (1) {
-          <div class="row">
-            <div class="col my-3">
-              <p>Propietarios vista</p>
-            </div>
-          </div>
-        }
+    }
+      @case (1) {
+      <div class="row">
+        <div class="col my-3">
+          <p>Propietarios vista</p>
+        </div>
+      </div>
       }
-    </div>
+    }
+  </div>
   } @placeholder {
-    <shared-spinner />
+  <shared-spinner />
   }
 </div>

@@ -2,17 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CommunitiesService } from '@communities/communities.service';
-import { Community } from '@communities/interfaces/community.interface';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
-import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
-import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
-import { Page } from '@shared/interfaces/page.interface';
-import { SortingOrder } from '@shared/enums/sorting-direction.enum';
-import { Sorting } from '@shared/interfaces/sorting.interface';
-import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 import { BuildingUnitsTableComponent } from 'building-units/components/building-units-table/building-units-table.component';
+import { CommunitiesService } from '@communities/communities.service';
+import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
+import { Community } from '@communities/interfaces/community.interface';
+import { Page } from '@shared/interfaces/page.interface';
+import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
+import { Sorting } from '@shared/interfaces/sorting.interface';
+import { SortingOrder } from '@shared/enums/sorting-direction.enum';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
+import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
+import { BuildingUnit } from 'building-units/interfaces/building-unit.interface';
+import { BuildingUnitType } from 'building-units/enums/building-unit-type.enum';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
@@ -22,6 +25,7 @@ import { BuildingUnitsTableComponent } from 'building-units/components/building-
     BuildingUnitsTableComponent,
     CommunitiesTableComponent,
     PaginatorComponent,
+    ReactiveFormsModule,
     RouterModule,
     SpinnerComponent,
     TabsComponent,
@@ -31,9 +35,14 @@ import { BuildingUnitsTableComponent } from 'building-units/components/building-
   styleUrl: './admin-dashboard-page.component.scss'
 })
 export class AdminDashBoardPageComponent implements OnInit {
+onSubmit() {
+throw new Error('Method not implemented.');
+}
   private readonly communitiesService = inject(CommunitiesService);
 
   communities: Community[] = [];
+  buildingUnits: BuildingUnit[] = [];
+
   recordsLoaded = false;
   totalItems = 0;
   currentPage = 1;
@@ -51,8 +60,16 @@ export class AdminDashBoardPageComponent implements OnInit {
     sortOrder: SortingOrder.ASC,
   }
 
-  tabs = ['inmuebles','propietarios'];
+  tabs = ['inmuebles', 'propietarios'];
   selectedTabIndex = 0;
+
+  buildingUnitsForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.buildingUnitsForm = this.fb.group({
+      units: this.fb.array([])
+    });
+  }
 
   ngOnInit(): void {
     this.loadCommunities();
@@ -87,6 +104,37 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   onTabChanged(tabIndex: number) {
     this.selectedTabIndex = tabIndex;
+  }
+
+  addBuildingUnitRow(): void {
+    const newBuildingUnit: BuildingUnit = {
+      address: '',
+      type: BuildingUnitType.APARTMENT,
+      coefficient: 0,
+      communityId: '',
+    }    
+    this.buildingUnits.push(newBuildingUnit);
+  }
+
+  get unitsArray(): FormArray {
+    return this.buildingUnitsForm.get('units') as FormArray;
+  }
+
+  createUnit(buildingUnit: BuildingUnit): FormGroup {
+    return this.fb.group({
+      address: [buildingUnit.address, Validators.required],
+      communityId: ['', Validators.required],
+      type: [null, Validators.required],
+      coefficient: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  addBuildingUnit(unit?: any): void {
+    this.unitsArray.push(this.createUnit(unit));
+  }
+
+  removeBuildingUnit(index: number): void {
+    this.unitsArray.removeAt(index);
   }
 
 }
