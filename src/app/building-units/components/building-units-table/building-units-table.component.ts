@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, model, output } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, input, Input, model, output } from '@angular/core';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
@@ -19,7 +19,8 @@ import { BuildingUnit } from 'building-units/interfaces/building-unit.interface'
   styleUrl: './building-units-table.component.scss'
 })
 export class BuildingUnitsTableComponent {
-  buildingUnits = model<BuildingUnit[]>([]);
+  formGroup = input.required<FormGroup>();
+  buildingUnits = model.required<FormArray>();
   sortingEvent = output<Sorting>();
 
   ngOnInit(): void {

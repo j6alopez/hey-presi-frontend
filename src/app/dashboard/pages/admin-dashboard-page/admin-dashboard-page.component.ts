@@ -106,31 +106,21 @@ throw new Error('Method not implemented.');
     this.selectedTabIndex = tabIndex;
   }
 
-  addBuildingUnitRow(): void {
-    const newBuildingUnit: BuildingUnit = {
-      address: '',
-      type: BuildingUnitType.APARTMENT,
-      coefficient: 0,
-      communityId: '',
-    }    
-    this.buildingUnits.push(newBuildingUnit);
-  }
-
   get unitsArray(): FormArray {
     return this.buildingUnitsForm.get('units') as FormArray;
   }
 
-  createUnit(buildingUnit: BuildingUnit): FormGroup {
+  createUnit(): FormGroup {
     return this.fb.group({
-      address: [buildingUnit.address, Validators.required],
+      address: ['', Validators.required],
       communityId: ['', Validators.required],
-      type: [null, Validators.required],
+      type: [BuildingUnitType.APARTMENT, Validators.required],
       coefficient: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
   addBuildingUnit(unit?: any): void {
-    this.unitsArray.push(this.createUnit(unit));
+    this.unitsArray.push(this.createUnit());
   }
 
   removeBuildingUnit(index: number): void {
