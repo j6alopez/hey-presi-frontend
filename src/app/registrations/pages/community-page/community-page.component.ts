@@ -1,11 +1,9 @@
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
 
 import { Observable, catchError, filter, of, switchMap, tap } from 'rxjs';
-
 
 import { CommunitiesService } from '@communities/communities.service';
 import { CountryCode } from '@locations/enums/country-codes';

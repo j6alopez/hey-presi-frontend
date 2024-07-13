@@ -2,9 +2,8 @@
   <table class="table communities-table">
     <thead class="table-light">
       <tr>
-        <th class="p-0"></th>
         @for (column of columnLabels.entries(); track $index) {
-          <th class="communities-table-cell" 
+          <th 
             (click)="sortTable(column[0])"
             [ngClass]="{ 'sortable': !isActionColumn(column[0]) }"
           >
@@ -23,8 +22,11 @@
     </thead>
     <tbody>
       @for (community of communities(); track $index) {
-      <tr>
-        <td><input  type="checkbox"></td>
+      <tr (click)="onCommunityRowClick(community)"
+        [ngClass]="{
+          'table-info table-active': community === selectedCommunity()
+        }"
+      >
         <td>{{community.createdAt | date:'mediumDate'}}</td>
         <td class="fw-bold">{{ formatAddress(community.address)}}</td>
         <td> {{community.address.region.name}}</td>

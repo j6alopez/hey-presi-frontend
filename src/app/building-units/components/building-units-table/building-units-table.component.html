@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup()" class="table-responsive">
-  <table class="table building-units-table">
+  <table class="table building-units-table ">
     <thead class="table-light">
       <tr>
         @for (column of columnLabels.entries(); track $index) {
@@ -23,16 +23,16 @@
       <tr [formGroupName]="$index">
         <!-- address -->
         <td>
-          <div class="col-12 col-md-6 my-3">
+          <div class="my-3">
             <input type="text" formControlName="address" class="form-control" id="address" />
           </div>
         </td>
 
         <!-- type -->
         <td>
-          <select class="form-select" formControlName='type' id="type">
+          <select class="form-control my-3" formControlName='type' id="type">
             @for (item of buildingUnitTypes | keyvalue; track $index) {
-            <option [value]="item.key">55</option>
+            <option [value]="item.key">{{item.value}}</option>
             }
           </select>
 
@@ -40,8 +40,9 @@
 
         <!-- coefficient -->
         <td>
-          <div class="col-12 col-md-6 my-3">
+          <div class="my-3 input-group">
             <input type="number" formControlName="coefficient" min="0" class="form-control" id="coefficient" />
+            <span class="input-group-text"><small>m2</small></span>
           </div>
         </td> -->
 

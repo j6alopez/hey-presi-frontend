@@ -1,8 +1,8 @@
 import { BuildingUnitType } from "building-units/enums/building-unit-type.enum";
-import { BuildingUnitRole } from "../building-unit-role.interface";
+import { BuildingUnitRole } from "./building-unit-role.interface";
 
 export interface CreateBuildingUnit {
-  communityId: string;  
+  communityId: string;
   address: string;
   coefficient: number;
   type: BuildingUnitType;

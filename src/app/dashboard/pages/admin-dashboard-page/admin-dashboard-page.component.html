@@ -14,7 +14,10 @@
       </div>
     </div>
     
-    <communities-table [communities]="communities" (sortingEvent)="onSortingEvent($event)"/>
+    <communities-table [communities]="communities" 
+      (sortingEvent)="onSortingEvent($event)"
+      (selectedCommunityChange)="onSelectedCommunityChange($event)"
+    />
     
     <shared-paginator [itemsPerPage]="itemsPerPage" [totalItems]="totalItems" [currentPage]="currentPage"
       (pageSizeChanged)="onPageSizeChanged($event)" (pageChanged)="onPageChanged($event)"/>
@@ -35,9 +38,7 @@
             </div>
           </div>
           <form [formGroup]="buildingUnitsForm" (ngSubmit)="onSubmit()">
-
             <building-units-table [formGroup]="buildingUnitsForm" [buildingUnits]="unitsArray"/>
-
             <button class="btn btn-primary" type="submit">Save Units</button>
           </form>
 

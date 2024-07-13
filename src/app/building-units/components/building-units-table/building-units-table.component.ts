@@ -4,8 +4,8 @@ import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
-import { BuildingUnitType } from 'building-units/enums/building-unit-type.enum';
-import { BuildingUnit } from 'building-units/interfaces/building-unit.interface';
+import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
+import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 
 @Component({
   selector: 'building-units-table',

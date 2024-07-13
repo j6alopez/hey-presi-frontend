@@ -7,27 +7,23 @@ import { CreateCommunity } from './interfaces/create-community.interface';
 import { environment } from '../../environments/environment';
 import { Results } from '../shared/interfaces/results.interface';
 import { Sorting } from '../shared/interfaces/sorting.interface';
-import { Page } from '../shared/interfaces/page.interface';
+import { Pagination } from '../shared/interfaces/pagintation.interface';
+import { CommunitiesFilter } from './interfaces/communities-filter.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommunitiesService {
-  communityExists(communityCode: string) {
-    throw new Error('Method not implemented.');
-  }
-
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.backend_base_url;
 
-  getCommunities(pagination: Page, sorting: Sorting): Observable<Results<Community>> {
-    const { page, size } = pagination;
-    const { sortBy, sortOrder } = sorting;
+  getCommunities(filter: CommunitiesFilter): Observable<Results<Community>> {
+    const { page, size, sortBy, sortOrder } = filter;
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
       .set('sortBy', sortBy)
-      .set('sortOrder', sortOrder)
+      .set('sortOrder', sortOrder);
 
     const url = `${this.baseUrl}/communities`;
     return this.http.get<Results<Community>>(url, { params });

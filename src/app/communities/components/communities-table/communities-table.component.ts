@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, OnInit, output, Output } from '@angular/core';
+import { Component, EventEmitter, input, model, OnInit, output, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,7 +22,9 @@ import { formatAddress } from '@shared/utils/utils';
   styleUrl: './communities-table.component.scss'
 })
 export class CommunitiesTableComponent implements OnInit {
+
   communities = input<Community[]>([]);
+  selectedCommunity = model<Community>();
   sortingEvent = output<Sorting>();
 
   formatAddress = formatAddress;
@@ -92,6 +94,12 @@ export class CommunitiesTableComponent implements OnInit {
 
   emitEvent() {
     this.sortingEvent.emit(this.sorting);
+  }
+
+  onCommunityRowClick(community: Community) {
+    this.selectedCommunity() === community
+      ? this.selectedCommunity.set(undefined)
+      : this.selectedCommunity.set(community);
   }
 
 }
