@@ -21,7 +21,7 @@ import { BuildingUnit } from '@building_units/interfaces/building-unit.interface
 export class BuildingUnitsTableComponent {
   formGroup = input.required<FormGroup>();
   buildingUnits = model.required<FormArray>();
-  sortingEvent = output<Sorting>();
+  sortingEvent = output<Sorting<BuildingUnit>>();
 
   ngOnInit(): void {
     this.setColumnHeaders();
@@ -30,7 +30,7 @@ export class BuildingUnitsTableComponent {
   buildingUnitsColumns: Array<keyof BuildingUnit> = ['address', 'type', 'coefficient'];
   actionsColumns: string[] = ['action'];
 
-  sorting: Sorting = {
+  sorting: Sorting<BuildingUnit> = {
     sortBy: 'address',
     sortOrder: SortingOrder.ASC
   };
@@ -53,8 +53,9 @@ export class BuildingUnitsTableComponent {
       ? SortingOrder.ASC
       : SortingOrder.DESC;
 
+    const sortBy = column as keyof BuildingUnit;
     this.sorting = {
-      sortBy: column,
+      sortBy: sortBy,
       sortOrder: sortingOrder
     };
     this.emitEvent();

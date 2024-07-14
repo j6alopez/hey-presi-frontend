@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Address } from '@locations/interfaces/address.interface';
 import { Community } from '@communities/interfaces/community.interface';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { CommunityActionComponent } from '../community-action-component/community-action-component';
 import { formatAddress } from '@shared/utils/utils';
+import { SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
+import { Address } from '@locations/interfaces/address.interface';
 
 @Component({
   selector: 'communities-table',
@@ -25,7 +26,7 @@ export class CommunitiesTableComponent implements OnInit {
 
   communities = input<Community[]>([]);
   selectedCommunity = model<Community>();
-  sortingEvent = output<Sorting>();
+  sortingEvent = output<Sorting<SortingComunityColumns>>();
 
   formatAddress = formatAddress;
 
@@ -33,15 +34,16 @@ export class CommunitiesTableComponent implements OnInit {
     this.setColumnHeaders();
   }
 
-  communityColumns: Array<keyof Community> = ['createdAt'];
-  addressColumns: Array<keyof Address> = ['street', 'region', 'subregion', 'city'];
-  actionsColumns: string[] = ['action'];
-
-  sorting: Sorting = {
+  sorting: Sorting<SortingComunityColumns> = {
     sortBy: 'createdAt',
     sortOrder: SortingOrder.ASC
   };
 
+  actionsColumns: string[] = ['action'];
+  
+  communityColumns: Array<keyof Community> = ['createdAt'];
+  addressColumns: Array<keyof Address> = ['street', 'region', 'subregion', 'city'];
+  
   columnLabels = new Map<string, string>();
 
   private setColumnHeaders(): void {
@@ -55,13 +57,14 @@ export class CommunitiesTableComponent implements OnInit {
     });
   }
 
-  sortTable(column: string) {
+  sortTable(column: string) : void {
     const sortingOrder = this.isDescendingSorting(column)
       ? SortingOrder.ASC
       : SortingOrder.DESC;
-
+      
+    const sortBy = column as keyof SortingComunityColumns;
     this.sorting = {
-      sortBy: column,
+      sortBy: sortBy,
       sortOrder: sortingOrder
     };
     this.emitEvent();

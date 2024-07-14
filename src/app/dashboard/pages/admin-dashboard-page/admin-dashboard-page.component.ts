@@ -1,27 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { Address } from '@locations/interfaces/address.interface';
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
-import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
+import { BuildingUnitsFilter } from '@building_units/interfaces/building-units-filter.interface';
+import { BuildingUnitsService } from '../../../building-units/building-units.service';
+import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
 import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
+import { CommunitiesFilter, SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
 import { CommunitiesService } from '@communities/communities.service';
 import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
 import { Community } from '@communities/interfaces/community.interface';
-import { Pagintation } from '@shared/interfaces/page.interface';
+import { FormOperation } from '@shared/enums/form-operation.enum';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
-import { FormOperation } from '@shared/enums/form-operation.enum';
-import { BuildingUnitsService } from '../../../building-units/building-units.service';
-import { CommunitiesFilter } from '@communities/interfaces/communities-filter.interface';
-import { BuildingUnitsFilter } from '@building_units/interfaces/building-units-filter.interface';
-
 
 @Component({
   standalone: true,
@@ -51,8 +50,6 @@ export class AdminDashBoardPageComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
 
-  sortCommunityField: keyof Community = 'createdAt';
-
   communityFilter: CommunitiesFilter = {
     page: 1,
     size: 5,
@@ -60,7 +57,6 @@ export class AdminDashBoardPageComponent implements OnInit {
     sortOrder: SortingOrder.ASC,
   }
 
-  sortUnitField: keyof BuildingUnit = 'address';
   buildingUnitsFilter: BuildingUnitsFilter = {
     page: 1,
     size: 5,
@@ -69,7 +65,7 @@ export class AdminDashBoardPageComponent implements OnInit {
   }
 
   tabs = ['inmuebles', 'propietarios'];
-  selectedCommunity?: Community;
+  selectedCommunity = signal<Community | undefined>(undefined);
   buildingUnitsForm: FormGroup;
 
   selectedTabIndex: number = 0;
@@ -107,7 +103,7 @@ export class AdminDashBoardPageComponent implements OnInit {
     this.loadCommunities();
   }
 
-  onSortingEvent(sorting: Sorting<Community>) {
+  onSortingEvent(sorting: Sorting<SortingComunityColumns>) {
     const { sortBy, sortOrder } = sorting;
     this.communityFilter.sortBy = sortBy;
     this.communityFilter.sortOrder = sortOrder;
@@ -125,7 +121,7 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   createUnit(): FormGroup {
     return this.fb.group({
-      communityId: [this.selectedCommunity!.id, Validators.required],
+      communityId: [this.selectedCommunity()!.id, Validators.required],
       address: ['', Validators.required],
       type: [BuildingUnitType.APARTMENT, Validators.required],
       coefficient: [0, [Validators.required, Validators.min(0)]],
@@ -142,9 +138,7 @@ export class AdminDashBoardPageComponent implements OnInit {
   }
 
   onSelectedCommunityChange(community: Community | undefined) {
-    this.selectedCommunity = community;
-    this.buildingUnitsService.getBuildingUnits(community!.id).subscribe(
-      this.buildingUnits = buildingUnits;
+    this.selectedCommunity.set(community);
   }
 
   onSubmit() {
