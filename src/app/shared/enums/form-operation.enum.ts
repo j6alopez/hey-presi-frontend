@@ -1,5 +1,6 @@
 export enum FormOperation {
   NEW,
   EDIT,
-  DELETE
+  DELETE,
+  UPDATE
 }

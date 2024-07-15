@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col my-3">
+    <div class="row">
+      <div class="col d-flex justify-content-end">
+        <button class="btn btn-primary mb-3" type="button" id="add-building-properties-"
+          (click)="addBuildingUnit()">
+          <span class="bi bi-plus-lg me-1"></span>
+          Crear Inmueble
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="buildingUnitsForm" (ngSubmit)="onSubmit()">
+      <building-units-table [formGroup]="buildingUnitsForm" [buildingUnits]="unitsArray"/>
+      <button class="btn btn-primary" type="submit">Save Units</button>
+    </form>
+
+  </div>
+</div>

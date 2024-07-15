@@ -1,3 +1,4 @@
+import { Results } from './../shared/interfaces/results.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 
@@ -17,19 +18,17 @@ export class BuildingUnitsService {
   private baseUrl = environment.backend_base_url;
   private unitSignal = signal<BuildingUnit[]>([]);
 
-  getBuildingUnits(filter: BuildingUnitsFilter): Observable<BuildingUnit[]> {
+  getBuildingUnits(filter: BuildingUnitsFilter): Observable<Results<BuildingUnit>> {
     const { page, size, sortBy, sortOrder, communityId } = filter;
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
       .set('sortBy', sortBy)
-      .set('sortOrder', sortOrder);
-
-    if (communityId) {
-      params.set('communityId', communityId)
-    }
+      .set('sortOrder', sortOrder)
+      .set('communityId', communityId || '');
+      
     const url = `${this.baseUrl}/building-units`
-    return this.http.get<BuildingUnit[]>(url, { params });
+    return this.http.get<Results<BuildingUnit>>(url, { params });
   }
 
   getBuildingUnit(id: string): Observable<BuildingUnit> {

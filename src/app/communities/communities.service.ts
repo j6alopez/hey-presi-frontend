@@ -6,8 +6,6 @@ import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
 import { environment } from '../../environments/environment';
 import { Results } from '../shared/interfaces/results.interface';
-import { Sorting } from '../shared/interfaces/sorting.interface';
-import { Pagination } from '../shared/interfaces/pagintation.interface';
 import { CommunitiesFilter } from './interfaces/communities-filter.interface';
 
 @Injectable({

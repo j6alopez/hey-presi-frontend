@@ -3,10 +3,8 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { Address } from '@locations/interfaces/address.interface';
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
-import { BuildingUnitsFilter } from '@building_units/interfaces/building-units-filter.interface';
 import { BuildingUnitsService } from '../../../building-units/building-units.service';
 import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
 import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
@@ -21,11 +19,13 @@ import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
+import { BuildingUnitsTabComponent } from '@communities/components/building-units-tab/building-units-tab.component';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
+    BuildingUnitsTabComponent,
     BuildingUnitsTableComponent,
     CommunitiesTableComponent,
     PaginatorComponent,
@@ -57,12 +57,6 @@ export class AdminDashBoardPageComponent implements OnInit {
     sortOrder: SortingOrder.ASC,
   }
 
-  buildingUnitsFilter: BuildingUnitsFilter = {
-    page: 1,
-    size: 5,
-    sortBy: 'address',
-    sortOrder: SortingOrder.ASC,
-  }
 
   tabs = ['inmuebles', 'propietarios'];
   selectedCommunity = signal<Community | undefined>(undefined);
@@ -82,15 +76,15 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   private loadCommunities() {
     this.recordsLoaded = false;
-    this.communitiesService.getCommunities(this.communityFilter).subscribe(
-      (response) => {
+    this.communitiesService.getCommunities(this.communityFilter)
+      .subscribe((response) => {
         this.communities = response.data;
         this.currentPage = response.metadata.currentPage;
         this.totalItems = response.metadata.totalCount;
         this.itemsPerPage = this.communityFilter.size
         this.recordsLoaded = true;
       }
-    )
+      )
   }
 
   onPageChanged(pageChanged: number) {
@@ -139,6 +133,7 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   onSelectedCommunityChange(community: Community | undefined) {
     this.selectedCommunity.set(community);
+    console.log('Selected community:', community);
   }
 
   onSubmit() {
@@ -153,13 +148,10 @@ export class AdminDashBoardPageComponent implements OnInit {
         return { communityId, address, type, coefficient, } as BuildingUnit;
       });
 
-    this.buildingUnitsService.bulkUpsertBuildingUnits(buildingUnits).subscribe(
-      () => {
-        this.buildingUnitsForm.reset();
-        this.unitsArray.clear();
-      }
-    );
-
+    this.buildingUnitsService.bulkUpsertBuildingUnits(buildingUnits).subscribe(() => {
+      this.buildingUnitsForm.reset();
+      this.unitsArray.clear();
+    });
   }
 
 }
