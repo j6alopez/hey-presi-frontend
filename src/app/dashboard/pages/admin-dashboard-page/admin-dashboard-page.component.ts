@@ -5,14 +5,12 @@ import { RouterModule } from '@angular/router';
 
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
-import { BuildingUnitsService } from '../../../building-units/building-units.service';
+import { BuildingUnitsService } from '@building_units/building-units.service';
 import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
-import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
 import { CommunitiesFilter, SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
 import { CommunitiesService } from '@communities/communities.service';
 import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
 import { Community } from '@communities/interfaces/community.interface';
-import { FormOperation } from '@shared/enums/form-operation.enum';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
@@ -40,7 +38,6 @@ import { BuildingUnitsTabComponent } from '@communities/components/building-unit
 })
 export class AdminDashBoardPageComponent implements OnInit {
   private readonly communitiesService = inject(CommunitiesService);
-  private readonly buildingUnitsService = inject(BuildingUnitsService);
 
   communities: Community[] = [];
   buildingUnits: BuildingUnit[] = [];
@@ -83,8 +80,7 @@ export class AdminDashBoardPageComponent implements OnInit {
         this.totalItems = response.metadata.totalCount;
         this.itemsPerPage = this.communityFilter.size
         this.recordsLoaded = true;
-      }
-      )
+      })
   }
 
   onPageChanged(pageChanged: number) {
@@ -113,45 +109,8 @@ export class AdminDashBoardPageComponent implements OnInit {
     return this.buildingUnitsForm.get('units') as FormArray;
   }
 
-  createUnit(): FormGroup {
-    return this.fb.group({
-      communityId: [this.selectedCommunity()!.id, Validators.required],
-      address: ['', Validators.required],
-      type: [BuildingUnitType.APARTMENT, Validators.required],
-      coefficient: [0, [Validators.required, Validators.min(0)]],
-      operation: [FormOperation.NEW, Validators.required],
-    });
-  }
-
-  addBuildingUnit(unit?: any): void {
-    this.unitsArray.push(this.createUnit());
-  }
-
-  removeBuildingUnit(index: number): void {
-    this.unitsArray.removeAt(index);
-  }
 
   onSelectedCommunityChange(community: Community | undefined) {
     this.selectedCommunity.set(community);
-    console.log('Selected community:', community);
   }
-
-  onSubmit() {
-    if (this.buildingUnitsForm.invalid) {
-      this.buildingUnitsForm.markAllAsTouched();
-      return;
-    }
-
-    const buildingUnits: BuildingUnit[] = this.buildingUnitsForm.get('units')?.value.map(
-      (unit: BuildingUnitForm) => {
-        const { communityId, address, type, coefficient } = unit;
-        return { communityId, address, type, coefficient, } as BuildingUnit;
-      });
-
-    this.buildingUnitsService.bulkUpsertBuildingUnits(buildingUnits).subscribe(() => {
-      this.buildingUnitsForm.reset();
-      this.unitsArray.clear();
-    });
-  }
-
 }

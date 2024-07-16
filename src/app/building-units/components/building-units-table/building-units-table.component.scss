@@ -1,0 +1,28 @@
+@import 'bootstrap/scss/bootstrap-grid';
+@import 'bootstrap/scss/variables';
+
+.building-units-table {
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  vertical-align: middle;
+  height: 3rem;
+  white-space: nowrap;
+}
+
+.building-units-table tbody tr:hover td, 
+.building-units-table tbody tr:hover th {
+  background-color: $gray-100;
+}
+
+th.sortable {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+th:first-child {
+  width: 2rem;
+}

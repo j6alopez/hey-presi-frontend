@@ -6,6 +6,7 @@ import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
+import { BuildingUnitActionComponent } from '../building-actions-table/building-actions-table';
 
 @Component({
   selector: 'building-units-table',
@@ -13,7 +14,8 @@ import { BuildingUnit } from '@building_units/interfaces/building-unit.interface
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    BuildingUnitActionComponent
   ],
   templateUrl: './building-units-table.component.html',
   styleUrl: './building-units-table.component.scss'
@@ -26,7 +28,6 @@ export class BuildingUnitsTableComponent {
   ngOnInit(): void {
     this.setColumnHeaders();
   }
-
   buildingUnitsColumns: Array<keyof BuildingUnit> = ['address', 'type', 'coefficient'];
   actionsColumns: string[] = ['action'];
 
@@ -59,6 +60,11 @@ export class BuildingUnitsTableComponent {
       sortOrder: sortingOrder
     };
     this.emitEvent();
+  }
+
+  getControlId(index: number) : string | undefined {
+    const id = this.buildingUnits().controls[index].get('id')!.value;
+    return id ? id : undefined;
   }
 
   isDescendingSorting(column: string): boolean {

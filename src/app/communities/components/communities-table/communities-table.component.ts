@@ -96,6 +96,7 @@ export class CommunitiesTableComponent implements OnInit {
   }
 
   emitEvent() {
+    this.selectedCommunity.set(undefined);
     this.sortingEvent.emit(this.sorting);
   }
 

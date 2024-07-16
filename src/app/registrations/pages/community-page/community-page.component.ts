@@ -36,6 +36,7 @@ export class CommunityPage implements OnInit {
   public subregions = SpanishSubRegions;
 
   private isEditMode = false;
+  
   private communityId?: string;
 
   constructor(private fb: FormBuilder) {

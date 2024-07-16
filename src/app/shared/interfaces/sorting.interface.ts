@@ -1,4 +1,7 @@
-import { SortingOrder } from "../enums/sorting-direction.enum";
+export enum SortingOrder {
+  ASC = 'ASC',
+  DESC = 'DESC'
+}
 
 export interface Sorting<T> {
   sortBy: keyof T;

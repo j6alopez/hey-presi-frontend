@@ -3,7 +3,7 @@
     <thead class="table-light">
       <tr>
         @for (column of columnLabels.entries(); track $index) {
-        <th class="building-units-table-cell" (click)="sortTable(column[0])"
+        <th (click)="sortTable(column[0])"
           [ngClass]="{ 'sortable': !isActionColumn(column[0]) }">
           {{ column[1] | translate }}
           @if (isDescendingSorting(column[0])) {
@@ -44,7 +44,15 @@
             <input type="number" formControlName="coefficient" min="0" class="form-control" id="coefficient" />
             <span class="input-group-text"><small>m2</small></span>
           </div>
-        </td> -->
+        </td>
+
+        <!-- id -->
+        <td>
+          <building-unit-action [buildingUnitId]="getControlId($index)"></building-unit-action>
+          <button class="btn btn-icon" type="button">
+            <i class="bi bi-trash3"></i>
+          </button>
+        </td>
 
       </tr>
       }
