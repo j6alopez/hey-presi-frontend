@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit, Signal, inject, signal } from '@angular/core';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.dev';
 import { Observable, tap } from 'rxjs';
 import { Task } from '../interfaces/task.interface';
 import { TasksResponseDto } from '../interfaces/tasks-response.dto';
@@ -12,7 +12,7 @@ import { TasksResponseDto } from '../interfaces/tasks-response.dto';
 export class TasksService implements OnInit {
 
   private http = inject(HttpClient);
-  private baseUrl = environment.backend_base_url;
+  private baseUrl = environment.base_url;
   private tasksSignal = signal<Task[]>([]);
 
   constructor() {

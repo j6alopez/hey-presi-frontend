@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 
 import { CreateUser } from '../interfaces/create-user';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.dev';
 import { LoginResponseDto } from '../interfaces/user-response.dto';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { User } from '../interfaces/user';
@@ -16,7 +16,7 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly http: HttpClient = inject(HttpClient);
 
-  private readonly baseUrl: string = environment.backend_base_url;
+  private readonly baseUrl: string = environment.base_url;
   private readonly user = signal<User | undefined>(undefined);
 
   private readonly USER_ID = "USER_ID";

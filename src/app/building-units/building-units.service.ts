@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 
 import { catchError, map, Observable, of, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.dev';
 
 import { BuildingUnit } from './interfaces/building-unit.interface';
 import { UpsertBuildingUnitsBulk } from './interfaces/bulk-upsert-building-units.interface';
@@ -15,7 +15,7 @@ import { BuildingUnitsFilter } from './interfaces/building-units-filter.interfac
 export class BuildingUnitsService {
 
   private http = inject(HttpClient);
-  private baseUrl = environment.backend_base_url;
+  private baseUrl = environment.base_url;
   private unitSignal = signal<BuildingUnit[]>([]);
 
   getBuildingUnits(filter: BuildingUnitsFilter): Observable<Results<BuildingUnit>> {
@@ -26,7 +26,7 @@ export class BuildingUnitsService {
       .set('sortBy', sortBy)
       .set('sortOrder', sortOrder)
       .set('communityId', communityId || '');
-      
+
     const url = `${this.baseUrl}/building-units`
     return this.http.get<Results<BuildingUnit>>(url, { params });
   }

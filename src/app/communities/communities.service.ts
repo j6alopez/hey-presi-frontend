@@ -4,7 +4,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 
 import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.dev';
 import { Results } from '../shared/interfaces/results.interface';
 import { CommunitiesFilter } from './interfaces/communities-filter.interface';
 
@@ -13,7 +13,7 @@ import { CommunitiesFilter } from './interfaces/communities-filter.interface';
 })
 export class CommunitiesService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = environment.backend_base_url;
+  private readonly baseUrl = environment.base_url;
 
   getCommunities(filter: CommunitiesFilter): Observable<Results<Community>> {
     const { page, size, sortBy, sortOrder } = filter;
