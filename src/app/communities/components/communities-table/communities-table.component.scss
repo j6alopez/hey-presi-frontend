@@ -1,9 +1,14 @@
-@import 'bootstrap/scss/bootstrap-grid';
+@import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
 .communities-table {
   table-layout: auto;
   border-collapse: collapse;
+}
+
+.communities-table tbody tr:hover td, 
+.communities-table tbody tr:hover th {
+  background-color: $gray-100;
 }
 
 th, td {
@@ -12,10 +17,6 @@ th, td {
   white-space: nowrap;
 }
 
-.communities-table tbody tr:hover td, 
-.communities-table tbody tr:hover th {
-  background-color: $gray-100;
-}
 
 th.sortable {
   &:hover {

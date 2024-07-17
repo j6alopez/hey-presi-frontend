@@ -1,5 +1,5 @@
 import { Component, effect, inject, input } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { tap } from 'rxjs';
 import { BuildingUnitsService } from '@building_units/building-units.service';
@@ -49,16 +49,16 @@ export class BuildingUnitsTabComponent {
     return this.buildingUnitsForm.get('units') as FormArray;
   }
 
-  addNewUnitToForm(): FormGroup & { value: BuildingUnitForm } {
-    const form = this.fb.group({
-      id: [null],
-      communityId: [this.selectedCommunity()!.id, Validators.required],
-      address: ['', Validators.required],
-      type: [BuildingUnitType.APARTMENT, Validators.required],
-      coefficient: [0, [Validators.required, Validators.min(0)]],
-      operation: [FormOperation.NEW, Validators.required],
+  addNewUnitToForm(): FormGroup {
+    const form = new FormGroup<BuildingUnitForm>({
+      id: new FormControl(null),
+      coefficient: new FormControl(0, { nonNullable: true }),
+      address: new FormControl('', { nonNullable: true }),
+      type: new FormControl(BuildingUnitType.APARTMENT, { nonNullable: true }),
+      operation: new FormControl(FormOperation.NEW, { nonNullable: true }),
+      communityId: new FormControl(this.selectedCommunity()!.id, { nonNullable: true }),
     });
-    return form as FormGroup & { value: BuildingUnitForm };
+    return form
   }
 
   addExistingUnitToForm(unit: BuildingUnit): FormGroup {
@@ -82,8 +82,12 @@ export class BuildingUnitsTabComponent {
 
     const buildingUnits: BuildingUnit[] = this.buildingUnitsForm.get('units')?.value.map(
       (unit: BuildingUnitForm) => {
-        const { communityId, address, type, coefficient, id } = unit;
-        return { communityId, address, type, coefficient, id } as BuildingUnit;
+        return {
+          communityId: unit.communityId,
+          address: unit.address,
+          type: unit.type,
+          coefficient: unit.coefficient,
+        }
       });
 
     this.buildingUnitsService.bulkUpsertBuildingUnits(buildingUnits).subscribe(() => {

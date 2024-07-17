@@ -1,5 +1,10 @@
-@import 'bootstrap/scss/bootstrap-grid';
+@import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
+
+.building-units-table tbody tr:hover td, 
+.building-units-table tbody tr:hover th {
+  background-color: $gray-100;
+}
 
 .building-units-table {
   table-layout: auto;
@@ -12,10 +17,6 @@ th, td {
   white-space: nowrap;
 }
 
-.building-units-table tbody tr:hover td, 
-.building-units-table tbody tr:hover th {
-  background-color: $gray-100;
-}
 
 th.sortable {
   &:hover {
