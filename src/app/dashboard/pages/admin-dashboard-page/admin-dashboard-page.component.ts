@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
-import { BuildingUnitsService } from '@building_units/building-units.service';
 import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
 import { CommunitiesFilter, SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
 import { CommunitiesService } from '@communities/communities.service';

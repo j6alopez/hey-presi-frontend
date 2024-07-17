@@ -27,11 +27,11 @@
           'table-info table-active': community === selectedCommunity()
         }"
       >
-        <td>{{community.createdAt | date:'mediumDate'}}</td>
-        <td class="fw-bold">{{ formatAddress(community.address)}}</td>
-        <td> {{community.address.region.name}}</td>
-        <td> {{community.address.subregion.name}}</td>
-        <td> {{community.address.city.name}}</td>
+      <td> {{ formatAddress(community.address)}}</td>
+      <td> {{community.address.region.name}}</td>
+      <td> {{community.address.subregion.name}}</td>
+      <td> {{community.address.city.name}}</td>
+      <td>{{community.createdAt | date:'mediumDate'}}</td>
         <td>
           <community-action [communityId]="community.id"></community-action>
           <button class="btn btn-icon" type="button">

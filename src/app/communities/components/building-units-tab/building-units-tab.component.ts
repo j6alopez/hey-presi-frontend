@@ -1,7 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { tap } from 'rxjs';
+import { delay, filter, tap } from 'rxjs';
 import { BuildingUnitsService } from '@building_units/building-units.service';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
 import { BuildingUnitsTableComponent } from "../../../building-units/components/building-units-table/building-units-table.component";
@@ -11,19 +11,22 @@ import { FormOperation } from '@shared/enums/form-operation.enum';
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 import { BuildingUnitsFilter } from '@building_units/interfaces/building-units-filter.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'building-units-tab',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     BuildingUnitsTableComponent,
-    ReactiveFormsModule
+    SpinnerComponent
   ],
   templateUrl: './building-units-tab.component.html',
   styleUrl: './building-units-tab.component.scss'
 })
 export class BuildingUnitsTabComponent {
   private readonly buildingUnitsService = inject(BuildingUnitsService);
+  
   selectedCommunity = input<Community>();
 
   buildingUnitsForm: FormGroup;
@@ -33,6 +36,8 @@ export class BuildingUnitsTabComponent {
     sortBy: 'address',
     sortOrder: SortingOrder.ASC,
   }
+
+  recordsLoaded: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.buildingUnitsForm = this.fb.group({
@@ -101,6 +106,7 @@ export class BuildingUnitsTabComponent {
       if (!this.selectedCommunity) {
         return;
       }
+      this.recordsLoaded = false;
       this.unitsArray.clear();
       if (this.selectedCommunity() === undefined) {
         return;
@@ -111,8 +117,18 @@ export class BuildingUnitsTabComponent {
           response.data.forEach((unit: BuildingUnit) => {
             this.unitsArray.push(this.addExistingUnitToForm(unit));
           });
-        })
+        }),
+        filter(response => !!response),
+        tap(() => this.recordsLoaded = true)
       ).subscribe();
     })
+  }
+  showTable(): boolean {
+    const isSelectedCommunity = this.selectedCommunity() !== undefined;
+    if(!this.recordsLoaded && !isSelectedCommunity){
+      return true;
+    }      
+
+    return this.recordsLoaded && isSelectedCommunity;
   }
 }

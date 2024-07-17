@@ -1,6 +1,11 @@
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
+.building-units-table {
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
 .building-units-table tbody tr:hover td, 
 .building-units-table tbody tr:hover th {
   background-color: $gray-100;

@@ -48,8 +48,8 @@ export class CommunitiesTableComponent implements OnInit {
 
   private setColumnHeaders(): void {
     const columnHeaders = [
-      ...this.communityColumns,
       ...this.addressColumns,
+      ...this.communityColumns,
       ...this.actionsColumns
     ];
     columnHeaders.forEach(header => {
