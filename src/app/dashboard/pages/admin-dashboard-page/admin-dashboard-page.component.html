@@ -7,7 +7,9 @@
     <div class="row">
       <div class="justify-content-end d-flex">
         <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
-          id="creation-button">
+          id="creation-button"
+          [disabled]="isCommunityCreationDisabled()"
+          >
           <span class="bi bi-building-add me-1"></span>
           Crear Comunidad
         </button>

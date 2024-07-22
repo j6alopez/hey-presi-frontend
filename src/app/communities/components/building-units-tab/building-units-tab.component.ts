@@ -1,15 +1,15 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { delay, filter, tap } from 'rxjs';
-import { BuildingUnitsService } from '@building_units/building-units.service';
-import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
-import { BuildingUnitsTableComponent } from "../../../building-units/components/building-units-table/building-units-table.component";
-import { Community } from '@communities/interfaces/community.interface';
-import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
-import { FormOperation } from '@shared/enums/form-operation.enum';
+import { filter, tap, map } from 'rxjs';
+
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
+import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
 import { BuildingUnitsFilter } from '@building_units/interfaces/building-units-filter.interface';
+import { BuildingUnitsService } from '@building_units/building-units.service';
+import { BuildingUnitsTableComponent } from "@building_units/components/building-units-table/building-units-table.component";
+import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
+import { Community } from '@communities/interfaces/community.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
@@ -26,7 +26,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 })
 export class BuildingUnitsTabComponent {
   private readonly buildingUnitsService = inject(BuildingUnitsService);
-  
+
   selectedCommunity = input<Community>();
 
   buildingUnitsForm: FormGroup;
@@ -39,6 +39,10 @@ export class BuildingUnitsTabComponent {
 
   recordsLoaded: boolean = false;
 
+  editingForm?: FormGroup;
+  editingUnit?: BuildingUnit;
+
+
   constructor(private fb: FormBuilder) {
     this.buildingUnitsForm = this.fb.group({
       units: this.fb.array<BuildingUnitForm>([])
@@ -50,20 +54,16 @@ export class BuildingUnitsTabComponent {
     this.unitsArray.push(this.addNewUnitToForm());
   }
 
-  get unitsArray(): FormArray {
-    return this.buildingUnitsForm.get('units') as FormArray;
-  }
-
   addNewUnitToForm(): FormGroup {
     const form = new FormGroup<BuildingUnitForm>({
       id: new FormControl(null),
-      coefficient: new FormControl(0, { nonNullable: true }),
       address: new FormControl('', { nonNullable: true }),
       type: new FormControl(BuildingUnitType.APARTMENT, { nonNullable: true }),
-      operation: new FormControl(FormOperation.NEW, { nonNullable: true }),
+      builtArea: new FormControl(0, { nonNullable: true }),
+      coefficient: new FormControl(0, { nonNullable: true }),
       communityId: new FormControl(this.selectedCommunity()!.id, { nonNullable: true }),
     });
-    return form
+    return form;
   }
 
   addExistingUnitToForm(unit: BuildingUnit): FormGroup {
@@ -72,8 +72,8 @@ export class BuildingUnitsTabComponent {
       communityId: [this.selectedCommunity()!.id, Validators.required],
       address: ['', Validators.required],
       type: ['', Validators.required],
-      coefficient: [0, [Validators.required, Validators.min(0)]],
-      operation: [FormOperation.UPDATE, Validators.required],
+      builtArea: [0.00, [Validators.required, Validators.min(0)]],
+      coefficient: [0.00, [Validators.required, Validators.min(0)]],
     });
     form.patchValue(unit);
     return form;
@@ -85,20 +85,13 @@ export class BuildingUnitsTabComponent {
       return;
     }
 
-    const buildingUnits: BuildingUnit[] = this.buildingUnitsForm.get('units')?.value.map(
-      (unit: BuildingUnitForm) => {
-        return {
-          communityId: unit.communityId,
-          address: unit.address,
-          type: unit.type,
-          coefficient: unit.coefficient,
-        }
-      });
+    if (this.editingForm) {
+      this.updateBuildingUnit();
+      return;
+    }
 
-    this.buildingUnitsService.bulkUpsertBuildingUnits(buildingUnits).subscribe(() => {
-      this.buildingUnitsForm.reset();
-      this.unitsArray.clear();
-    });
+    this.createBuildingUnits();
+
   }
 
   onCommunityChanged(): void {
@@ -116,6 +109,7 @@ export class BuildingUnitsTabComponent {
         tap(response => {
           response.data.forEach((unit: BuildingUnit) => {
             this.unitsArray.push(this.addExistingUnitToForm(unit));
+            this.unitsArray.disable();
           });
         }),
         filter(response => !!response),
@@ -123,12 +117,47 @@ export class BuildingUnitsTabComponent {
       ).subscribe();
     })
   }
+
   showTable(): boolean {
     const isSelectedCommunity = this.selectedCommunity() !== undefined;
-    if(!this.recordsLoaded && !isSelectedCommunity){
+    if (!this.recordsLoaded && !isSelectedCommunity) {
       return true;
-    }      
-
+    }
     return this.recordsLoaded && isSelectedCommunity;
+  }
+
+  trackEditingUnit(formGroup: FormGroup): void {
+    this.editingForm = formGroup;
+    this.editingUnit = formGroup.value;
+    this.editingForm.enable();
+  }
+
+  private getNewUnits(): BuildingUnit[] {
+    return this.unitsArray.value.filter((unit: BuildingUnitForm) => !unit.id)
+      .map((unit: BuildingUnitForm) => {
+        const { communityId, address, type, coefficient, builtArea } = unit;
+        return { communityId, address, type, coefficient, builtArea };
+      });
+
+  }
+
+  private createBuildingUnits(): void {
+    const buildingUnits = this.getNewUnits();
+    this.buildingUnitsService.bulkUpsertBuildingUnits(buildingUnits).subscribe(() => {
+      this.buildingUnitsForm.reset();
+      this.unitsArray.clear();
+    });
+  }
+
+  private updateBuildingUnit(): void {
+    const buildingUnit = this.editingForm!.value as BuildingUnit;
+    this.buildingUnitsService.updateBuildingUnit(buildingUnit).pipe(
+      tap(() => this.editingForm!.disable()),
+      tap(() => this.editingForm = undefined),
+    ).subscribe();
+  }
+
+  get unitsArray(): FormArray {
+    return this.buildingUnitsForm.get('units') as FormArray;
   }
 }

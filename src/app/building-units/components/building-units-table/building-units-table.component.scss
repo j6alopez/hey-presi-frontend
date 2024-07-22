@@ -11,11 +11,6 @@
   background-color: $gray-100;
 }
 
-.building-units-table {
-  table-layout: auto;
-  border-collapse: collapse;
-}
-
 th, td {
   vertical-align: middle;
   height: 3rem;
@@ -29,6 +24,10 @@ th.sortable {
   }
 }
 
-th:first-child {
-  width: 2rem;
+#address {
+  font-weight: bold;
+}
+
+#coefficient, #builtArea {
+  text-align: end;
 }

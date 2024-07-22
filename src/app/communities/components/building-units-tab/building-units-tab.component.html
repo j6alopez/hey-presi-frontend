@@ -3,15 +3,22 @@
     <div class="col my-3">
       <div class="row">
         <div class="col d-flex justify-content-end">
-          <button class="btn btn-primary mb-3" type="button" id="add-building-properties-" (click)="addBuildingUnit()">
+          <button class="btn btn-primary mb-3" type="button" id="add-building-properties-" 
+            [disabled]="selectedCommunity() === undefined"
+            (click)="addBuildingUnit()">
             <span class="bi bi-plus-lg me-1"></span>
             Crear Inmueble
           </button>
         </div>
       </div>
       <form [formGroup]="buildingUnitsForm" (ngSubmit)="onSubmit()">
-        <building-units-table [formGroup]="buildingUnitsForm" [buildingUnits]="unitsArray" />
-        <button class="btn btn-primary" type="submit">Save Units</button>
+        <building-units-table [formGroup]="buildingUnitsForm" [buildingUnits]="unitsArray"
+          (onEditingUnit)="trackEditingUnit($event)"
+        />
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-secondary col-1 mx-2" type="submit">Cancelar</button>
+          <button class="btn btn-primary col-1" type="submit">Guardar</button>
+        </div>
       </form>
   
     </div>

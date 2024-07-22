@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
+import { BuildingUnitsTabComponent } from '@communities/components/building-units-tab/building-units-tab.component';
 import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
 import { CommunitiesFilter, SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
 import { CommunitiesService } from '@communities/communities.service';
@@ -16,7 +17,6 @@ import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
-import { BuildingUnitsTabComponent } from '@communities/components/building-units-tab/building-units-tab.component';
 
 @Component({
   standalone: true,
@@ -93,10 +93,7 @@ export class AdminDashBoardPageComponent implements OnInit {
   }
 
   onSortingEvent(sorting: Sorting<SortingComunityColumns>) {
-    const { sortBy, sortOrder } = sorting;
-    this.communityFilter.sortBy = sortBy;
-    this.communityFilter.sortOrder = sortOrder;
-
+    Object.assign(this.communityFilter, sorting);
     this.loadCommunities();
   }
 
@@ -108,8 +105,12 @@ export class AdminDashBoardPageComponent implements OnInit {
     return this.buildingUnitsForm.get('units') as FormArray;
   }
 
-
   onSelectedCommunityChange(community: Community | undefined) {
     this.selectedCommunity.set(community);
   }
+
+  isCommunityCreationDisabled(): boolean {
+    return this.selectedCommunity() !== undefined;
+  }
+
 }

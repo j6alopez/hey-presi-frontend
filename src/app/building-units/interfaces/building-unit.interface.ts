@@ -6,6 +6,7 @@ export interface BuildingUnit {
   communityId: string;  
   address: string;
   coefficient: number;
+  builtArea: number;
   type: BuildingUnitType;
   // unitRoles: BuildingUnitRole[];
 }

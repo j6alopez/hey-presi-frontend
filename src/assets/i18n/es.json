@@ -36,6 +36,7 @@
     "address": "Dirección",
     "type": "Tipo",
     "coefficient": "Coeficiente",
+    "builtArea": "Superfície construida",
     "action": "Acción"
   }
 }

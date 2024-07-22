@@ -22,16 +22,17 @@
     </thead>
     <tbody>
       @for (community of communities(); track $index) {
-      <tr (click)="onCommunityRowClick(community)"
+      <tr
         [ngClass]="{
           'table-info table-active': community === selectedCommunity()
         }"
+        (click)="onCommunityRowClick(community)"
       >
       <td> {{ formatAddress(community.address)}}</td>
       <td> {{community.address.region.name}}</td>
       <td> {{community.address.subregion.name}}</td>
       <td> {{community.address.city.name}}</td>
-      <td>{{community.createdAt | date:'mediumDate'}}</td>
+      <td> {{community.createdAt | date:'mediumDate'}}</td>
         <td>
           <community-action [communityId]="community.id"></community-action>
           <button class="btn btn-icon" type="button">

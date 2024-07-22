@@ -6,7 +6,6 @@ import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
-import { BuildingUnitActionComponent } from '../building-actions-table/building-actions-table';
 
 @Component({
   selector: 'building-units-table',
@@ -15,24 +14,25 @@ import { BuildingUnitActionComponent } from '../building-actions-table/building-
     CommonModule,
     ReactiveFormsModule,
     TranslateModule,
-    BuildingUnitActionComponent
   ],
   templateUrl: './building-units-table.component.html',
   styleUrl: './building-units-table.component.scss'
 })
 export class BuildingUnitsTableComponent {
+
   formGroup = input.required<FormGroup>();
   buildingUnits = model.required<FormArray>();
   sortingEvent = output<Sorting<BuildingUnit>>();
+  onEditingUnit = output<FormGroup>();
 
   ngOnInit(): void {
     this.setColumnHeaders();
   }
-  buildingUnitsColumns: Array<keyof BuildingUnit> = ['address', 'type', 'coefficient'];
+  buildingUnitsColumns: Array<keyof BuildingUnit> = ['type', 'address', 'builtArea','coefficient'];
   actionsColumns: string[] = ['action'];
 
   sorting: Sorting<BuildingUnit> = {
-    sortBy: 'address',
+    sortBy: 'address',  
     sortOrder: SortingOrder.ASC
   };
 
@@ -62,9 +62,8 @@ export class BuildingUnitsTableComponent {
     this.emitEvent();
   }
 
-  getControlId(index: number) : string | undefined {
-    const id = this.buildingUnits().controls[index].get('id')!.value;
-    return id ? id : undefined;
+  getControlId(index: number) : FormGroup {
+    return this.buildingUnits().controls[index] as FormGroup;
   }
 
   isDescendingSorting(column: string): boolean {
@@ -100,5 +99,9 @@ export class BuildingUnitsTableComponent {
     return a;
   }
 
-}
+  onEditButtonClick(index: number): void {
+    const form = this.buildingUnits().controls[index] as FormGroup;
+    this.onEditingUnit.emit(form);
+  }
 
+}
