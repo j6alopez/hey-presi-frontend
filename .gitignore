@@ -5,7 +5,6 @@
 
 # Node
 /node_modules
-/aa
 npm-debug.log
 yarn-error.log
 
