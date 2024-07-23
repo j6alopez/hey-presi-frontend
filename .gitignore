@@ -2,12 +2,10 @@
 
 # Compiled output
 /dist
-/tmp
-/out-tsc
-/bazel-out
 
 # Node
 /node_modules
+/aa
 npm-debug.log
 yarn-error.log
 
@@ -40,4 +38,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-/scripts
