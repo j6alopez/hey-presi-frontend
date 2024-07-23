@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env node
 
 ng update \
   @angular/cli@^18 \
