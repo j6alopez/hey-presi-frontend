@@ -6,6 +6,7 @@ import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { BuildingUnitType } from '@building_units/enums/building-unit-type.enum';
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
+import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
 
 @Component({
   selector: 'building-units-table',
@@ -24,15 +25,16 @@ export class BuildingUnitsTableComponent {
   buildingUnits = model.required<FormArray>();
   sortingEvent = output<Sorting<BuildingUnit>>();
   onEditingUnit = output<FormGroup>();
+  onDeleteUnit = output<FormGroup>();
 
   ngOnInit(): void {
     this.setColumnHeaders();
   }
-  buildingUnitsColumns: Array<keyof BuildingUnit> = ['type', 'address', 'builtArea','coefficient'];
+  buildingUnitsColumns: Array<keyof BuildingUnit> = ['type', 'address', 'builtArea', 'coefficient'];
   actionsColumns: string[] = ['action'];
 
   sorting: Sorting<BuildingUnit> = {
-    sortBy: 'address',  
+    sortBy: 'address',
     sortOrder: SortingOrder.ASC
   };
 
@@ -62,7 +64,7 @@ export class BuildingUnitsTableComponent {
     this.emitEvent();
   }
 
-  getControlId(index: number) : FormGroup {
+  getControlId(index: number): FormGroup {
     return this.buildingUnits().controls[index] as FormGroup;
   }
 
@@ -104,4 +106,13 @@ export class BuildingUnitsTableComponent {
     this.onEditingUnit.emit(form);
   }
 
+  onDeleteButtonClick(index: number) {
+    const form = this.buildingUnits().controls[index] as FormGroup;
+    this.onDeleteUnit.emit(form);
+  }
+
+  isEditingButtonDisabled(index: number): boolean {
+    const form = this.buildingUnits().controls[index] as FormGroup<BuildingUnitForm>;
+    return form.value.id === null;
+  }
 }

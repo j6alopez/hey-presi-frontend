@@ -34,7 +34,7 @@
         <!-- address -->
         <td>
           <div class="my-3">
-            <input type="text" formControlName="address" class="form-control" id="address" />
+            <input type="text" formControlName="address" class="form-control" id="address"/>
           </div>
         </td>
 
@@ -56,13 +56,16 @@
 
         <!-- id -->
         <td>
-          <div class="btn-group">
+          <div class="">
             <button class="btn" type="button"
               (click)="onEditButtonClick($index)"
+              [disabled] = "isEditingButtonDisabled($index)"
             >
               <i class="bi bi-pencil text-primary"></i>
             </button>
-            <button class="btn" type="button">
+            <button class="btn" type="button"
+            (click)="onDeleteButtonClick($index)"
+            >
               <i class="bi bi-trash3"></i>
             </button>
           </div>

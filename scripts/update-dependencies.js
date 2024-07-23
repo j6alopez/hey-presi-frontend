@@ -31,7 +31,7 @@ const main = async () => {
     const installOutput = await runCommand('npm install');
     console.log(installOutput);
 
-    console.log('All done!');
+    console.log('Everythin is up to date!');
   } catch (error) {
     console.error(error);
   }

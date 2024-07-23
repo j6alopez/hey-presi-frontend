@@ -132,6 +132,18 @@ export class BuildingUnitsTabComponent {
     this.editingForm.enable();
   }
 
+  deleteBuildingUnit(formGroup: FormGroup):void {
+    const { id } = formGroup.value as BuildingUnit;
+    console.log(id), 'aa';
+    if (!id) {
+      this.unitsArray.removeAt(this.unitsArray.controls.indexOf(formGroup));
+      return;
+    }
+    this.buildingUnitsService.deleteBuildingUnit(id).pipe(
+      tap(() => this.unitsArray.removeAt(this.unitsArray.controls.indexOf(formGroup)))
+    ).subscribe();
+  }
+
   private getNewUnits(): BuildingUnit[] {
     return this.unitsArray.value.filter((unit: BuildingUnitForm) => !unit.id)
       .map((unit: BuildingUnitForm) => {

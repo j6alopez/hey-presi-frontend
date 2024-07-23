@@ -17,6 +17,9 @@ th, td {
   white-space: nowrap;
 }
 
+.table.communities-table th {
+  font-weight: 500;
+}
 
 th.sortable {
   &:hover {
@@ -26,4 +29,8 @@ th.sortable {
 
 th:first-child {
   width: 2rem;
+}
+
+td:first-child {
+  font-weight: 500;
 }

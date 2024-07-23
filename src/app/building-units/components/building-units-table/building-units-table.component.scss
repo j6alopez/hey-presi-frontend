@@ -17,6 +17,10 @@ th, td {
   white-space: nowrap;
 }
 
+.table.building-units-table th {
+  font-weight: 500;
+}
+
 
 th.sortable {
   &:hover {
@@ -25,9 +29,13 @@ th.sortable {
 }
 
 #address {
-  font-weight: bold;
+  font-weight: 500;
 }
 
 #coefficient, #builtArea {
   text-align: end;
+}
+
+button:disabled {
+  border: 0 !important;
 }
