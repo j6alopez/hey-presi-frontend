@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+const { exec } = require('child_process');
 
 const runCommand = (command) => {
   return new Promise((resolve, reject) => {
@@ -16,8 +16,13 @@ const main = async () => {
   try {
     console.log('Updating Angular packages...');
 
-    // Use a single line for the ng update command
-    const updateCommand = 'ng update @angular/cli@^18 @angular/compiler-cli@^18 @angular/localize@^18 @angular-devkit/build-angular@^18';
+    const updateCommand = `
+      ng update \
+        @angular/cli@^18 \
+        @angular/compiler-cli@^18 \
+        @angular/localize@^18 \
+        @angular-devkit/build-angular@^18
+    `;
     const updateOutput = await runCommand(updateCommand);
     console.log(updateOutput);
 
