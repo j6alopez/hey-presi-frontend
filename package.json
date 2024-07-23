@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "build:prod": "ng build --configuration production",
     "update:dependencies": "scripts/update-dependencies.sh",
-    "update:dependencie": "scripts/update-dependencies.js",
+    "update:dependencie": "node scripts/update-dependencies.js",
     "test": "ng test"
   },
   "private": true,
