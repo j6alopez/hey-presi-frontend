@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
+import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
 
 @Component({
   selector: 'community-page',

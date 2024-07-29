@@ -1,9 +1,10 @@
-import { Component, Input, inject } from '@angular/core';
-import { MenuItem } from '../../../interfaces/menu-item.interface';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../auth/services/auth.service';
-import { Role } from '../../../../auth/enums/role.enum';
+import { Component, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { AuthService } from '@auth/services/auth.service';
+import { MenuItem } from '@shared/interfaces/menu-item.interface';
+import { Role } from '@auth/enums/role.enum';
 
 @Component({
   selector: 'shared-side-bar',

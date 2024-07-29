@@ -39,3 +39,8 @@ th.sortable {
 button:disabled {
   border: 0 !important;
 }
+
+input:disabled, select:disabled {
+  background-color:  $gray-100;
+  cursor: not-allowed;
+}

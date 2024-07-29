@@ -5,7 +5,10 @@
   @defer (when recordsLoaded) {
   <div class="card-body">
     <div class="row">
-      <div class="justify-content-end d-flex">
+      <div class="col-6">
+        <shared-search-box/>
+      </div>
+      <div class="col-6 justify-content-end d-flex">
         <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
           id="creation-button"
           [disabled]="isCommunityCreationDisabled()"
@@ -24,7 +27,7 @@
     <shared-paginator [itemsPerPage]="itemsPerPage" [totalItems]="totalItems" [currentPage]="currentPage"
       (pageSizeChanged)="onPageSizeChanged($event)" (pageChanged)="onPageChanged($event)"/>
 
-    <shared-tabs [tabs]="tabs" (activatedTabChange)="onTabChanged($event)"></shared-tabs>
+    <shared-tabs [tabs]="tabs" (activatedTabChange)="onTabChanged($event)"/>
     
     @switch (selectedTabIndex) {
     @case (0) {

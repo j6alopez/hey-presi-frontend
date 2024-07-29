@@ -1,0 +1,27 @@
+<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+  <div class="input-group">
+    <input type="text" 
+      class="form-control bg-light border-0 small" 
+      [placeholder]="placeholder()" 
+      aria-label="Search"
+      aria-describedby="basic-addon2"
+    >
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="button">
+        <i class="fas fa-search fa-sm"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- <div class="col-12 col-md-6 my-3">
+  <div class="form-floating">
+    <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia">
+      <option value=null>-- Seleccione una provincia --</option>
+      @for (subregion of subregions | keyvalue: keepOrder; track $index) {
+      <option [value]="subregion.key">{{ subregion.value}}</option>
+      }
+    </select>
+    <label for="subregion">Provincia</label>
+  </div>
+</div> -->

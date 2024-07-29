@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 
 import { Community } from './interfaces/community.interface';
@@ -14,6 +14,7 @@ import { CommunitiesFilter } from './interfaces/communities-filter.interface';
 export class CommunitiesService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.base_url;
+  private communities = signal<Community[]>([]);
 
   getCommunities(filter: CommunitiesFilter): Observable<Results<Community>> {
     const { page, size, sortBy, sortOrder } = filter;
@@ -59,8 +60,8 @@ export class CommunitiesService {
     );
   }
 
-  checkBookExistance(bookCode: string): Observable<boolean> {
-    const url: string = `${this.baseUrl}/books/${bookCode}/check-exists`;
+  checkCommunityExistance(communityCode: string): Observable<boolean> {
+    const url: string = `${this.baseUrl}/communities/${communityCode}/check-exists`;
     return this.http.head(url).pipe(
       map(() => true),
       catchError(() => of(false))

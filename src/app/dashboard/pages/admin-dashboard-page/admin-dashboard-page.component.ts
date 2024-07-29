@@ -17,6 +17,7 @@ import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
+import { SearchBoxComponent } from '@shared/components/search-box/search-box.component';
 
 @Component({
   standalone: true,
@@ -28,6 +29,7 @@ import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.c
     PaginatorComponent,
     ReactiveFormsModule,
     RouterModule,
+    SearchBoxComponent,
     SpinnerComponent,
     TabsComponent,
     TopBarComponent,
