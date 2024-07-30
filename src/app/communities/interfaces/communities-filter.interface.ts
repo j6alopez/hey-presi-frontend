@@ -8,4 +8,5 @@ type AddressFields = Omit<Address, 'postalCode' | 'streetNumber'>;
 type CommunityFields = Pick<Community, 'createdAt'>;
 export type SortingComunityColumns = CommunityFields & AddressFields;
 export interface CommunitiesFilter extends Pagination, Sorting<SortingComunityColumns> {
+  search:string;
 }

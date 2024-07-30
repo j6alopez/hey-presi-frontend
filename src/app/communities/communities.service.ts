@@ -5,7 +5,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { Community } from './interfaces/community.interface';
 import { CreateCommunity } from './interfaces/create-community.interface';
 import { environment } from '../../environments/environment.dev';
-import { Results } from '../shared/interfaces/results.interface';
+import { Results } from '@shared/interfaces/results.interface';
 import { CommunitiesFilter } from './interfaces/communities-filter.interface';
 
 @Injectable({
@@ -17,12 +17,20 @@ export class CommunitiesService {
   private communities = signal<Community[]>([]);
 
   getCommunities(filter: CommunitiesFilter): Observable<Results<Community>> {
-    const { page, size, sortBy, sortOrder } = filter;
-    const params = new HttpParams()
-      .set('page', page)
-      .set('size', size)
-      .set('sortBy', sortBy)
-      .set('sortOrder', sortOrder);
+    const { page, size, sortBy, sortOrder, search } = filter;
+    const params = (() => {
+      let httpParams = new HttpParams()
+        .set('page', page)
+        .set('size', size)
+        .set('sortBy', sortBy)
+        .set('sortOrder', sortOrder);
+    
+      if (search.length > 0) {
+        httpParams = httpParams.set('search', search);
+      }
+    
+      return httpParams;
+    })();
 
     const url = `${this.baseUrl}/communities`;
     return this.http.get<Results<Community>>(url, { params });

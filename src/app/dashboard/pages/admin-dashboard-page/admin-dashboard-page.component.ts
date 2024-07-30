@@ -12,12 +12,12 @@ import { CommunitiesService } from '@communities/communities.service';
 import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
 import { Community } from '@communities/interfaces/community.interface';
 import { PaginatorComponent } from '@shared/components/paginator/paginator.component';
+import { SearchBoxComponent } from '@shared/components/search-box/search-box.component';
 import { Sorting } from '@shared/interfaces/sorting.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TabsComponent } from '@shared/components/navigation/tabs/tabs.component';
 import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
-import { SearchBoxComponent } from '@shared/components/search-box/search-box.component';
 
 @Component({
   standalone: true,
@@ -53,6 +53,7 @@ export class AdminDashBoardPageComponent implements OnInit {
     size: 5,
     sortBy: 'createdAt',
     sortOrder: SortingOrder.ASC,
+    search: ''
   }
 
 
@@ -113,6 +114,11 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   isCommunityCreationDisabled(): boolean {
     return this.selectedCommunity() !== undefined;
+  }
+
+  onValueChanged(search: string): void {
+    this.communityFilter.search = search;
+    this.loadCommunities();
   }
 
 }

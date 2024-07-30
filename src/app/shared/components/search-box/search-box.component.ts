@@ -1,31 +1,32 @@
 import { Component, input, OnDestroy, OnInit, output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, filter, Subscription, tap } from 'rxjs';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, filter, map, Subscription } from 'rxjs';
 
 @Component({
   selector: 'shared-search-box',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './search-box.component.html',
   styleUrl: './search-box.component.scss'
 })
 export class SearchBoxComponent implements OnInit, OnDestroy {
-
   placeholder = input<string>('Buscar...');
-  onValue = output<string>();
-  searchControl = new FormControl();
-  
+  onValueChanged = output<string>();
+
+  searchForm = new FormControl();
+
   private subscription?: Subscription;
-  private valueChanges$ = this.searchControl.valueChanges.pipe(
+  private valueChanges$ = this.searchForm.valueChanges.pipe(
     debounceTime(300),
-    tap(value => console.log(value)),
-    distinctUntilKeyChanged('value'),
-    filter(value =>  value.length === 0 || value.length > 2)
+    map(value => value.trim()),
+    distinctUntilChanged(),
+    map(value => value.length === 0 ? '' : value),
+    filter(value => value === '' || value.length > 2),
   )
 
   ngOnInit(): void {
     this.subscription = this.valueChanges$.subscribe(
-      value => this.onValue.emit(value)
+      value => this.onValueChanged.emit(value)
     );
   }
 
