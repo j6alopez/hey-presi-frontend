@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, model, OnInit, output, Output } from '@angular/core';
+import { Component, input, model, OnInit, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
