@@ -1,7 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { filter, tap, map } from 'rxjs';
+import { filter, tap } from 'rxjs';
 
 import { BuildingUnit } from '@building_units/interfaces/building-unit.interface';
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';

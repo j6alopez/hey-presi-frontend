@@ -1,7 +1,9 @@
 <!-- Outer Row -->
 <div class="card border-0 shadow my-5">
   <div class="card-header d-flex flex-wrap align-items">
-    <h5 class="me-auto my-auto py-2 font-weight-bold">Registrar Comunidad</h5>
+    <h5 class="me-auto my-auto py-2 font-weight-bold">
+      {{ title()}}
+    </h5>
   </div>
   <div class="card-body p-0">
     <!-- Nested Row within Card Body -->
@@ -12,31 +14,20 @@
 
         <form [formGroup]="communityForm" (ngSubmit)="onSubmit()" autocomplete="off" class="row">
 
-          <!-- subregion -->
+          <!-- TIN -->
 
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
-              <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia">
-                <option value=null>-- Seleccione una provincia --</option>
-                @for (subregion of subregions | keyvalue: keepOrder; track $index) {
-                <option [value]="subregion.key">{{ subregion.value}}</option>
-                }
-              </select>
-              <label for="subregion">Provincia</label>
-            </div>
-          </div>
+              <input type="text" formControlName="tin" class="form-control" id="tin" />
+              <label for="tin">CIF</label>
 
-          <!-- city -->
-
-          <div class="col-12 col-md-6 my-3">
-            <div class="form-floating">
-              <select class="form-select" formControlName='city' id="city" aria-label="Ciudad">
-                <option value=null>-- Seleccione una población --</option>
-                @for (city of citiesSignal(); track $index) {
-                <option [value]="city.code">{{ city.name!}}</option>
-                }
-              </select>
-              <label for="city">Población</label>
+              @if ( isNotValidField('tin') ) {
+              <div class="text-center text-sm-start">
+                <small class="text-danger mt-1">
+                 Debe tener un formato válido
+                </small>
+              </div>
+              }
             </div>
           </div>
 
@@ -75,7 +66,7 @@
           </div>
 
           <!-- postalCode -->
-           
+
           <div class="col-12 col-md-6 my-3">
             <div class="form-floating">
               <input type="text" formControlName="postalCode" class="form-control" id="postalCode" />
@@ -91,10 +82,39 @@
             </div>
           </div>
 
-          <div class="row justify-content-center d-flex">
-            <div class="col-12 col-md-6 col-lg-4">
+          <!-- subregion -->
+
+          <div class="col-12 col-md-6 my-3">
+            <div class="form-floating">
+              <select class="form-select" formControlName='subregion' id="subregion" aria-label="Provincia">
+                <option value=null>-- Seleccione una provincia --</option>
+                @for (subregion of subregions | keyvalue: keepOrder; track $index) {
+                <option [value]="subregion.key">{{ subregion.value}}</option>
+                }
+              </select>
+              <label for="subregion">Provincia</label>
+            </div>
+          </div>
+
+          <!-- city -->
+
+          <div class="col-12 col-md-6 my-3">
+            <div class="form-floating">
+              <select class="form-select" formControlName='city' id="city" aria-label="Ciudad">
+                <option value=null>-- Seleccione una población --</option>
+                @for (city of citiesSignal(); track $index) {
+                <option [value]="city.code">{{ city.name!}}</option>
+                }
+              </select>
+              <label for="city">Población</label>
+            </div>
+          </div>
+
+          <!-- submit button -->
+          <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-4 my-3">
               <button type="submit" class="btn btn-primary text-center my-3 w-100" [disabled]="communityForm.invalid">
-                Registrar
+                {{ buttonText() }}
               </button>
             </div>
           </div>

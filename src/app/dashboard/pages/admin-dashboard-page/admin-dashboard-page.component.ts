@@ -7,7 +7,7 @@ import { BuildingUnit } from '@building_units/interfaces/building-unit.interface
 import { BuildingUnitForm } from '@building_units/interfaces/building-unit-form.interface';
 import { BuildingUnitsTabComponent } from '@communities/components/building-units-tab/building-units-tab.component';
 import { BuildingUnitsTableComponent } from '@building_units/components/building-units-table/building-units-table.component';
-import { CommunitiesFilter, SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
+import { CommunityFilter, SortingComunityColumns } from '@communities/interfaces/community-filter.interface';
 import { CommunitiesService } from '@communities/communities.service';
 import { CommunitiesTableComponent } from '@communities/components/communities-table/communities-table.component';
 import { Community } from '@communities/interfaces/community.interface';
@@ -48,7 +48,7 @@ export class AdminDashBoardPageComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
 
-  communityFilter: CommunitiesFilter = {
+  communityFilter: CommunityFilter = {
     page: 1,
     size: 5,
     sortBy: 'createdAt',

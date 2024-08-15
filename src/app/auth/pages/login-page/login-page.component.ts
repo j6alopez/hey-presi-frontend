@@ -4,7 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
-import { PatternUtils } from '../../../shared/validators/pattern-utils';
+import { PatternUtils } from '../../../shared/utils/pattern-utils';
 import { User } from '../../interfaces/user';
 
 @Component({

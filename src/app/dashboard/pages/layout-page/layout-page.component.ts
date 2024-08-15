@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MenuItem } from '../../../shared/interfaces/menu-item.interface';
-import { SideBarComponent } from '../../../shared/components/navigation/side-bar/side-bar.component';
-import { TopBarComponent } from '../../../shared/components/navigation/top-bar/top-bar.component';
+import { MenuItem } from '@shared/interfaces/menu-item.interface';
+import { SideBarComponent } from '@shared/components/navigation/side-bar/side-bar.component';
+import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.component';
 
 
 @Component({

@@ -11,8 +11,8 @@ import { CreateAddress } from '@locations/interfaces/create-address.interface';
 import { CreateCommunity } from '@communities/interfaces/create-community.interface';
 import { Location } from '@locations/interfaces/location.interface';
 import { LocationsService } from '@locations/locations.service';
-import { PatternUtils } from '@shared/validators/pattern-utils';
-import { SpanishSubRegions } from '@locations/enums/spanish-regions';
+import { PatternUtils } from '@shared/utils/pattern-utils';
+import { SpanishSubRegion } from '@locations/enums/spanish-subregion';
 
 @Component({
   standalone: true,
@@ -29,15 +29,16 @@ export class CommunityPage implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly locationsService = inject(LocationsService);
-  private readonly communitiesService = inject(CommunitiesService)
-
-  public citiesSignal = signal<Location[]>([]);
-  public communityForm!: FormGroup;
-  public subregions = SpanishSubRegions;
-
-  private isEditMode = false;
-  
+  private readonly communitiesService = inject(CommunitiesService);
   private communityId?: string;
+
+  isEditMode = false;
+  citiesSignal = signal<Location[]>([]);
+  communityForm!: FormGroup;
+  subregions = SpanishSubRegion;
+  title = signal<string>('Crear Comunidad');
+  buttonText = signal<string>('Registrar');
+
 
   constructor(private fb: FormBuilder) {
   }
@@ -46,10 +47,7 @@ export class CommunityPage implements OnInit {
     this.createCommunityForm();
     this.route.params.pipe(
       filter(params => !!params['id']),
-      tap((params) => {
-        this.isEditMode = true;
-        this.communityId = params['id']
-      })
+      tap(params => this.setEditMode(params['id']))
     ).subscribe();
     this.loadCommunity();
     this.handleSubregionChange().subscribe();
@@ -62,17 +60,18 @@ export class CommunityPage implements OnInit {
     }
 
     const createAddress = this.buildAddress();
-    const address: CreateCommunity = {
+    const createCommunity: CreateCommunity = {
+      tin: this.communityForm.get('tin')!.value,
       address: createAddress
     }
 
     if (this.isEditMode) {
-      this.communitiesService.updateCommunity(this.communityId!, address).pipe(
+      this.communitiesService.updateCommunity(this.communityId!, createCommunity).pipe(
         filter(updated => !!updated),
-        switchMap(() => this.router.navigate(['/dashboard']))
+        // switchMap(() => this.router.navigate(['/dashboard']))
       ).subscribe();
     } else {
-      this.communitiesService.createCommunity(address).pipe(
+      this.communitiesService.createCommunity(createCommunity).pipe(
         filter(created => !!created),
         switchMap(() => this.router.navigate(['/dashboard']))
       ).subscribe();
@@ -102,6 +101,13 @@ export class CommunityPage implements OnInit {
 
   private createCommunityForm(): void {
     this.communityForm = this.fb.group({
+      tin: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(PatternUtils.spanishTin)
+        ]
+      ],
       street: [
         '',
         Validators.required,
@@ -146,8 +152,10 @@ export class CommunityPage implements OnInit {
   private loadCommunity(): void {
     this.communitiesService.getCommunityById(this.communityId!).pipe(
       tap(({ address }) => {
-        this.communityForm.patchValue(address);
-        this.communityForm.patchValue({ subregion: address.subregion.code })
+        this.communityForm.patchValue({
+          ...address,
+          subregion: address.subregion.code,
+        });
       }),
       switchMap(({ address }) => this.locationsService.getCitiesBySubregionCode(address.subregion.code).pipe(
         tap(cities => this.citiesSignal.set(cities)),
@@ -155,5 +163,12 @@ export class CommunityPage implements OnInit {
         catchError(() => of([])),
       )),
     ).subscribe();
+  }
+
+  private setEditMode(communityId: string): void {
+    this.isEditMode = true;
+    this.communityId = communityId;
+    this.title.set('Editar Comunidad');
+    this.buttonText.set('Actualizar');
   }
 }

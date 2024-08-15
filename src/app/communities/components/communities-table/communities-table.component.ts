@@ -8,7 +8,7 @@ import { Sorting } from '@shared/interfaces/sorting.interface';
 import { SortingOrder } from '@shared/enums/sorting-direction.enum';
 import { CommunityActionComponent } from '../community-action-component/community-action-component';
 import { formatAddress } from '@shared/utils/utils';
-import { SortingComunityColumns } from '@communities/interfaces/communities-filter.interface';
+import { SortingComunityColumns } from '@communities/interfaces/community-filter.interface';
 import { Address } from '@locations/interfaces/address.interface';
 
 @Component({
@@ -40,10 +40,10 @@ export class CommunitiesTableComponent implements OnInit {
   };
 
   actionsColumns: string[] = ['action'];
-  
+
   communityColumns: Array<keyof Community> = ['createdAt'];
   addressColumns: Array<keyof Address> = ['street', 'region', 'subregion', 'city'];
-  
+
   columnLabels = new Map<string, string>();
 
   private setColumnHeaders(): void {
@@ -57,11 +57,11 @@ export class CommunitiesTableComponent implements OnInit {
     });
   }
 
-  sortTable(column: string) : void {
+  sortTable(column: string): void {
     const sortingOrder = this.isDescendingSorting(column)
       ? SortingOrder.ASC
       : SortingOrder.DESC;
-      
+
     const sortBy = column as keyof SortingComunityColumns;
     this.sorting = {
       sortBy: sortBy,

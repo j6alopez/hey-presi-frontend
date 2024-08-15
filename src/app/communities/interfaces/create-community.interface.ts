@@ -1,5 +1,6 @@
 import { CreateAddress } from "../../locations/interfaces/create-address.interface";
 
 export interface CreateCommunity {
+  tin: string;
   address: CreateAddress;
 }

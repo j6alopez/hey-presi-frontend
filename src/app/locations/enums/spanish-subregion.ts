@@ -1,4 +1,4 @@
-export enum SpanishSubRegions {
+export enum SpanishSubRegion {
   'ES-C' = 'A Coruña',
   'ES-AB' = 'Albacete',
   'ES-A' = 'Alicante/Alacant',

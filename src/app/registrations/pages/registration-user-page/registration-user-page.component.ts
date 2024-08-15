@@ -5,10 +5,10 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { CommunityRole } from '../../../communities/enums/community-role.enum';
-import { PatternUtils } from '../../../shared/validators/pattern-utils';
+import { PatternUtils } from '../../../shared/utils/pattern-utils';
 import { RegistrationService } from '../../registation.service';
 import { UserRegistrationForm } from '../../interfaces/user-form.interface';
-import { ValidatorService } from '../../../shared/validators/validator.service';
+import { ValidatorService } from '../../../shared/components/services/validator.service';
 import { CommonModule } from '@angular/common';
 import { filter, switchMap, tap } from 'rxjs';
 import { ErrorMessageComponent } from '../../../shared/components/error-message/error-message.component';

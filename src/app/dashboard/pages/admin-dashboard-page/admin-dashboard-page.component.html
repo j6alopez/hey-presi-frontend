@@ -5,10 +5,10 @@
   @defer (when recordsLoaded) {
   <div class="card-body">
     <div class="row">
-      <div class="col-6">
+      <div class="col-7">
         <shared-search-box (onValueChanged)="onValueChanged($event)"/>
       </div>
-      <div class="col-6 justify-content-end d-flex">
+      <div class="col-5 justify-content-end d-flex">
         <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
           id="creation-button"
           [disabled]="isCommunityCreationDisabled()"
