@@ -38,6 +38,8 @@ import { TopBarComponent } from '@shared/components/navigation/top-bar/top-bar.c
   styleUrl: './admin-dashboard-page.component.scss'
 })
 export class AdminDashBoardPageComponent implements OnInit {
+  private fb = inject(FormBuilder);
+
   private readonly communitiesService = inject(CommunitiesService);
 
   communities: Community[] = [];
@@ -63,7 +65,7 @@ export class AdminDashBoardPageComponent implements OnInit {
 
   selectedTabIndex: number = 0;
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.buildingUnitsForm = this.fb.group({
       units: this.fb.array<BuildingUnitForm>([])
     });

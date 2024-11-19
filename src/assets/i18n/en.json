@@ -24,7 +24,7 @@
   },
   "COMMUNITY_TABLE": {
     "createdAt": "Created at",
-    "street": "Street",
+    "street": "Address",
     "region": "Region",
     "subregion": "Subregion",
     "city": "City",

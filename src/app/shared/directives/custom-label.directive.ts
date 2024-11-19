@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit } from "@angular/core";
+import { Directive, ElementRef, Input, OnInit, inject } from "@angular/core";
 import { ValidationErrors } from "@angular/forms";
 
 @Directive({
@@ -6,6 +6,8 @@ import { ValidationErrors } from "@angular/forms";
 })
 
 export class CustomLabelDirective {
+  private el = inject<ElementRef<HTMLElement>>(ElementRef);
+
 
   private htmlElement?: ElementRef<HTMLElement>;
   private _errors?: ValidationErrors | null;
@@ -16,7 +18,9 @@ export class CustomLabelDirective {
     this.setErrorMessage();
   }
 
-  constructor( private el: ElementRef<HTMLElement> ) {
+  constructor() {
+    const el = this.el;
+
     this.htmlElement = el;
   }
 

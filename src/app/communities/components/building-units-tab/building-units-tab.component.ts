@@ -25,6 +25,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   styleUrl: './building-units-tab.component.scss'
 })
 export class BuildingUnitsTabComponent {
+  private fb = inject(FormBuilder);
+
   private readonly buildingUnitsService = inject(BuildingUnitsService);
 
   selectedCommunity = input<Community>();
@@ -43,7 +45,7 @@ export class BuildingUnitsTabComponent {
   editingUnit?: BuildingUnit;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.buildingUnitsForm = this.fb.group({
       units: this.fb.array<BuildingUnitForm>([])
     });

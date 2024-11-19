@@ -1,14 +1,14 @@
 <div class="card shadow my-5">
   <div class="card-header d-flex flex-wrap align-items">
-    <h4 class="me-auto my-auto font-weight-bold">Comunidades</h4>
+    <h2 class="me-auto my-3">Comunidades</h2>
   </div>
   @defer (when recordsLoaded) {
   <div class="card-body">
     <div class="row">
-      <div class="col-7">
+      <div class="col-3">
         <shared-search-box (onValueChanged)="onValueChanged($event)"/>
       </div>
-      <div class="col-5 justify-content-end d-flex">
+      <div class="col-9 justify-content-end d-flex">
         <button class="btn btn-primary mb-3" type="button" [routerLink]="['/communities', 'creation']"
           id="creation-button"
           [disabled]="isCommunityCreationDisabled()"

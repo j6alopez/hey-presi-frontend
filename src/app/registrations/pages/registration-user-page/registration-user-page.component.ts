@@ -27,6 +27,8 @@ import { ErrorMessageComponent } from '../../../shared/components/error-message/
   styleUrl: './registration-user-page.component.scss'
 })
 export class RegistrationUserPage {
+  private formBuilder = inject(FormBuilder);
+
 
   private readonly router = inject(Router);
   private readonly validatorService = inject(ValidatorService);
@@ -37,7 +39,7 @@ export class RegistrationUserPage {
   public userForm: FormGroup;
   public communityRoles = Object.values(CommunityRole).sort();
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     this.userForm = this.formBuilder.group({
       communityCode: [
         '',

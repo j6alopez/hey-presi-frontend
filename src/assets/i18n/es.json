@@ -26,7 +26,7 @@
 
   "COMMUNITY_TABLE": {
     "createdAt": "Fecha de creación",
-    "street": "Calle",
+    "street": "Dirección",
     "region": "Comunidad Autónoma",
     "subregion": "Provincia",
     "city": "Ciudad",

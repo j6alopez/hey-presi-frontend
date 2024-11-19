@@ -25,6 +25,8 @@ import { SpanishSubRegion } from '@locations/enums/spanish-subregion';
   styleUrl: './community-page.component.scss'
 })
 export class CommunityPage implements OnInit {
+  private fb = inject(FormBuilder);
+
 
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -38,10 +40,6 @@ export class CommunityPage implements OnInit {
   subregions = SpanishSubRegion;
   title = signal<string>('Crear Comunidad');
   buttonText = signal<string>('Registrar');
-
-
-  constructor(private fb: FormBuilder) {
-  }
 
   ngOnInit(): void {
     this.createCommunityForm();
